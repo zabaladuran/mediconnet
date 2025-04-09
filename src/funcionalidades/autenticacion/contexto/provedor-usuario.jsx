@@ -41,7 +41,7 @@ export const ProveedorUsuario = ({ children }) => {
     eliminarDeLocalStorage(CLAVE_TOKEN_AUTENTICACION_USUARIO);
   };
 
-  byPassAut();
+  // byPassAut();
   useEffect(() => {
     try {
       const autToken = obtenerDeLocalStorage({
