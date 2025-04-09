@@ -6,11 +6,11 @@ import {
 
 function SignUpPage() {
   return (
-    <>
+    <main className="min-h-screen flex flex-col">
       <AutHeader />
       <SignUpForm />
       <AutFooter />
-    </>
+    </main>
   );
 }
 
