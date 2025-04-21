@@ -79,7 +79,11 @@ export function SignUpForm() {
               </div>
             </CardContent>
             <CardFooter className="flex flex-col space-y-4">
-              <Button type="submit" className="w-full" disabled={estaCargando}>
+              <Button
+                type="submit"
+                className="w-full cursor-pointer"
+                disabled={estaCargando}
+              >
                 {estaCargando ? (
                   <div className="flex items-center space-x-2">
                     <div className="h-4 w-4 animate-spin rounded-full border-2 border-primary border-t-transparent"></div>
@@ -87,15 +91,14 @@ export function SignUpForm() {
                   </div>
                 ) : (
                   <div className="flex items-center space-x-2">
-                    <LogIn className="h-5 w-5" />
-                    <span>Iniciar Sesión</span>
+                    <span>Registrarse</span>
                   </div>
                 )}
               </Button>
               <p className="text-sm text-muted-foreground text-center">
-                ¿No tienes una cuenta?{" "}
-                <a href="#" className="text-primary hover:underline">
-                  Regístrate
+                ¿Ya tienes una cuenta?{" "}
+                <a href="/sign-in" className="text-primary hover:underline">
+                  Iniciar sesión
                 </a>
               </p>
             </CardFooter>
