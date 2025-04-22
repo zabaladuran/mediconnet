@@ -11,101 +11,156 @@ import { Input } from "../../../../components/ui/input";
 import { Button } from "../../../../components/ui/button";
 import { Mail, Lock, LogIn, User } from "lucide-react";
 import { useState } from "react";
-
+import { z } from "zod";
+import { signUpSchema } from "../../zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { obtenerDeLocalStorage } from "../../../../servicios";
+import { CLAVE_CORREO_USUARIO } from "../../data/variables-de-autenticacion";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "../../../../components/ui/form";
+import { useForm } from "react-hook-form";
+import { Checkbox } from "../../../../components/ui/checkbox";
+import { RadioGroup, RadioGroupItem } from "@radix-ui/react-radio-group";
+import { useSignUpForm } from "../../hooks";
 export function SignUpForm() {
-  const [email, setEmail] = useState("");
-  const [password, definirPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [estaCargando, definirEstaCargando] = useState(false);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    definirEstaCargando(true);
-
-    try {
-      // Here you would typically make an API call to authenticate
-      // For demo purposes, we'll just show a success toast
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-    } catch (error) {
-    } finally {
-      definirEstaCargando(false);
-    }
-  };
+  const { formulario, enviarData } = useSignUpForm();
   return (
-    <>
-      <div className="flex items-center justify-center bg-gradient-to-br from-background to-muted p-4 flex-grow">
-        <Card className="w-full max-w-md bg-white">
-          <CardHeader className="text-center">
-            <CardTitle className="text-3xl font-bold">
-              Crear una cuenta
-            </CardTitle>
-            <CardDescription>Ingresa tus datos para comenzar</CardDescription>
-          </CardHeader>
-          <form onSubmit={handleSubmit}>
-            <CardContent>
-              <div className="flex-row space-y-4 my-5">
-                <TextInput
-                  label="Nombre Completo"
-                  htmlFor="nombre"
-                  id="nombre"
-                  valor={password}
-                  actualizarValor={definirPassword}
-                  icon={User}
-                  tipoDeCampo="text"
+    <Form {...formulario}>
+      <form onSubmit={formulario.handleSubmit(enviarData)}>
+        <FormField
+          control={formulario.control}
+          name="nombreCompleto"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Nombre Completo</FormLabel>
+              <FormControl>
+                <Input placeholder="" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={formulario.control}
+          name="email"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Correo electrónico</FormLabel>
+              <FormControl>
+                <Input
+                  type="email"
+                  placeholder="correo@ejemplo.com"
+                  {...field}
                 />
-                <TextInput
-                  label="Correo electrónico"
-                  htmlFor="email"
-                  id="email"
-                  valor={password}
-                  actualizarValor={definirPassword}
-                  icon={Mail}
-                  tipoDeCampo="email"
-                />
-                <PasswordInput
-                  label="Contraseña"
-                  htmlFor="password"
-                  id="password"
-                  password={password}
-                  definirPassword={definirPassword}
-                />
-                <PasswordInput
-                  label="Confirmar contraseña"
-                  htmlFor="confirm-password"
-                  id="confirm-password"
-                  password={confirmPassword}
-                  definirPassword={setConfirmPassword}
-                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={formulario.control}
+          name="password"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Contraseña</FormLabel>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 flex items-center pl-3">
+                  <Lock className="h-5 w-5 text-green-500" />
+                </div>
+                <FormControl>
+                  <Input
+                    {...field}
+                    type="password"
+                    className="pl-10 flex "
+                    placeholder="********"
+                  />
+                </FormControl>
               </div>
-            </CardContent>
-            <CardFooter className="flex flex-col space-y-4">
-              <Button
-                type="submit"
-                className="w-full cursor-pointer"
-                disabled={estaCargando}
-              >
-                {estaCargando ? (
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={formulario.control}
+          name="confirmPassword"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Confirmar contraseña</FormLabel>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 flex items-center pl-3">
+                  <Lock className="h-5 w-5 text-green-500" />
+                </div>
+                <FormControl>
+                  <Input
+                    {...field}
+                    type="password"
+                    className="pl-10"
+                    placeholder="********"
+                  />
+                </FormControl>
+              </div>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={formulario.control}
+          name="tipoUsuario"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Tipo de usuario</FormLabel>
+              <FormControl>
+                <RadioGroup
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                  className="flex gap-4"
+                >
                   <div className="flex items-center space-x-2">
-                    <div className="h-4 w-4 animate-spin rounded-full border-2 border-primary border-t-transparent"></div>
-                    <span>Iniciando sesión...</span>
+                    <RadioGroupItem value="paciente" id="paciente" />
+                    <Label htmlFor="paciente">Paciente</Label>
                   </div>
-                ) : (
                   <div className="flex items-center space-x-2">
-                    <span>Registrarse</span>
+                    <RadioGroupItem value="doctor" id="doctor" />
+                    <Label htmlFor="doctor">Médico</Label>
                   </div>
-                )}
-              </Button>
-              <p className="text-sm text-muted-foreground text-center">
-                ¿Ya tienes una cuenta?{" "}
-                <a href="/sign-in" className="text-primary hover:underline">
-                  Iniciar sesión
-                </a>
-              </p>
-            </CardFooter>
-          </form>
-        </Card>
-      </div>
-    </>
+                </RadioGroup>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={formulario.control}
+          name="terminos"
+          render={({ field }) => (
+            <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+              <FormControl>
+                <Checkbox
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                />
+              </FormControl>
+              <div className="space-y-1 leading-none">
+                <FormLabel>Acepto los términos y condiciones</FormLabel>
+              </div>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <Button type="submit">Submit</Button>
+      </form>
+    </Form>
   );
 }
 

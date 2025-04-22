@@ -1,2 +1,4 @@
 import { useAut } from "./useAut";
-export { useAut };
+import { useSignInForm } from "./useSignInForm";
+import { useSignUpForm } from "./useSignUpForm";
+export { useAut, useSignInForm, useSignUpForm };
