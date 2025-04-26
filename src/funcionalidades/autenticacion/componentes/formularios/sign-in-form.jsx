@@ -12,7 +12,7 @@ import {
 import { useSignInForm } from "../../hooks";
 
 export function SignInForm() {
-  const { formulario, enviarData } = useSignInForm();
+  const { validando, formulario, enviarData } = useSignInForm();
   return (
     <Form {...formulario}>
       <form onSubmit={formulario.handleSubmit(enviarData)} className="">
@@ -56,7 +56,9 @@ export function SignInForm() {
             </FormItem>
           )}
         />
-        <Button type="submit">Submit</Button>
+        <Button disabled={validando} type="submit">
+          {validando ? "Cargando" : "Enviar"}
+        </Button>
       </form>
     </Form>
   );

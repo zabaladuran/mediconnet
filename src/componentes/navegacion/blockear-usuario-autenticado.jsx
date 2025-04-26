@@ -1,7 +1,7 @@
 import { Outlet, Navigate } from "react-router";
 import { useAut } from "../../funcionalidades/autenticacion/hooks";
 const BlockearUsuarioAutenticado = ({ to }) => {
-  const { usuario } = useAut();
+  const usuario = false;
   return usuario ? <Navigate to={to} /> : <Outlet />;
 };
 
