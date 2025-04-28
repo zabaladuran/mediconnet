@@ -10,7 +10,7 @@ import { useNavigate } from "react-router";
 import { useState } from "react";
 
 export function useSignInForm() {
-  const { usuario, inciarSesion } = useAut();
+  const { iniciarSesion } = useAut();
   const [validando, definirValidando] = useState(false);
   const navigate = useNavigate();
   const form = useForm({
@@ -22,32 +22,43 @@ export function useSignInForm() {
 
   async function enviarData(data) {
     try {
+      //  ENTRADA DE DATOS DE INICIO DE SESION
       definirValidando(true);
       const { email, password } = data;
-      let { exito, tk } = await signInUsuario({
+
+      // LOGIN Y OBTENCION DE CREDENCIALES (BACKEND)
+      let {
+        exito: exitoSignIn,
+        token,
+        verficado: usuarioVerificado,
+      } = await signInUsuario({
         email: email,
         pass: password,
       });
-
-      if (exito) {
-        const { exito, tipoUsuario } = await obtenerTipoUsuario({
-          token: "kjkj",
-        });
-        if (exito) {
-          if (tipoUsuario == "paciente")
-            navigate("/paciente/dashboard/home", { replace: true });
-          else if (tipoUsuario == "doctor")
-            navigate("/doctor/dashboard/home", { replace: true });
-          toast.success("Iniciando sesion...");
-        } else {
-          toast.error("Ops. ocuririo un error surante el envio de sus datos");
+      if (!exitoSignIn) return toast.error("Crendenciales invalidas");
+      const { exito: exitoTipoUsuario, tipoUsuario } = await obtenerTipoUsuario(
+        {
+          token: token,
         }
-      } else {
-        toast.error("Crendenciales invalidas");
-      }
-      definirValidando(false);
+      );
+      if (!exitoTipoUsuario) return toast.error("Crendenciales invalidas");
+      iniciarSesion({
+        correo: email,
+        token: token,
+        tipoUsuario: tipoUsuario,
+        usuarioVerificado: usuarioVerificado,
+      });
+
+      // REDIRECCION CONDICIONAL
+      if (!usuarioVerificado)
+        return navigate("/verfication", { replace: true });
+      if (tipoUsuario == "paciente")
+        return navigate("/paciente/dashboard/home", { replace: true });
+      if (tipoUsuario == "doctor")
+        return navigate("/doctor/dashboard/home", { replace: true });
     } catch (e) {
-      toast.error(e);
+    } finally {
+      definirValidando(false);
     }
   }
   return { validando: validando, formulario: form, enviarData: enviarData };

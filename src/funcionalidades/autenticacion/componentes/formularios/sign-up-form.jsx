@@ -1,21 +1,7 @@
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "../../../../components/ui/card";
 import { Label } from "../../../../components/ui/label";
 import { Input } from "../../../../components/ui/input";
 import { Button } from "../../../../components/ui/button";
 import { Mail, Lock, LogIn, User } from "lucide-react";
-import { useState } from "react";
-import { z } from "zod";
-import { signUpSchema } from "../../zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { obtenerDeLocalStorage } from "../../../../servicios";
-import { CLAVE_CORREO_USUARIO } from "../../data/variables-de-autenticacion";
 import {
   Form,
   FormControl,
@@ -25,51 +11,70 @@ import {
   FormLabel,
   FormMessage,
 } from "../../../../components/ui/form";
-import { useForm } from "react-hook-form";
 import { Checkbox } from "../../../../components/ui/checkbox";
-import { RadioGroup, RadioGroupItem } from "@radix-ui/react-radio-group";
+import {
+  RadioGroup,
+  RadioGroupItem,
+} from "../../../../components/ui/radio-group";
 import { useSignUpForm } from "../../hooks";
+import { PACIENTE, DOCTOR } from "../../data";
 export function SignUpForm() {
-  const { formulario, enviarData } = useSignUpForm();
+  const { formulario, enviarData, validando } = useSignUpForm();
   return (
     <Form {...formulario}>
-      <form onSubmit={formulario.handleSubmit(enviarData)}>
+      <form
+        onSubmit={formulario.handleSubmit(enviarData)}
+        className="space-y-6 bg-white p-8 rounded-xl shadow-md"
+      >
         <FormField
           control={formulario.control}
           name="nombreCompleto"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Nombre Completo</FormLabel>
-              <FormControl>
-                <Input placeholder="" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={formulario.control}
-          name="email"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Correo electrónico</FormLabel>
+              <FormLabel className="text-sm font-semibold">
+                Nombre Completo
+              </FormLabel>
               <FormControl>
                 <Input
-                  type="email"
-                  placeholder="correo@ejemplo.com"
+                  placeholder="Ingresa tu nombre completo"
                   {...field}
+                  className="border rounded-md p-2"
                 />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
+
+        <FormField
+          control={formulario.control}
+          name="email"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="text-sm font-semibold">
+                Correo electrónico
+              </FormLabel>
+              <FormControl>
+                <Input
+                  type="email"
+                  placeholder="correo@ejemplo.com"
+                  {...field}
+                  className="border rounded-md p-2"
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
         <FormField
           control={formulario.control}
           name="password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Contraseña</FormLabel>
+              <FormLabel className="text-sm font-semibold">
+                Contraseña
+              </FormLabel>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 flex items-center pl-3">
                   <Lock className="h-5 w-5 text-green-500" />
@@ -78,7 +83,7 @@ export function SignUpForm() {
                   <Input
                     {...field}
                     type="password"
-                    className="pl-10 flex "
+                    className="pl-10 border rounded-md p-2"
                     placeholder="********"
                   />
                 </FormControl>
@@ -93,7 +98,9 @@ export function SignUpForm() {
           name="confirmPassword"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Confirmar contraseña</FormLabel>
+              <FormLabel className="text-sm font-semibold">
+                Confirmar contraseña
+              </FormLabel>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 flex items-center pl-3">
                   <Lock className="h-5 w-5 text-green-500" />
@@ -102,7 +109,7 @@ export function SignUpForm() {
                   <Input
                     {...field}
                     type="password"
-                    className="pl-10"
+                    className="pl-10 border rounded-md p-2"
                     placeholder="********"
                   />
                 </FormControl>
@@ -117,20 +124,30 @@ export function SignUpForm() {
           name="tipoUsuario"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Tipo de usuario</FormLabel>
+              <FormLabel className="text-sm font-semibold">
+                Tipo de usuario
+              </FormLabel>
               <FormControl>
                 <RadioGroup
                   onValueChange={field.onChange}
                   defaultValue={field.value}
-                  className="flex gap-4"
+                  className="flex gap-6"
                 >
                   <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="paciente" id="paciente" />
-                    <Label htmlFor="paciente">Paciente</Label>
+                    <RadioGroupItem
+                      className="width-2"
+                      value={PACIENTE}
+                      id="paciente"
+                    />
+                    <Label htmlFor="paciente" className="text-sm">
+                      Paciente
+                    </Label>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="doctor" id="doctor" />
-                    <Label htmlFor="doctor">Médico</Label>
+                    <RadioGroupItem value={DOCTOR} id="doctor" />
+                    <Label htmlFor="doctor" className="text-sm">
+                      Doctor
+                    </Label>
                   </div>
                 </RadioGroup>
               </FormControl>
@@ -151,79 +168,23 @@ export function SignUpForm() {
                 />
               </FormControl>
               <div className="space-y-1 leading-none">
-                <FormLabel>Acepto los términos y condiciones</FormLabel>
+                <FormLabel className="text-sm">
+                  Acepto los términos y condiciones
+                </FormLabel>
               </div>
               <FormMessage />
             </FormItem>
           )}
         />
 
-        <Button type="submit">Submit</Button>
+        <Button
+          disabled={validando}
+          type="submit"
+          className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 rounded-md"
+        >
+          {validando ? "Verificando..." : "Enviar"}
+        </Button>
       </form>
     </Form>
-  );
-}
-
-function PasswordInput({ label, definirPassword, password, htmlFor, id }) {
-  if (!label || !definirPassword)
-    throw new Error("Password Input no recibio los parametros minimos");
-  if (!(typeof label == "string") || !(typeof definirPassword == "function"))
-    throw new Error("Password Input no recibio los parametros minimos");
-  return (
-    <div className="space-y-2">
-      <Label htmlFor={htmlFor}>{label}</Label>
-      <div className="relative">
-        <Lock className="absolute left-3 top-2 h-5 w-5 text-muted-foreground" />
-        <Input
-          id={id}
-          type="password"
-          placeholder="••••••••"
-          className="pl-10"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-      </div>
-    </div>
-  );
-}
-
-function TextInput({
-  label,
-  actualizarValor,
-  valor,
-  htmlFor = "",
-  id = "",
-  tipoDeCampo,
-  placeholder = "",
-  icon: Icon,
-}) {
-  if (!label || !actualizarValor || !tipoDeCampo)
-    throw new Error("Text Input no recibio los parametros minimos");
-  if (
-    !(typeof label == "string") ||
-    !(typeof tipoDeCampo == "string") ||
-    !(typeof actualizarValor == "function")
-  )
-    throw new Error("Text Input no recibio los parametros minimos");
-
-  return (
-    <div className="space-y-2">
-      <Label htmlFor={htmlFor}>{label}</Label>
-      <div className="relative">
-        {Icon && (
-          <Icon className="absolute left-3 top-2 h-5 w-5 text-muted-foreground" />
-        )}
-        <Input
-          id={id}
-          type={tipoDeCampo}
-          placeholder={placeholder}
-          className="pl-10"
-          value={valor}
-          onChange={(e) => actualizarValor(e.target.value)}
-          required
-        />
-      </div>
-    </div>
   );
 }

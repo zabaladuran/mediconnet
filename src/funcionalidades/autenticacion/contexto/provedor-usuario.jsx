@@ -9,6 +9,8 @@ import {
   CLAVE_TOKEN_AUTENTICACION_USUARIO,
 } from "../data/variables-de-autenticacion";
 import { toast } from "sonner";
+import { coerce } from "zod";
+import { obtenerTipoUsuario, validarAutenticidadToken } from "../servicios/";
 
 export const ContextoDeAutenticacion = createContext({
   usuario: null,
@@ -19,126 +21,54 @@ export const ContextoDeAutenticacion = createContext({
 export const ProveedorUsuario = ({ children }) => {
   const [usuario, definirUsuario] = useState(null);
 
-  const guardarCrendencialesAut = ({ tk, correo }) => {
-    try {
-      if (!tk && !correo) throw Error("Parametros insuficientes");
-      if (correo) {
-        guardarEnLocalStorage({
-          clave: CLAVE_CORREO_USUARIO,
-          data: correo,
-        });
-      }
-      if (tk) {
-        guardarEnLocalStorage({
-          clave: CLAVE_TOKEN_AUTENTICACION_USUARIO,
-          data: tk,
-        });
-      }
-    } catch (error) {
-      toast.error(`Error durante guardado de credenciales: ${error}`);
-    }
-  };
-  const eliminarCrendencialesAut = () => {
-    try {
-      eliminarDeLocalStorage({ clave: CLAVE_CORREO_USUARIO });
-      eliminarDeLocalStorage({ clave: CLAVE_TOKEN_AUTENTICACION_USUARIO });
-    } catch (error) {
-      toast.error(
-        `Error durante la eliminacion de crendenciales locales: ${error}`
-      );
-    }
-  };
-  const obtenerCrendencialesAut = () => {
-    try {
-      const tk = obtenerDeLocalStorage({
-        clave: CLAVE_TOKEN_AUTENTICACION_USUARIO,
-      });
-      const correo = obtenerDeLocalStorage({
-        clave: CLAVE_CORREO_USUARIO,
-      });
-      return { tk, correo };
-    } catch (error) {
-      toast.error(
-        `Error durante obtencion de credenciales de usuario: ${error}`
-      );
-    }
-  };
-  const validarCrendenciales = () => {
-    try {
-      const { tk } = obtenerCrendencialesAut();
-      if (!tk) return false;
-      // Si existe un token de auntenticacion invalido eliminarlo del navegador del usuario
-      // Validar tk
-      // Si es valido reporta credenciales validas
-      // Si no es valido eliminar crendenciales y reportas credenciales invalidas
-      return true;
-    } catch (error) {
-      toast.error(`Error durante la validacion de crendenciales: ${error}`);
-    }
-  };
-  const obtenerInfoUsuario = () => {
-    return {
-      correo: "jondoe@gmail.com",
-      tk: "jondoe@gmail.com",
-      grupoSanguineo: "O+",
-    };
-  };
-  const iniciarSesion = ({ usuario }) => {
-    const validacionDeCrendenciales = validarCrendenciales();
-    try {
-      const infoUsuario = obtenerInfoUsuario();
-      if (!infoUsuario)
-        throw Error("No se puedo obtener la informacion de su cuenta");
-      definirUsuario(infoUsuario);
-      guardarCrendencialesAut({ infoUsuario });
-
-      // guardar las credenciales locales de autenticacion necesarias para mantener la sesion
-      definirUsuario(usuario);
-      guardarEnLocalStorage({
-        clave: CLAVE_CORREO_USUARIO,
-        data: usuario.correo,
-      });
-      guardarEnLocalStorage({
-        clave: CLAVE_TOKEN_AUTENTICACION_USUARIO,
-        data: usuario.tk,
-      });
-    } catch (error) {
-      toast.error(`Error durante incio de sesion: ${error}`);
-    }
-  };
-
-  const cerrarSesion = () => {
-    // eliminar las credenciales locales de autenticacion
+  function cerrarSesion() {
     definirUsuario(null);
-    eliminarDeLocalStorage({ clave: CLAVE_CORREO_USUARIO });
     eliminarDeLocalStorage({ clave: CLAVE_TOKEN_AUTENTICACION_USUARIO });
-  };
+    toast.success("Su sesion ha sido cerrada");
+  }
 
-  // byPassAut();
+  function iniciarSesion({ token, correo, tipoUsuario }) {
+    if (
+      !token ||
+      !correo ||
+      !tipoUsuario ||
+      typeof token != "string" ||
+      typeof correo != "string" ||
+      typeof tipoUsuario != "string"
+    )
+      throw Error(
+        "Ops, ocurrio un error. Parametros insuficientes para iniciar sesion"
+      );
+    definirUsuario({ token, tipoUsuario });
+    guardarEnLocalStorage({
+      clave: CLAVE_CORREO_USUARIO,
+      data: correo,
+    });
+    guardarEnLocalStorage({
+      clave: CLAVE_TOKEN_AUTENTICACION_USUARIO,
+      data: token,
+    });
+    toast.success("Sesion iniciada");
+  }
+
   useEffect(() => {
-    try {
-      const autToken = obtenerDeLocalStorage({
-        clave: CLAVE_TOKEN_AUTENTICACION_USUARIO,
-      });
+    const token = obtenerDeLocalStorage({
+      clave: CLAVE_TOKEN_AUTENTICACION_USUARIO,
+    });
+    if (!token) return;
 
-      // Si el existe un token de autenticacion almacenado en el navegador del usuario intentar inciar sesion
-      // Si existe un token de auntenticacion invalido eliminarlo del navegador del usuario
-      if (autToken) {
-        const autTkEsValido = true;
-        if (autTkEsValido) {
-          // ======================================
-          const correo = obtenerDeLocalStorage({
-            clave: CLAVE_CORREO_USUARIO,
-          });
-          // ======================================
-          const usuario = { correo, tk: autToken };
-          iniciarSesion({ usuario });
-        } else
-          eliminarDeLocalStorage({ clave: CLAVE_TOKEN_AUTENTICACION_USUARIO });
-      }
-    } catch (e) {
-      console.error(e);
-    }
+    const { exito: exitoAutenticidad, autenticidad } = validarAutenticidadToken(
+      { token: token }
+    );
+    if (!exitoAutenticidad) return;
+    if (!autenticidad) return toast.error("Estas intentando hackearnos?");
+    const { exito: exitoTipoUsuario, tipoUsuario } = obtenerTipoUsuario({
+      token: token,
+    });
+    if (!exitoTipoUsuario) return;
+
+    definirUsuario({ token, tipoUsuario });
+    return;
   }, []);
 
   const recursosDeContexto = { usuario, iniciarSesion, cerrarSesion };
