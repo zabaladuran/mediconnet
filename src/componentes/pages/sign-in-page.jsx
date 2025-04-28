@@ -11,26 +11,31 @@ import {
 } from "../../components/ui/card";
 import { Input } from "../../components/ui/input";
 import { Label } from "../../components/ui/label";
-
+import { useNavigate } from "react-router-dom"; // Importa useNavigate
+import { Link } from "react-router-dom"; // Importa Link de react-router-dom
 function SignInPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate(); // Inicializa la función navigate
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-
+  
     try {
-      // Here you would typically make an API call to authenticate
-      // For demo purposes, we'll just show a success toast
+      // Simula un retraso para demostrar el inicio de sesión
       await new Promise((resolve) => setTimeout(resolve, 1000));
+  
+      // Si el inicio de sesión es exitoso, redirige al usuario
+      navigate("/home");
     } catch (error) {
+      console.error("Error al iniciar sesión:", error);
     } finally {
       setIsLoading(false);
     }
   };
-
+  
   return (
     <>
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background to-muted p-4">
@@ -92,9 +97,9 @@ function SignInPage() {
               </Button>
               <p className="text-sm text-muted-foreground text-center">
                 ¿No tienes una cuenta?{" "}
-                <a href="#" className="text-primary hover:underline">
+                <Link to="/sign-up" className="text-primary hover:underline">
                   Regístrate
-                </a>
+                </Link>
               </p>
             </CardFooter>
           </form>

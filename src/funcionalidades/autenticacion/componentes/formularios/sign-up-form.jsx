@@ -11,6 +11,8 @@ import { Input } from "../../../../components/ui/input";
 import { Button } from "../../../../components/ui/button";
 import { Mail, Lock, LogIn, User } from "lucide-react";
 import { useState } from "react";
+import { Link } from "react-router-dom"; // Importa Link de react-router-dom
+
 
 export function SignUpForm() {
   const [email, setEmail] = useState("");
@@ -93,10 +95,10 @@ export function SignUpForm() {
                 )}
               </Button>
               <p className="text-sm text-muted-foreground text-center">
-                ¿No tienes una cuenta?{" "}
-                <a href="#" className="text-primary hover:underline">
-                  Regístrate
-                </a>
+                ¿Ya tienes una cuenta?{" "}
+                <Link to="/sign-in" className="text-primary hover:underline">
+                  Iniciar sesión
+                </Link>
               </p>
             </CardFooter>
           </form>
