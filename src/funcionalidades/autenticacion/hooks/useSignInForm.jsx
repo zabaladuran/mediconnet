@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { obtenerDeLocalStorage } from "../../../servicios";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CLAVE_CORREO_USUARIO } from "../data";
+import { CLAVE_CORREO_USUARIO, DOCTOR, PACIENTE } from "../data";
 import { signInSchema } from "../zod";
 import { useAut } from "../hooks";
 import { toast } from "sonner";
@@ -30,7 +30,7 @@ export function useSignInForm() {
       let {
         exito: exitoSignIn,
         token,
-        verficado: usuarioVerificado,
+        verificado: cuentaVerificada,
       } = await signInUsuario({
         email: email,
         pass: password,
@@ -46,15 +46,15 @@ export function useSignInForm() {
         correo: email,
         token: token,
         tipoUsuario: tipoUsuario,
-        usuarioVerificado: usuarioVerificado,
+        cuentaVerificada: cuentaVerificada,
       });
 
       // REDIRECCION CONDICIONAL
-      if (!usuarioVerificado)
-        return navigate("/verfication", { replace: true });
-      if (tipoUsuario == "paciente")
+      if (!cuentaVerificada)
+        return navigate("/auth/verfication", { replace: true });
+      if (tipoUsuario == PACIENTE)
         return navigate("/paciente/dashboard/home", { replace: true });
-      if (tipoUsuario == "doctor")
+      if (tipoUsuario == DOCTOR)
         return navigate("/doctor/dashboard/home", { replace: true });
     } catch (e) {
     } finally {

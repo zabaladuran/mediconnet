@@ -2,7 +2,7 @@ export async function signInUsuario({ email, pass }) {
   if (!email || !pass || typeof email != "string" || typeof pass != "string")
     throw Error("Ops, ocurrio un error.");
   try {
-    return { exito: true, token: "aftwas", verficado: true };
+    return { exito: true, token: "aftwas", verificado: true };
   } catch {
     throw Error("Ops, error durante registro");
   }
@@ -26,7 +26,7 @@ export async function signUpUsuario({
   )
     throw Error("Ops, ocurrio un error.");
   try {
-    return { exito: true, token: "aftwas", verficado: false };
+    return { exito: true, token: "aftwas", verificado: true };
   } catch {
     throw Error("Ops, error durante inicio de sesion");
   }
@@ -45,6 +45,15 @@ export async function validarAutenticidadToken({ token }) {
   if (!token || typeof token != "string") throw Error("Ops, ocurrio un error.");
   try {
     return { exito: true, autentico: true };
+  } catch {
+    throw Error("Ops, error durante registro");
+  }
+}
+
+export async function validarCuentaVerificada({ token }) {
+  if (!token || typeof token != "string") throw Error("Ops, ocurrio un error.");
+  try {
+    return { exito: true, verificado: true };
   } catch {
     throw Error("Ops, error durante registro");
   }

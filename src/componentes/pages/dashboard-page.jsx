@@ -212,7 +212,9 @@ function DashboardPage() {
             </CardHeader>
             <CardContent>
               <ul className="space-y-4">
-                <li>Recordatorio de Cita: Dr. Carlos Ruiz mañana a las 09:30</li>
+                <li>
+                  Recordatorio de Cita: Dr. Carlos Ruiz mañana a las 09:30
+                </li>
                 <li>
                   Resultados Disponibles: Tus resultados de laboratorio están
                   listos

@@ -29,26 +29,26 @@ export function useSignUpForm() {
 
       // SIGNUP Y OBTENCION DE CREDENCIALES (BACKEND)
       let {
-        exito: exitoSignIn,
+        exito: exitoSignUp,
         token,
-        verficado: usuarioVerificado,
+        verificado: cuentaVerificada,
       } = await signUpUsuario({
         email: email,
         pass: password,
         nombreCompleto: nombreCompleto,
         tipoUsuario: tipoUsuario,
       });
-      if (!exitoSignIn) return toast.error("Crendenciales invalidas");
+      if (!exitoSignUp) return toast.error("Crendenciales invalidas");
       iniciarSesion({
         correo: email,
         token: token,
         tipoUsuario: tipoUsuario,
-        usuarioVerificado: usuarioVerificado,
+        cuentaVerificada: cuentaVerificada,
       });
 
       // REDIRECCION CONDICIONAL
-      if (!usuarioVerificado)
-        return navigate("/verfication", { replace: true });
+      if (!cuentaVerificada)
+        return navigate("/auth/verfication", { replace: true });
       if (tipoUsuario == PACIENTE)
         return navigate("/paciente/dashboard/home", { replace: true });
       if (tipoUsuario == DOCTOR)

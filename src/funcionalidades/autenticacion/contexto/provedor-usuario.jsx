@@ -9,37 +9,54 @@ import {
   CLAVE_TOKEN_AUTENTICACION_USUARIO,
 } from "../data/variables-de-autenticacion";
 import { toast } from "sonner";
-import { coerce } from "zod";
-import { obtenerTipoUsuario, validarAutenticidadToken } from "../servicios/";
+import { useNavigate } from "react-router";
+import {
+  obtenerTipoUsuario,
+  validarAutenticidadToken,
+  validarCuentaVerificada,
+} from "../servicios/";
 
 export const ContextoDeAutenticacion = createContext({
-  usuario: null,
+  credenciales: null,
   iniciarSesion: () => {},
   cerrarSesion: () => {},
 });
 
 export const ProveedorUsuario = ({ children }) => {
-  const [usuario, definirUsuario] = useState(null);
-
+  const [credenciales, definirCredenciales] = useState({
+    token: null,
+    tipoUsuario: null,
+    cuentaVerificada: null,
+  });
+  const navigate = useNavigate();
   function cerrarSesion() {
-    definirUsuario(null);
+    definirCredenciales({
+      token: null,
+      tipoUsuario: null,
+      cuentaVerificada: null,
+    });
     eliminarDeLocalStorage({ clave: CLAVE_TOKEN_AUTENTICACION_USUARIO });
     toast.success("Su sesion ha sido cerrada");
   }
-
-  function iniciarSesion({ token, correo, tipoUsuario }) {
+  function iniciarSesion({ token, correo, tipoUsuario, cuentaVerificada }) {
     if (
       !token ||
       !correo ||
       !tipoUsuario ||
+      !cuentaVerificada ||
       typeof token != "string" ||
       typeof correo != "string" ||
-      typeof tipoUsuario != "string"
+      typeof tipoUsuario != "string" ||
+      typeof cuentaVerificada != "boolean"
     )
       throw Error(
         "Ops, ocurrio un error. Parametros insuficientes para iniciar sesion"
       );
-    definirUsuario({ token, tipoUsuario });
+    definirCredenciales({
+      token: token,
+      tipoUsuario: tipoUsuario,
+      cuentaVerificada: cuentaVerificada,
+    });
     guardarEnLocalStorage({
       clave: CLAVE_CORREO_USUARIO,
       data: correo,
@@ -52,26 +69,44 @@ export const ProveedorUsuario = ({ children }) => {
   }
 
   useEffect(() => {
-    const token = obtenerDeLocalStorage({
-      clave: CLAVE_TOKEN_AUTENTICACION_USUARIO,
-    });
-    if (!token) return;
+    async function intentarRestaurarSesion() {
+      // ENTRADA DE CREDENCIALES LOCALES
+      const token = obtenerDeLocalStorage({
+        clave: CLAVE_TOKEN_AUTENTICACION_USUARIO,
+      });
+      if (!token) return;
 
-    const { exito: exitoAutenticidad, autenticidad } = validarAutenticidadToken(
-      { token: token }
-    );
-    if (!exitoAutenticidad) return;
-    if (!autenticidad) return toast.error("Estas intentando hackearnos?");
-    const { exito: exitoTipoUsuario, tipoUsuario } = obtenerTipoUsuario({
-      token: token,
-    });
-    if (!exitoTipoUsuario) return;
+      // ENTRADA DE CREDENCIALES BACKEND
+      const { exito: exitoAutenticidad, autentico } =
+        await validarAutenticidadToken({ token: token });
+      if (!exitoAutenticidad)
+        return toast.error("Estamos experimentando unos errores.");
+      if (!autentico) return toast.error("Estas intentando hackearnos?");
+      const { exito: exitoTipoUsuario, tipoUsuario } = await obtenerTipoUsuario(
+        {
+          token: token,
+        }
+      );
+      const { exito: exitoVerificacion, verificado: cuentaVerificada } =
+        await validarCuentaVerificada({
+          token,
+        });
+      if (!exitoTipoUsuario || !exitoVerificacion)
+        return toast.error("Estamos experimentando unos errores.");
 
-    definirUsuario({ token, tipoUsuario });
-    return;
+      // INICIAR SESION
+      definirCredenciales({
+        token: token,
+        tipoUsuario: tipoUsuario,
+        cuentaVerificada: cuentaVerificada,
+      });
+      // REDIRECCIONAMIENTO SEGUN EL ESTADO DE LA CUENTA
+      if (!cuentaVerificada) navigate("/auth/verfication", { replace: true });
+    }
+    intentarRestaurarSesion();
   }, []);
 
-  const recursosDeContexto = { usuario, iniciarSesion, cerrarSesion };
+  const recursosDeContexto = { credenciales, iniciarSesion, cerrarSesion };
   return (
     <ContextoDeAutenticacion.Provider
       children={children}
