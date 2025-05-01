@@ -3,8 +3,11 @@ export async function signInUsuario({ email, pass }) {
     throw Error("Ops, ocurrio un error.");
   try {
     return { exito: true, token: "aftwas", verificado: true };
+<<<<<<< HEAD
     // return { status: 200, message: "Correctamente iniciado", token: "aftwas", idUsuario: 10 };
     // return { status: 400, message: "Error iniciar sesion"
+=======
+>>>>>>> 78bdddc (se termino las funcionalidades minimas para el funcionamiento de autenticacion, redireccion y manejo de sesion)
   } catch {
     throw Error("Ops, error durante registro");
   }
@@ -29,8 +32,11 @@ export async function signUpUsuario({
     throw Error("Ops, ocurrio un error.");
   try {
     return { exito: true, token: "aftwas", verificado: true };
+<<<<<<< HEAD
     // { status: 200, message: "Correctamente registrado", token: "aftwas", idUsuario: 10 };
     // { status: 400, message: "Error crear usuario" };
+=======
+>>>>>>> 78bdddc (se termino las funcionalidades minimas para el funcionamiento de autenticacion, redireccion y manejo de sesion)
   } catch {
     throw Error("Ops, error durante inicio de sesion");
   }
@@ -62,6 +68,7 @@ export async function validarCuentaVerificada({ token }) {
     throw Error("Ops, error durante registro");
   }
 }
+<<<<<<< HEAD
 
 export async function validarCodigoDeAutenticacion({ idUsuario, codigo }) {
   if (!idUsuario || typeof idUsuario != "number")
@@ -84,3 +91,5 @@ export async function enviarCorreoDeVerificacion({ idUsuario }) {
     throw Error("Ops, error durante registro");
   }
 }
+=======
+>>>>>>> 78bdddc (se termino las funcionalidades minimas para el funcionamiento de autenticacion, redireccion y manejo de sesion)
