@@ -1,6 +1,9 @@
 import React from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ButtonDashboard from "./btton-dashboard";
+import ButtonCitas from "./btton-citas";
+import ButtonHistorialMedico from "./btton-Historialmedico";
+import ButtonConfiguracion from "./btton-configuracion";
 
 const BarraNav = () => {
   return (
@@ -43,16 +46,16 @@ const BarraNav = () => {
         <ButtonDashboard /> {/* Muestra el contenido del componente */}
       </TabsContent>
       <TabsContent value="Citas">
-        <p>Contenido de Citas</p>
+        <ButtonCitas /> {/* Muestra el contenido del componente */}
       </TabsContent>
       <TabsContent value="Historial Medico">
-        <p>Contenido de Historial Médico</p>
+        <ButtonHistorialMedico /> {/* Muestra el contenido del componente */}
       </TabsContent>
       <TabsContent value="Medicamentos">
         <p>Contenido de Medicamentos</p>
       </TabsContent>
       <TabsContent value="Configuracion">
-        <p>Contenido de Configuración</p>
+        <ButtonConfiguracion /> {/* Muestra el contenido del componente */}
       </TabsContent>
     </Tabs>
   );

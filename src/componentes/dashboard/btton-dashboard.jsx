@@ -4,9 +4,9 @@ import { Button } from "@/components/ui/button";
 
 const ButtonDashboard = () => {
   return (
-    <div className="container mx-auto px-6 py-8 grid grid-cols-1 lg:grid-cols-6 gap-6">
-      {/* Acciones Rápidas */}
-      <div className="col-span-2">
+    <div className="container mx-auto px-6 py-8 grid grid-cols-1 lg:grid-cols-12 gap-6">
+      {/* Columna Izquierda: Acciones Rápidas */}
+      <div className="col-span-12 lg:col-span-3">
         <Card>
           <CardHeader>
             <CardTitle>Acciones Rápidas</CardTitle>
@@ -25,8 +25,9 @@ const ButtonDashboard = () => {
         </Card>
       </div>
 
-      {/* Próximas Citas */}
-      <div className="col-span-4">
+      {/* Columna Central */}
+      <div className="col-span-12 lg:col-span-6 space-y-6">
+        {/* Próximas Citas */}
         <Card>
           <CardHeader>
             <CardTitle>Próximas Citas</CardTitle>
@@ -49,10 +50,8 @@ const ButtonDashboard = () => {
             </ul>
           </CardContent>
         </Card>
-      </div>
 
-      {/* Historial Médico Reciente */}
-      <div className="col-span-4">
+        {/* Historial Médico Reciente */}
         <Card>
           <CardHeader>
             <CardTitle>Historial Médico Reciente</CardTitle>
@@ -79,8 +78,9 @@ const ButtonDashboard = () => {
         </Card>
       </div>
 
-      {/* Control de Medicamentos */}
-      <div className="col-span-2">
+      {/* Columna Derecha */}
+      <div className="col-span-12 lg:col-span-3 space-y-6">
+        {/* Control de Medicamentos */}
         <Card>
           <CardHeader>
             <CardTitle>Control de Medicamentos</CardTitle>
@@ -98,10 +98,8 @@ const ButtonDashboard = () => {
             </ul>
           </CardContent>
         </Card>
-      </div>
 
-      {/* Métricas de Salud */}
-      <div className="col-span-2">
+        {/* Métricas de Salud */}
         <Card>
           <CardHeader>
             <CardTitle>Métricas de Salud</CardTitle>
@@ -117,10 +115,8 @@ const ButtonDashboard = () => {
             </p>
           </CardContent>
         </Card>
-      </div>
 
-      {/* Notificaciones */}
-      <div className="col-span-2">
+        {/* Notificaciones */}
         <Card>
           <CardHeader>
             <CardTitle>Notificaciones</CardTitle>
