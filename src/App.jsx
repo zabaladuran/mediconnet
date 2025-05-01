@@ -16,11 +16,13 @@ function App() {
         <Route path="/home" element={<HomePage />} />
         <Route path="/sign-in" element={<SignInPage />} />
         <Route path="/sign-up" element={<SignUpPage />} />
+        <Route path="/dashboard/home" element={<DashboardPage />} />
 
         {/* Rutas privadas protegidas */}
         <Route element={<PermitirUsuarioAutenticado to="/sign-in" />}>
           <Route path="/dashboard/home" element={<DashboardPage />} />
         </Route>
+        
 
         {/* Ruta para páginas no encontradas */}
         <Route path="*" element={<NotFoundPage />} />
