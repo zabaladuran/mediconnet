@@ -1,3 +1,8 @@
 import BlockearUsuarioAutenticado from "./blockear-usuario-autenticado";
-import PermitirUsuarioAutenticado from "./permitir-usuario-autenticado";
-export { BlockearUsuarioAutenticado, PermitirUsuarioAutenticado };
+import PermitirUsuarioDoctor from "./permitir-usuario-doctor";
+import PermitirUsuarioPaciente from "./permitir-usuario-paciente";
+export {
+  BlockearUsuarioAutenticado,
+  PermitirUsuarioDoctor,
+  PermitirUsuarioPaciente,
+};

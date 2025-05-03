@@ -1,6 +1,10 @@
-import { Link } from "react-router-dom"; // Asegúrate de importar Link
 import { Button } from "../../components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "../../components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "../../components/ui/card";
 import ServiceCard from "../../funcionalidades/home/componentes/ServiceCard";
 
 function HomePage() {
@@ -17,33 +21,41 @@ function HomePage() {
               </a>
             </li>
             <li>
-              <a href="#servicios" className="text-gray-800 hover:text-[#16a34a]">
+              <a
+                href="#servicios"
+                className="text-gray-800 hover:text-[#16a34a]"
+              >
                 Servicios
               </a>
             </li>
             <li>
-              <a href="#nosotros" className="text-gray-800 hover:text-[#16a34a]">
+              <a
+                href="#nosotros"
+                className="text-gray-800 hover:text-[#16a34a]"
+              >
                 Nosotros
               </a>
             </li>
             <li>
-              <a href="#contacto" className="text-gray-800 hover:text-[#16a34a]">
+              <a
+                href="#contacto"
+                className="text-gray-800 hover:text-[#16a34a]"
+              >
                 Contacto
               </a>
             </li>
           </ul>
-        <div className="flex items-center space-x-4">
-          <Link to="/sign-in">
-            <Button variant="outline" className="text-[#16a34a] border-[#16a34a] hover:bg-green-100">
-              Iniciar Sesión
+          <div className="flex items-center space-x-4">
+            <Button
+              variant="outline"
+              className="text-[#16a34a] border-[#16a34a] hover:bg-green-100"
+            >
+              <a href="/sign-in">Iniciar Sesión</a>
             </Button>
-          </Link>
-          <Link to="/sign-up">
             <Button className="bg-[#16a34a] text-white hover:bg-green-700">
-              Registrarse
+              <a href="/sign-up">Registrarse</a>
             </Button>
-          </Link>
-        </div>
+          </div>
         </div>
       </nav>
 
@@ -52,7 +64,8 @@ function HomePage() {
         id="inicio"
         className="relative bg-cover bg-center bg-no-repeat text-center py-16"
         style={{
-          backgroundImage: "url('https://www.diagnosticorojas.com.ar/wp-content/uploads/2023/09/habitos-que-perjudican-la-salud-scaled.jpg')",
+          backgroundImage:
+            "url('https://www.diagnosticorojas.com.ar/wp-content/uploads/2023/09/habitos-que-perjudican-la-salud-scaled.jpg')",
         }}
       >
         {/* Overlay para oscurecer la imagen */}
@@ -64,13 +77,17 @@ function HomePage() {
             Tu salud en las mejores manos
           </h1>
           <p className="text-lg text-gray-300 mt-4">
-            Sistema de gestión médica inteligente y segura para una atención más eficiente
+            Sistema de gestión médica inteligente y segura para una atención más
+            eficiente
           </p>
           <div className="mt-6 flex justify-center gap-4">
             <Button className="bg-[#16a34a] text-white hover:bg-green-700">
               Agendar Cita
             </Button>
-            <Button variant="outline" className="text-[#16a34a] border-[#16a34a] hover:bg-green-100">
+            <Button
+              variant="outline"
+              className="text-[#16a34a] border-[#16a34a] hover:bg-green-100"
+            >
               Conoce más
             </Button>
           </div>
@@ -102,8 +119,8 @@ function HomePage() {
         </div>
       </div>
 
-            {/* Sobre Nosotros Section */}
-            <div className="bg-white py-16">
+      {/* Sobre Nosotros Section */}
+      <div className="bg-white py-16">
         <div className="container mx-auto flex flex-col md:flex-row items-center gap-8">
           <div className="w-full md:w-1/2">
             <img
@@ -113,11 +130,13 @@ function HomePage() {
             />
           </div>
           <div className="w-full md:w-1/2">
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">Sobre Nosotros</h2>
+            <h2 className="text-2xl font-bold text-gray-800 mb-4">
+              Sobre Nosotros
+            </h2>
             <p className="text-gray-600 mb-4">
-              En Mediconnet, nos dedicamos a revolucionar la atención médica a través de
-              tecnología innovadora. Nuestro sistema integral permite una gestión eficiente y
-              segura de la información médica.
+              En Mediconnet, nos dedicamos a revolucionar la atención médica a
+              través de tecnología innovadora. Nuestro sistema integral permite
+              una gestión eficiente y segura de la información médica.
             </p>
             <ul className="list-disc list-inside text-gray-600 mb-4">
               <li>Atención médica personalizada</li>
@@ -152,19 +171,23 @@ function HomePage() {
           />
         </div>
       </div>
-            {/* Call to Action Section */}
-            <div className="bg-green-50 py-16 text-center">
+      {/* Call to Action Section */}
+      <div className="bg-green-50 py-16 text-center">
         <h2 className="text-3xl font-bold text-gray-800 mb-4">
           Comienza tu experiencia médica digital
         </h2>
         <p className="text-gray-600 mb-6">
-          Únete a miles de pacientes que ya confían en nuestro sistema de gestión médica
+          Únete a miles de pacientes que ya confían en nuestro sistema de
+          gestión médica
         </p>
         <div className="flex justify-center gap-4">
           <Button className="bg-[#16a34a] text-white hover:bg-green-700">
             Registrarse
           </Button>
-          <Button variant="outline" className="text-[#16a34a] border-[#16a34a] hover:bg-green-100">
+          <Button
+            variant="outline"
+            className="text-[#16a34a] border-[#16a34a] hover:bg-green-100"
+          >
             Contactar
           </Button>
         </div>
@@ -175,7 +198,9 @@ function HomePage() {
         <div className="container mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Logo and Social Links */}
           <div>
-            <h3 className="text-[#16a34a] text-xl font-bold mb-4">Mediconnet</h3>
+            <h3 className="text-[#16a34a] text-xl font-bold mb-4">
+              Mediconnet
+            </h3>
             <div className="flex space-x-4">
               <a href="#" className="text-gray-600 hover:text-[#16a34a]">
                 <i className="fab fa-facebook-f"></i>
@@ -230,14 +255,17 @@ function HomePage() {
                 <i className="fas fa-envelope mr-2"></i> info@mediconnet.com
               </li>
               <li className="text-gray-600">
-                <i className="fas fa-map-marker-alt mr-2"></i> Calle Principal 123, Ciudad
+                <i className="fas fa-map-marker-alt mr-2"></i> Calle Principal
+                123, Ciudad
               </li>
             </ul>
           </div>
 
           {/* Newsletter */}
           <div>
-            <h4 className="text-gray-800 font-bold mb-4">Boletín Informativo</h4>
+            <h4 className="text-gray-800 font-bold mb-4">
+              Boletín Informativo
+            </h4>
             <p className="text-gray-600 mb-4">
               Suscríbete para recibir noticias y actualizaciones
             </p>
@@ -250,7 +278,7 @@ function HomePage() {
               <button
                 type="submit"
                 className="bg-[#16a34a] text-white px-4 py-2 rounded-r hover:bg-green-700"
-                >
+              >
                 Suscribir
               </button>
             </form>
@@ -264,4 +292,4 @@ function HomePage() {
   );
 }
 
-     export default HomePage;
+export default HomePage;

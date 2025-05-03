@@ -8,67 +8,105 @@ import {
   CLAVE_CORREO_USUARIO,
   CLAVE_TOKEN_AUTENTICACION_USUARIO,
 } from "../data/variables-de-autenticacion";
+import { toast } from "sonner";
+import { useNavigate } from "react-router";
+import {
+  obtenerTipoUsuario,
+  validarAutenticidadToken,
+  validarCuentaVerificada,
+} from "../servicios/";
+
 export const ContextoDeAutenticacion = createContext({
-  usuario: null,
+  credenciales: null,
   iniciarSesion: () => {},
   cerrarSesion: () => {},
 });
 
 export const ProveedorUsuario = ({ children }) => {
-  const [usuario, definirUsuario] = useState(null);
+  const [credenciales, definirCredenciales] = useState({
+    token: null,
+    tipoUsuario: null,
+    cuentaVerificada: null,
+  });
+  const navigate = useNavigate();
+  function cerrarSesion() {
+    definirCredenciales({
+      token: null,
+      tipoUsuario: null,
+      cuentaVerificada: null,
+    });
+    eliminarDeLocalStorage({ clave: CLAVE_TOKEN_AUTENTICACION_USUARIO });
+    toast.success("Su sesion ha sido cerrada");
+  }
+  function iniciarSesion({ token, correo, tipoUsuario, cuentaVerificada }) {
+    if (
+      !token ||
+      !correo ||
+      !tipoUsuario ||
+      !cuentaVerificada ||
+      typeof token != "string" ||
+      typeof correo != "string" ||
+      typeof tipoUsuario != "string" ||
+      typeof cuentaVerificada != "boolean"
+    )
+      throw Error(
+        "Ops, ocurrio un error. Parametros insuficientes para iniciar sesion"
+      );
+    definirCredenciales({
+      token: token,
+      tipoUsuario: tipoUsuario,
+      cuentaVerificada: cuentaVerificada,
+    });
+    guardarEnLocalStorage({
+      clave: CLAVE_CORREO_USUARIO,
+      data: correo,
+    });
+    guardarEnLocalStorage({
+      clave: CLAVE_TOKEN_AUTENTICACION_USUARIO,
+      data: token,
+    });
+    toast.success("Sesion iniciada");
+  }
 
-  const iniciarSesion = ({ usuario }) => {
-    try {
-      definirUsuario(usuario); // Error
-      // guardar las credenciales de autenticacion necesarias para mantener la sesion
-      guardarEnLocalStorage({
-        clave: CLAVE_CORREO_USUARIO,
-        data: usuario.correo,
-      });
-      guardarEnLocalStorage({
-        clave: CLAVE_TOKEN_AUTENTICACION_USUARIO,
-        data: usuario.tk,
-      });
-    } catch (error) {
-      console.error(`Error durante incio de sesion: ${error}`);
-    }
-  };
-
-  const cerrarSesion = () => {
-    definirUsuario(null);
-    // eliminar las credenciales de autenticacion
-    eliminarDeLocalStorage(CLAVE_CORREO_USUARIO);
-    eliminarDeLocalStorage(CLAVE_TOKEN_AUTENTICACION_USUARIO);
-  };
-
-  // byPassAut();
   useEffect(() => {
-    try {
-      const autToken = obtenerDeLocalStorage({
+    async function intentarRestaurarSesion() {
+      // ENTRADA DE CREDENCIALES LOCALES
+      const token = obtenerDeLocalStorage({
         clave: CLAVE_TOKEN_AUTENTICACION_USUARIO,
       });
+      if (!token) return;
 
-      // Si el existe un token de autenticacion almacenado en el navegador del usuario intentar inciar sesion
-      // Si existe un token de auntenticacion invalido eliminarlo del navegador del usuario
-      if (autToken) {
-        const autTkEsValido = true;
-        if (autTkEsValido) {
-          // ======================================
-          const correo = obtenerDeLocalStorage({
-            clave: CLAVE_CORREO_USUARIO,
-          });
-          // ======================================
-          const usuario = { correo, tk: autToken };
-          iniciarSesion({ usuario });
-        } else
-          eliminarDeLocalStorage({ clave: CLAVE_TOKEN_AUTENTICACION_USUARIO });
-      }
-    } catch (e) {
-      console.error(e);
+      // ENTRADA DE CREDENCIALES BACKEND
+      const { exito: exitoAutenticidad, autentico } =
+        await validarAutenticidadToken({ token: token });
+      if (!exitoAutenticidad)
+        return toast.error("Estamos experimentando unos errores.");
+      if (!autentico) return toast.error("Estas intentando hackearnos?");
+      const { exito: exitoTipoUsuario, tipoUsuario } = await obtenerTipoUsuario(
+        {
+          token: token,
+        }
+      );
+      const { exito: exitoVerificacion, verificado: cuentaVerificada } =
+        await validarCuentaVerificada({
+          token,
+        });
+      if (!exitoTipoUsuario || !exitoVerificacion)
+        return toast.error("Estamos experimentando unos errores.");
+
+      // INICIAR SESION
+      definirCredenciales({
+        token: token,
+        tipoUsuario: tipoUsuario,
+        cuentaVerificada: cuentaVerificada,
+      });
+      // REDIRECCIONAMIENTO SEGUN EL ESTADO DE LA CUENTA
+      if (!cuentaVerificada) navigate("/auth/verfication", { replace: true });
     }
+    intentarRestaurarSesion();
   }, []);
 
-  const recursosDeContexto = { usuario, iniciarSesion, cerrarSesion };
+  const recursosDeContexto = { credenciales, iniciarSesion, cerrarSesion };
   return (
     <ContextoDeAutenticacion.Provider
       children={children}

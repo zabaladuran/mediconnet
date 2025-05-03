@@ -1,174 +1,190 @@
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "../../../../components/ui/card";
 import { Label } from "../../../../components/ui/label";
 import { Input } from "../../../../components/ui/input";
 import { Button } from "../../../../components/ui/button";
 import { Mail, Lock, LogIn, User } from "lucide-react";
-import { useState } from "react";
-
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "../../../../components/ui/form";
+import { Checkbox } from "../../../../components/ui/checkbox";
+import {
+  RadioGroup,
+  RadioGroupItem,
+} from "../../../../components/ui/radio-group";
+import { useSignUpForm } from "../../hooks";
+import { PACIENTE, DOCTOR } from "../../data";
 export function SignUpForm() {
-  const [email, setEmail] = useState("");
-  const [password, definirPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [estaCargando, definirEstaCargando] = useState(false);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    definirEstaCargando(true);
-
-    try {
-      // Here you would typically make an API call to authenticate
-      // For demo purposes, we'll just show a success toast
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-    } catch (error) {
-    } finally {
-      definirEstaCargando(false);
-    }
-  };
+  const { formulario, enviarData, validando } = useSignUpForm();
   return (
-    <>
-      <div className="flex items-center justify-center bg-gradient-to-br from-background to-muted p-4 flex-grow">
-        <Card className="w-full max-w-md bg-white">
-          <CardHeader className="text-center">
-            <CardTitle className="text-3xl font-bold">
-              Crear una cuenta
-            </CardTitle>
-            <CardDescription>Ingresa tus datos para comenzar</CardDescription>
-          </CardHeader>
-          <form onSubmit={handleSubmit}>
-            <CardContent>
-              <div className="flex-row space-y-4 my-5">
-                <TextInput
-                  label="Nombre Completo"
-                  htmlFor="nombre"
-                  id="nombre"
-                  valor={password}
-                  actualizarValor={definirPassword}
-                  icon={User}
-                  tipoDeCampo="text"
+    <Form {...formulario}>
+      <form
+        onSubmit={formulario.handleSubmit(enviarData)}
+        className="space-y-6 bg-white p-8 rounded-xl shadow-md"
+      >
+        <FormField
+          control={formulario.control}
+          name="nombreCompleto"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="text-sm font-semibold">
+                Nombre Completo
+              </FormLabel>
+              <FormControl>
+                <Input
+                  placeholder="Ingresa tu nombre completo"
+                  {...field}
+                  className="border rounded-md p-2"
                 />
-                <TextInput
-                  label="Correo electrónico"
-                  htmlFor="email"
-                  id="email"
-                  valor={password}
-                  actualizarValor={definirPassword}
-                  icon={Mail}
-                  tipoDeCampo="email"
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={formulario.control}
+          name="email"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="text-sm font-semibold">
+                Correo electrónico
+              </FormLabel>
+              <FormControl>
+                <Input
+                  type="email"
+                  placeholder="correo@ejemplo.com"
+                  {...field}
+                  className="border rounded-md p-2"
                 />
-                <PasswordInput
-                  label="Contraseña"
-                  htmlFor="password"
-                  id="password"
-                  password={password}
-                  definirPassword={definirPassword}
-                />
-                <PasswordInput
-                  label="Confirmar contraseña"
-                  htmlFor="confirm-password"
-                  id="confirm-password"
-                  password={confirmPassword}
-                  definirPassword={setConfirmPassword}
-                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={formulario.control}
+          name="password"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="text-sm font-semibold">
+                Contraseña
+              </FormLabel>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 flex items-center pl-3">
+                  <Lock className="h-5 w-5 text-green-500" />
+                </div>
+                <FormControl>
+                  <Input
+                    {...field}
+                    type="password"
+                    className="pl-10 border rounded-md p-2"
+                    placeholder="********"
+                  />
+                </FormControl>
               </div>
-            </CardContent>
-            <CardFooter className="flex flex-col space-y-4">
-              <Button
-                type="submit"
-                className="w-full cursor-pointer"
-                disabled={estaCargando}
-              >
-                {estaCargando ? (
-                  <div className="flex items-center space-x-2">
-                    <div className="h-4 w-4 animate-spin rounded-full border-2 border-primary border-t-transparent"></div>
-                    <span>Iniciando sesión...</span>
-                  </div>
-                ) : (
-                  <div className="flex items-center space-x-2">
-                    <span>Registrarse</span>
-                  </div>
-                )}
-              </Button>
-              <p className="text-sm text-muted-foreground text-center">
-                ¿Ya tienes una cuenta?{" "}
-                <Link to="/sign-in" className="text-primary hover:underline">
-                  Iniciar sesión
-                </Link>
-              </p>
-            </CardFooter>
-          </form>
-        </Card>
-      </div>
-    </>
-  );
-}
-
-function PasswordInput({ label, definirPassword, password, htmlFor, id }) {
-  if (!label || !definirPassword)
-    throw new Error("Password Input no recibio los parametros minimos");
-  if (!(typeof label == "string") || !(typeof definirPassword == "function"))
-    throw new Error("Password Input no recibio los parametros minimos");
-  return (
-    <div className="space-y-2">
-      <Label htmlFor={htmlFor}>{label}</Label>
-      <div className="relative">
-        <Lock className="absolute left-3 top-2 h-5 w-5 text-muted-foreground" />
-        <Input
-          id={id}
-          type="password"
-          placeholder="••••••••"
-          className="pl-10"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
+              <FormMessage />
+            </FormItem>
+          )}
         />
-      </div>
-    </div>
-  );
-}
 
-function TextInput({
-  label,
-  actualizarValor,
-  valor,
-  htmlFor = "",
-  id = "",
-  tipoDeCampo,
-  placeholder = "",
-  icon: Icon,
-}) {
-  if (!label || !actualizarValor || !tipoDeCampo)
-    throw new Error("Text Input no recibio los parametros minimos");
-  if (
-    !(typeof label == "string") ||
-    !(typeof tipoDeCampo == "string") ||
-    !(typeof actualizarValor == "function")
-  )
-    throw new Error("Text Input no recibio los parametros minimos");
-
-  return (
-    <div className="space-y-2">
-      <Label htmlFor={htmlFor}>{label}</Label>
-      <div className="relative">
-        {Icon && (
-          <Icon className="absolute left-3 top-2 h-5 w-5 text-muted-foreground" />
-        )}
-        <Input
-          id={id}
-          type={tipoDeCampo}
-          placeholder={placeholder}
-          className="pl-10"
-          value={valor}
-          onChange={(e) => actualizarValor(e.target.value)}
-          required
+        <FormField
+          control={formulario.control}
+          name="confirmPassword"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="text-sm font-semibold">
+                Confirmar contraseña
+              </FormLabel>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 flex items-center pl-3">
+                  <Lock className="h-5 w-5 text-green-500" />
+                </div>
+                <FormControl>
+                  <Input
+                    {...field}
+                    type="password"
+                    className="pl-10 border rounded-md p-2"
+                    placeholder="********"
+                  />
+                </FormControl>
+              </div>
+              <FormMessage />
+            </FormItem>
+          )}
         />
-      </div>
-    </div>
+
+        <FormField
+          control={formulario.control}
+          name="tipoUsuario"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="text-sm font-semibold">
+                Tipo de usuario
+              </FormLabel>
+              <FormControl>
+                <RadioGroup
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                  className="flex gap-6"
+                >
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem
+                      className="width-2"
+                      value={PACIENTE}
+                      id="paciente"
+                    />
+                    <Label htmlFor="paciente" className="text-sm">
+                      Paciente
+                    </Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value={DOCTOR} id="doctor" />
+                    <Label htmlFor="doctor" className="text-sm">
+                      Doctor
+                    </Label>
+                  </div>
+                </RadioGroup>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={formulario.control}
+          name="terminos"
+          render={({ field }) => (
+            <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+              <FormControl>
+                <Checkbox
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                />
+              </FormControl>
+              <div className="space-y-1 leading-none">
+                <FormLabel className="text-sm">
+                  Acepto los términos y condiciones
+                </FormLabel>
+              </div>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <Button
+          disabled={validando}
+          type="submit"
+          className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 rounded-md"
+        >
+          {validando ? "Verificando..." : "Enviar"}
+        </Button>
+      </form>
+    </Form>
   );
 }

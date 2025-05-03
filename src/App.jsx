@@ -1,33 +1,41 @@
-import { Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router";
 import SignInPage from "./componentes/pages/sign-in-page";
 import SignUpPage from "./componentes/pages/sign-up-page";
 import HomePage from "./componentes/pages/home-page";
 import { DashboardPage } from "./componentes/pages";
-import { PermitirUsuarioAutenticado } from "./componentes/navegacion";
+import {
+  BlockearUsuarioAutenticado,
+  PermitirUsuarioDoctor,
+  PermitirUsuarioPaciente,
+} from "./componentes/navegacion";
 import NotFoundPage from "./componentes/pages/not-found";
 import { ProveedoresApp } from "./contexto/";
-
+import { Toaster } from "./components/ui/sonner";
 function App() {
   return (
-    <ProveedoresApp>
-      <Routes>
-        {/* Rutas públicas */}
-        <Route path="/" element={<HomePage />} />
-        <Route path="/home" element={<HomePage />} />
-        <Route path="/sign-in" element={<SignInPage />} />
-        <Route path="/sign-up" element={<SignUpPage />} />
-        <Route path="/dashboard/home" element={<DashboardPage />} />
-
-        {/* Rutas privadas protegidas */}
-        <Route element={<PermitirUsuarioAutenticado to="/sign-in" />}>
-          <Route path="/dashboard/home" element={<DashboardPage />} />
-        </Route>
-        
-
-        {/* Ruta para páginas no encontradas */}
-        <Route path="*" element={<NotFoundPage />} />
-      </Routes>
-    </ProveedoresApp>
+    <>
+      <BrowserRouter>
+        <ProveedoresApp>
+          <Routes>
+            <Route path="/" element={<Navigate replace to="/home" />} />
+            <Route path="/home" element={<HomePage />} />
+            <Route path="/auth/*" element={<BlockearUsuarioAutenticado />}>
+              <Route path="verification" element={<HomePage />} />
+              <Route path="sign-in" element={<SignInPage />} />
+              <Route path="sign-up" element={<SignUpPage />} />
+            </Route>
+            <Route path="/paciente/*" element={<PermitirUsuarioPaciente />}>
+              <Route path="dashboard/home" element={<DashboardPage />} />
+            </Route>
+            <Route path="/doctor/*" element={<PermitirUsuarioDoctor />}>
+              <Route path="dashboard/home" element={<DashboardPage />} />
+            </Route>
+            <Route path="*" element={<NotFoundPage />} />
+          </Routes>
+          <Toaster />
+        </ProveedoresApp>
+      </BrowserRouter>
+    </>
   );
 }
 
