@@ -1,3 +1,4 @@
+// En aut-footer.jsx
 export function AutFooter() {
   return (
     <footer className="min-w-full flex justify-between border-t border-slate-200 px-6 py-6 items-center">
