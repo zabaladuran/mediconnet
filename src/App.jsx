@@ -9,6 +9,7 @@ import {
   BlockearUsuarioAutenticado,
   PermitirUsuarioDoctor,
   PermitirUsuarioPaciente,
+  PermitirUsuarioAutenticado,
 } from "./componentes/navegacion";
 import NotFoundPage from "./componentes/pages/not-found";
 import { ProveedoresApp } from "./contexto/";
@@ -20,11 +21,15 @@ function App() {
         <ProveedoresApp>
           <Routes>
             <Route path="/" element={<Navigate replace to="/home" />} />
+            <Route
+              path="/verification/*"
+              element={<PermitirUsuarioAutenticado />}
+            >
+              <Route path="email" element={<EmailVerification />} />
+              <Route path="verification" element={<HomePage />} />
+            </Route>
             <Route path="/home" element={<HomePage />} />
             <Route path="/auth/*" element={<BlockearUsuarioAutenticado />}>
-              <Route path="email-verification" element={<EmailVerification />} />
-              <Route path="successful-verification" element={<EmailVerified />} />
-              <Route path="verification" element={<HomePage />} />
               <Route path="sign-in" element={<SignInPage />} />
               <Route path="sign-up" element={<SignUpPage />} />
             </Route>
