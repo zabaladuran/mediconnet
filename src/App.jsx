@@ -1,3 +1,4 @@
+import EmailVerified from "./componentes/emal-verification/successful-verification";
 import EmailVerification from "./componentes/pages/Email-verification-page";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router";
 import SignInPage from "./componentes/pages/sign-in-page";
@@ -22,6 +23,7 @@ function App() {
             <Route path="/home" element={<HomePage />} />
             <Route path="/auth/*" element={<BlockearUsuarioAutenticado />}>
               <Route path="email-verification" element={<EmailVerification />} />
+              <Route path="successful-verification" element={<EmailVerified />} />
               <Route path="verification" element={<HomePage />} />
               <Route path="sign-in" element={<SignInPage />} />
               <Route path="sign-up" element={<SignUpPage />} />
