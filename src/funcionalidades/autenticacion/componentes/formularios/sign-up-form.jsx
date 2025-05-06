@@ -142,13 +142,15 @@ export function SignUpForm() {
                   className="flex gap-6"
                 >
                   <div className="flex items-center space-x-2">
-                    <RadioGroupItem value={PACIENTE} id="paciente" />
+                    <RadioGroupItem value={PACIENTE} id="paciente" className="border border-black data-[state=checked]:border-2 data-[state=checked]:border-emerald-600"
+                    />
                     <Label htmlFor="paciente" className="text-sm">
                       Paciente
                     </Label>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <RadioGroupItem value={DOCTOR} id="doctor" />
+                    <RadioGroupItem value={DOCTOR} id="doctor"className="border border-black data-[state=checked]:border-2 data-[state=checked]:border-emerald-600"
+                    />
                     <Label htmlFor="doctor" className="text-sm">
                       Doctor
                     </Label>
@@ -169,6 +171,8 @@ export function SignUpForm() {
                 <Checkbox
                   checked={field.value}
                   onCheckedChange={field.onChange}
+                  className="border border-black"
+
                 />
               </FormControl>
               <div className="space-y-1 leading-none">
@@ -192,7 +196,7 @@ export function SignUpForm() {
         <div className="text-center text-sm">
           ¿Ya tienes una cuenta?{" "}
           <a
-            href="#"
+            href="/auth/sign-in"
             className="text-emerald-600 hover:underline underline-offset-4"
           >
             Iniciar sesión

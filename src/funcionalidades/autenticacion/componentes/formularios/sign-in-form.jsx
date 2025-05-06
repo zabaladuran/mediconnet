@@ -80,7 +80,9 @@ export function SignInForm() {
         {/* Recordarme + Olvidé contraseña */}
         <div className="flex items-center justify-between text-sm">
           <div className="flex items-center space-x-2">
-            <Checkbox id="remember" />
+            <Checkbox id="remember"
+              className="border border-black"
+            />
             <label htmlFor="remember" className="text-gray-700">Recordarme</label>
           </div>
           <a href="/forgot-password" className="text-green-600 hover:underline">
@@ -100,7 +102,7 @@ export function SignInForm() {
         {/* Registro */}
         <div className="text-center text-sm">
           ¿No tienes una cuenta?{" "}
-          <a href="/register" className="text-green-600 hover:underline">
+          <a href="/auth/sign-up" className="text-green-600 hover:underline">
             Regístrate aquí
           </a>
         </div>

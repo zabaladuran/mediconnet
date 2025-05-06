@@ -45,10 +45,6 @@ export function SignUpInfo() {
             className="rounded-lg object-cover w-full"
           />
         </div>
-
-        <div className="text-xs text-muted-foreground">
-          © 2024 MediconNet. Todos los derechos reservados
-        </div>
       </div>
     </div>
   );
