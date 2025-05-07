@@ -77,7 +77,7 @@ export function SignInForm() {
           )}
         />
 
-        {/* Recordarme + Olvidé contraseña */}
+        {/* Recordarme + Olvidé contraseña si*/}
         <div className="flex items-center justify-between text-sm">
           <div className="flex items-center space-x-2">
             <Checkbox id="remember"
