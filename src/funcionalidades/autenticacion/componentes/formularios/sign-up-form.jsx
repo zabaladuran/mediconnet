@@ -1,11 +1,10 @@
 import { Label } from "../../../../components/ui/label";
 import { Input } from "../../../../components/ui/input";
 import { Button } from "../../../../components/ui/button";
-import { Mail, Lock, LogIn, User } from "lucide-react";
+import { Lock } from "lucide-react";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -18,14 +17,23 @@ import {
 } from "../../../../components/ui/radio-group";
 import { useSignUpForm } from "../../hooks";
 import { PACIENTE, DOCTOR } from "../../data";
+
 export function SignUpForm() {
   const { formulario, enviarData, validando } = useSignUpForm();
+
   return (
     <Form {...formulario}>
       <form
         onSubmit={formulario.handleSubmit(enviarData)}
         className="space-y-6 bg-white p-8 rounded-xl shadow-md"
       >
+        <div className="flex flex-col gap-2 mb-2">
+          <h2 className="text-2xl font-bold">Crear una cuenta</h2>
+          <p className="text-sm text-muted-foreground">
+            Ingresa tus datos para comenzar
+          </p>
+        </div>
+
         <FormField
           control={formulario.control}
           name="nombreCompleto"
@@ -134,17 +142,15 @@ export function SignUpForm() {
                   className="flex gap-6"
                 >
                   <div className="flex items-center space-x-2">
-                    <RadioGroupItem
-                      className="width-2"
-                      value={PACIENTE}
-                      id="paciente"
+                    <RadioGroupItem value={PACIENTE} id="paciente" className="border border-black data-[state=checked]:border-2 data-[state=checked]:border-emerald-600"
                     />
                     <Label htmlFor="paciente" className="text-sm">
                       Paciente
                     </Label>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <RadioGroupItem value={DOCTOR} id="doctor" />
+                    <RadioGroupItem value={DOCTOR} id="doctor"className="border border-black data-[state=checked]:border-2 data-[state=checked]:border-emerald-600"
+                    />
                     <Label htmlFor="doctor" className="text-sm">
                       Doctor
                     </Label>
@@ -165,6 +171,8 @@ export function SignUpForm() {
                 <Checkbox
                   checked={field.value}
                   onCheckedChange={field.onChange}
+                  className="border border-black"
+
                 />
               </FormControl>
               <div className="space-y-1 leading-none">
@@ -182,8 +190,18 @@ export function SignUpForm() {
           type="submit"
           className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 rounded-md"
         >
-          {validando ? "Verificando..." : "Enviar"}
+          {validando ? "Verificando..." : "Registrarse"}
         </Button>
+
+        <div className="text-center text-sm">
+          ¿Ya tienes una cuenta?{" "}
+          <a
+            href="/auth/sign-in"
+            className="text-emerald-600 hover:underline underline-offset-4"
+          >
+            Iniciar sesión
+          </a>
+        </div>
       </form>
     </Form>
   );

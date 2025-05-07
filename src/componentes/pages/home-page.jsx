@@ -48,12 +48,11 @@ function HomePage() {
           <div className="flex items-center space-x-4">
             <Button
               variant="outline"
-              className="text-[#16a34a] border-[#16a34a] hover:bg-green-100"
-            >
-              <a href="/sign-in">Iniciar Sesión</a>
+              className="text-[#16a34a] border-[#16a34a] hover:bg-green-100" >
+              <a href="/auth/sign-in">Iniciar Sesión</a>
             </Button>
             <Button className="bg-[#16a34a] text-white hover:bg-green-700">
-              <a href="/sign-up">Registrarse</a>
+              <a href="/auth/sign-up">Registrarse</a>
             </Button>
           </div>
         </div>
@@ -82,13 +81,13 @@ function HomePage() {
           </p>
           <div className="mt-6 flex justify-center gap-4">
             <Button className="bg-[#16a34a] text-white hover:bg-green-700">
-              Agendar Cita
+              <a href="/auth/sign-in">Agendar Cita</a>
             </Button>
             <Button
               variant="outline"
               className="text-[#16a34a] border-[#16a34a] hover:bg-green-100"
             >
-              Conoce más
+              <a href="#nosotros">Conoce más</a>
             </Button>
           </div>
         </div>
@@ -120,7 +119,7 @@ function HomePage() {
       </div>
 
       {/* Sobre Nosotros Section */}
-      <div className="bg-white py-16">
+      <div id="nosotros" className="bg-white py-16">
         <div className="container mx-auto flex flex-col md:flex-row items-center gap-8">
           <div className="w-full md:w-1/2">
             <img
@@ -145,7 +144,7 @@ function HomePage() {
               <li>Compromiso con la excelencia</li>
             </ul>
             <Button className="bg-[#16a34a] text-white hover:bg-green-700">
-              Conoce Nuestro Equipo
+            <a href="#contacto">Conoce Nuestro Equipo</a>
             </Button>
           </div>
         </div>
@@ -172,7 +171,7 @@ function HomePage() {
         </div>
       </div>
       {/* Call to Action Section */}
-      <div className="bg-green-50 py-16 text-center">
+      <div id="contacto" className="bg-green-50 py-16 text-center">
         <h2 className="text-3xl font-bold text-gray-800 mb-4">
           Comienza tu experiencia médica digital
         </h2>
@@ -182,7 +181,7 @@ function HomePage() {
         </p>
         <div className="flex justify-center gap-4">
           <Button className="bg-[#16a34a] text-white hover:bg-green-700">
-            Registrarse
+            <a href="/auth/sign-up">Registrarse</a>
           </Button>
           <Button
             variant="outline"
