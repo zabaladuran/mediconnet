@@ -5,6 +5,7 @@ import {
   SignUpInfo,
 } from "../../funcionalidades/autenticacion/componentes";
 
+
 function SignInPage() {
   return (
     <main className="min-h-screen flex flex-col">
