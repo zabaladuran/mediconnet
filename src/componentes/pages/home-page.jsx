@@ -1,3 +1,5 @@
+import { Stethoscope } from "lucide-react";
+import { useEffect, useState } from "react";
 import { Button } from "../../components/ui/button";
 import {
   Card,
@@ -12,8 +14,13 @@ function HomePage() {
     <>
       {/* Navbar */}
       <nav className="bg-white border-b border-gray-200">
-        <div className="container mx-auto flex justify-between items-center py-4 px-6">
-          <div className="text-[#16a34a] text-xl font-bold">Mediconnet</div>
+          <div className="container mx-auto flex justify-between items-center py-4 px-6">
+            <a href="/home" className="flex items-center gap-2 font-medium text-[#16a34a]">
+          <div className="flex h-6 w-6 items-center justify-center rounded-md bg-[#16a34a] text-white">
+            <Stethoscope className="size-4" />
+          </div>
+          MediconNet
+          </a>
           <ul className="flex items-center space-x-6">
             <li>
               <a href="#inicio" className="text-gray-800 hover:text-[#16a34a]">
@@ -183,12 +190,6 @@ function HomePage() {
           <Button className="bg-[#16a34a] text-white hover:bg-green-700">
             <a href="/auth/sign-up">Registrarse</a>
           </Button>
-          <Button
-            variant="outline"
-            className="text-[#16a34a] border-[#16a34a] hover:bg-green-100"
-          >
-            Contactar
-          </Button>
         </div>
       </div>
 
@@ -268,19 +269,6 @@ function HomePage() {
             <p className="text-gray-600 mb-4">
               Suscríbete para recibir noticias y actualizaciones
             </p>
-            <form className="flex">
-              <input
-                type="email"
-                placeholder="Tu correo electrónico"
-                className="border border-gray-300 rounded-l px-4 py-2 w-full focus:outline-none"
-              />
-              <button
-                type="submit"
-                className="bg-[#16a34a] text-white px-4 py-2 rounded-r hover:bg-green-700"
-              >
-                Suscribir
-              </button>
-            </form>
           </div>
         </div>
         <div className="text-center text-gray-600 mt-8">

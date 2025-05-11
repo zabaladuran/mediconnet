@@ -16,8 +16,8 @@ export function AutHeader() {
 
   return (
     <header className="w-full border-b border-slate-200 px-6 py-6 md:px-10 flex justify-between items-center">
-      <a href="/home" className="flex items-center gap-2 font-medium text-emerald-600">
-        <div className="flex h-6 w-6 items-center justify-center rounded-md bg-emerald-600 text-white">
+      <a href="/home" className="flex items-center gap-2 font-medium text-[#16a34a]">
+        <div className="flex h-6 w-6 items-center justify-center rounded-md bg-[#16a34a] text-white">
           <Stethoscope className="size-4" />
         </div>
         MediconNet
