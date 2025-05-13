@@ -1,10 +1,4 @@
-
-import {
-  AutHeader,
-  AutFooter,
-  SignUpForm,
-  SignUpInfo,
-} from "../../funcionalidades/autenticacion/componentes";
+import { AutHeader, AutFooter, SignUpForm, SignUpInfo } from "../componentes";
 
 function SignUpPage() {
   return (
@@ -26,4 +20,3 @@ function SignUpPage() {
 }
 
 export default SignUpPage;
-

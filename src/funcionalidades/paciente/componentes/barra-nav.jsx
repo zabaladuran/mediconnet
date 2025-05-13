@@ -1,9 +1,9 @@
 import React from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import ButtonDashboard from "./btton-dashboard";
-import ButtonCitas from "./btton-citas";
-import ButtonHistorialMedico from "./btton-Historialmedico";
-import ButtonConfiguracion from "./btton-configuracion";
+import ButtonDashboard from "../componentes/btton-dashboard";
+import ButtonCitas from "../componentes/btton-citas";
+import ButtonHistorialMedico from "../componentes/btton-Historialmedico";
+import ButtonConfiguracion from "../componentes/btton-configuracion";
 
 const BarraNav = () => {
   return (
@@ -20,7 +20,9 @@ const BarraNav = () => {
             <div className="flex space-x-4">
               <TabsTrigger value="Dashboard">Dashboard</TabsTrigger>
               <TabsTrigger value="Citas">Citas</TabsTrigger>
-              <TabsTrigger value="Historial Medico">Historial Médico</TabsTrigger>
+              <TabsTrigger value="Historial Medico">
+                Historial Médico
+              </TabsTrigger>
               <TabsTrigger value="Medicamentos">Medicamentos</TabsTrigger>
               <TabsTrigger value="Configuracion">Configuración</TabsTrigger>
             </div>

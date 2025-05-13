@@ -1,6 +1,5 @@
-// components/EmailVerification.tsx
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 export default function EmailVerification() {
   return (
@@ -20,7 +19,8 @@ export default function EmailVerification() {
         <div>
           <p className="text-lg font-bold">¡Verificando Correo !</p>
           <p className="text-sm text-gray-500 mt-1">
-            Tu dirección de correo electrónico está siendo verificada. Para que puedas usar nuestros servicios.
+            Tu dirección de correo electrónico está siendo verificada. Para que
+            puedas usar nuestros servicios.
           </p>
         </div>
         <Button className="w-full bg-green-600 hover:bg-green-700 text-white">
@@ -28,5 +28,5 @@ export default function EmailVerification() {
         </Button>
       </div>
     </div>
-  )
+  );
 }

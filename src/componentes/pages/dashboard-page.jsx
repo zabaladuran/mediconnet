@@ -12,7 +12,7 @@ import {
 import { Input } from "../../components/ui/input";
 import { Label } from "../../components/ui/label";
 import { useAut } from "../../funcionalidades/autenticacion/hooks";
-import BarraNav from "../dashboard/barra-nav"; // Importa BarraNav
+import BarraNav from "../../funcionalidades/paciente/componentes/barra-nav"; // Importa BarraNav
 
 function DashboardPage() {
   const [email, setEmail] = useState("");

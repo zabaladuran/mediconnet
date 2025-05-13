@@ -3,8 +3,6 @@ export async function signInUsuario({ email, pass }) {
     throw Error("Ops, ocurrio un error.");
   try {
     return { exito: true, token: "aftwas", verificado: true };
-    // return { status: 200, message: "Correctamente iniciado", token: "aftwas", idUsuario: 10 };
-    // return { status: 400, message: "Error iniciar sesion"
   } catch {
     throw Error("Ops, error durante registro");
   }
@@ -29,8 +27,6 @@ export async function signUpUsuario({
     throw Error("Ops, ocurrio un error.");
   try {
     return { exito: true, token: "aftwas", verificado: true };
-    // { status: 200, message: "Correctamente registrado", token: "aftwas", idUsuario: 10 };
-    // { status: 400, message: "Error crear usuario" };
   } catch {
     throw Error("Ops, error durante inicio de sesion");
   }
@@ -63,9 +59,8 @@ export async function validarCuentaVerificada({ token }) {
   }
 }
 
-export async function validarCodigoDeAutenticacion({ idUsuario, codigo }) {
-  if (!idUsuario || typeof idUsuario != "number")
-    throw Error("Ops, ocurrio un error.");
+export async function validarCodigoDeAutenticacion({ token, codigo }) {
+  if (!token || typeof token != "string") throw Error("Ops, ocurrio un error.");
   if (!codigo || typeof codigo != "number")
     throw Error("Ops, ocurrio un error.");
   try {
@@ -75,9 +70,8 @@ export async function validarCodigoDeAutenticacion({ idUsuario, codigo }) {
   }
 }
 
-export async function enviarCorreoDeVerificacion({ idUsuario }) {
-  if (!idUsuario || typeof token != "number")
-    throw Error("Ops, ocurrio un error.");
+export async function enviarCorreoDeVerificacion({ token }) {
+  if (!token || typeof token != "string") throw Error("Ops, ocurrio un error.");
   try {
     return { exito: true, verificado: true };
   } catch {

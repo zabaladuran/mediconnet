@@ -1,10 +1,4 @@
-import {
-  AutHeader,
-  AutFooter,
-  SignInForm,
-  SignUpInfo,
-} from "../../funcionalidades/autenticacion/componentes";
-
+import { AutHeader, AutFooter, SignInForm, SignUpInfo } from "../componentes";
 
 function SignInPage() {
   return (
@@ -20,7 +14,9 @@ function SignInPage() {
         {/* Columna derecha: formulario de inicio */}
         <div className="w-full md:w-1/2 flex items-center justify-center p-6">
           <div className="w-full max-w-md">
-            <h2 className="text-2xl font-bold mb-6 text-center">Iniciar sesión</h2>
+            <h2 className="text-2xl font-bold mb-6 text-center">
+              Iniciar sesión
+            </h2>
             <SignInForm />
           </div>
         </div>

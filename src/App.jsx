@@ -1,8 +1,8 @@
-import EmailVerified from "./componentes/emal-verification/successful-verification";
-import EmailVerification from "./componentes/pages/Email-verification-page";
+import EmailVerified from "./funcionalidades/autenticacion/componentes/ui/successful-verification";
+import EmailVerification from "./funcionalidades/autenticacion/pages/email-verification-page";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router";
-import SignInPage from "./componentes/pages/sign-in-page";
-import SignUpPage from "./componentes/pages/sign-up-page";
+import SignInPage from "./funcionalidades/autenticacion/pages/sign-in-page";
+import SignUpPage from "./funcionalidades/autenticacion/pages/sign-up-page";
 import HomePage from "./componentes/pages/home-page";
 import { DashboardPage } from "./componentes/pages";
 import {
