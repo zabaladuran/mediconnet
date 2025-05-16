@@ -43,7 +43,7 @@ import {
   InputOTPSlot,
 } from "../../../components/ui/input-otp";
 import { useVerificationCodeForm } from "../hooks";
-export function InputOTPForm() {
+export default function EmailVerification() {
   const { validando, formulario, enviarData } = useVerificationCodeForm();
   return (
     <Form {...formulario}>
