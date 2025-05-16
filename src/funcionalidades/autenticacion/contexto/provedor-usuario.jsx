@@ -68,6 +68,14 @@ export const ProveedorUsuario = ({ children }) => {
     toast.success("Sesion iniciada");
   }
 
+  function autenticarUsuario() {
+    definirCredenciales({
+      token: credenciales.token,
+      tipoUsuario: credenciales.tipoUsuario,
+      cuentaVerificada: true,
+    });
+  }
+
   useEffect(() => {
     async function intentarRestaurarSesion() {
       // ENTRADA DE CREDENCIALES LOCALES
@@ -106,7 +114,12 @@ export const ProveedorUsuario = ({ children }) => {
     intentarRestaurarSesion();
   }, []);
 
-  const recursosDeContexto = { credenciales, iniciarSesion, cerrarSesion };
+  const recursosDeContexto = {
+    credenciales,
+    iniciarSesion,
+    cerrarSesion,
+    autenticarUsuario,
+  };
   return (
     <ContextoDeAutenticacion.Provider
       children={children}
