@@ -48,7 +48,7 @@ export function useSignUpForm() {
 
       // REDIRECCION CONDICIONAL
       if (!cuentaVerificada)
-        return navigate("/auth/verfication", { replace: true });
+        return navigate("/verification/email", { replace: true });
       if (tipoUsuario == PACIENTE)
         return navigate("/paciente/dashboard/home", { replace: true });
       if (tipoUsuario == DOCTOR)

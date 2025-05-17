@@ -21,16 +21,13 @@ export function useVerificationCodeForm() {
       const { code } = data;
 
       // VERIFICACION DEL CODIGO (BACKEND)
-      if (!code) return;
       autenticarUsuario();
       const { tipoUsuario, cuentaVerificada } = credenciales;
 
       // REDIRECCION CONDICIONAL
-      if (!cuentaVerificada)
-        return navigate("/auth/verfication", { replace: true });
-      if (tipoUsuario == PACIENTE)
+      if (tipoUsuario == PACIENTE && cuentaVerificada)
         return navigate("/paciente/dashboard/home", { replace: true });
-      if (tipoUsuario == DOCTOR)
+      if (tipoUsuario == DOCTOR && cuentaVerificada)
         return navigate("/doctor/dashboard/home", { replace: true });
     } catch (e) {
       toast.error("Error al verificar el código");

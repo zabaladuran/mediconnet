@@ -1,3 +1,4 @@
 import DashboardPage from "./dashboard-page";
 import HomePage from "./home-page";
-export { DashboardPage, HomePage };
+import NotFoundPage from "./not-found";
+export { DashboardPage, HomePage, NotFoundPage };

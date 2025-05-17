@@ -26,37 +26,33 @@ export function useSignInForm() {
       definirValidando(true);
       const { email, password } = data;
 
-      // LOGIN Y OBTENCION DE CREDENCIALES (BACKEND)
-      let {
-        exito: exitoSignIn,
-        token,
-        verificado: cuentaVerificada,
-      } = await signInUsuario({
+      // SIGNIN REQUEST
+      const signInResponse = await signInUsuario({
         email: email,
         pass: password,
       });
-      if (!exitoSignIn) return toast.error("Crendenciales invalidas");
-      const { exito: exitoTipoUsuario, tipoUsuario } = await obtenerTipoUsuario(
-        {
-          token: token,
-        }
-      );
-      if (!exitoTipoUsuario) return toast.error("Crendenciales invalidas");
+      if (!signInResponse.exito) {
+        return toast.error("Crendenciales invalidas");
+      }
+
+      // SIGN IN (LOCAL CREDENTIALS)
       iniciarSesion({
         correo: email,
-        token: token,
-        tipoUsuario: tipoUsuario,
-        cuentaVerificada: cuentaVerificada,
+        token: signInResponse.token,
+        tipoUsuario: signInResponse.tipoUsuario,
+        cuentaVerificada: signInResponse.cuentaVerificada,
       });
 
       // REDIRECCION CONDICIONAL
-      if (!cuentaVerificada)
-        return navigate("/auth/verfication", { replace: true });
-      if (tipoUsuario == PACIENTE)
+      if (!signInResponse.cuentaVerificada)
+        return navigate("/verification/email", { replace: true });
+      if (signInResponse.tipoUsuario == PACIENTE)
         return navigate("/paciente/dashboard/home", { replace: true });
-      if (tipoUsuario == DOCTOR)
+      if (signInResponse.tipoUsuario == DOCTOR)
         return navigate("/doctor/dashboard/home", { replace: true });
     } catch (e) {
+      toast.error("Error durante el envio de datos...");
+      console.error(e);
     } finally {
       definirValidando(false);
     }

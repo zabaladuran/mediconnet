@@ -1,17 +1,16 @@
-import EmailVerified from "./funcionalidades/autenticacion/componentes/ui/successful-verification";
-import EmailVerification from "./funcionalidades/autenticacion/pages/email-verification-page";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router";
-import SignInPage from "./funcionalidades/autenticacion/pages/sign-in-page";
-import SignUpPage from "./funcionalidades/autenticacion/pages/sign-up-page";
-import HomePage from "./componentes/pages/home-page";
-import { DashboardPage } from "./componentes/pages";
+import {
+  SignInPage,
+  SignUpPage,
+  EmailVerificationPage,
+} from "./funcionalidades/autenticacion/pages";
+import { DashboardPage, HomePage, NotFoundPage } from "./componentes/pages";
 import {
   BlockearUsuarioAutenticado,
   PermitirUsuarioDoctor,
   PermitirUsuarioPaciente,
-  PermitirUsuarioAutenticado,
+  PermitirUsuarioVerificacionPendiente,
 } from "./componentes/navegacion";
-import NotFoundPage from "./componentes/pages/not-found";
 import { ProveedoresApp } from "./contexto/";
 import { Toaster } from "./components/ui/sonner";
 function App() {
@@ -23,10 +22,9 @@ function App() {
             <Route path="/" element={<Navigate replace to="/home" />} />
             <Route
               path="/verification/*"
-              element={<PermitirUsuarioAutenticado />}
+              element={<PermitirUsuarioVerificacionPendiente />}
             >
-              <Route path="email" element={<EmailVerification />} />
-              <Route path="verification" element={<HomePage />} />
+              <Route path="email" element={<EmailVerificationPage />} />
             </Route>
             <Route path="/home" element={<HomePage />} />
             <Route path="/auth/*" element={<BlockearUsuarioAutenticado />}>

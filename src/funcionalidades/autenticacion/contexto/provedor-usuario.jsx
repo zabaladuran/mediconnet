@@ -43,7 +43,6 @@ export const ProveedorUsuario = ({ children }) => {
       !token ||
       !correo ||
       !tipoUsuario ||
-      !cuentaVerificada ||
       typeof token != "string" ||
       typeof correo != "string" ||
       typeof tipoUsuario != "string" ||
