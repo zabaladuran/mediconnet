@@ -73,9 +73,27 @@ import {
   InputOTPSlot,
 } from "../../../components/ui/input-otp";
 import { Button } from "../../../components/ui/button";
-import { useVerificationCodeForm } from "../hooks";
+import { useAut, useVerificationCodeForm } from "../hooks";
+import { useEffect } from "react";
+import { enviarCorreoDeVerificacion } from "../servicios/";
+
 export default function EmailVerificationPage() {
   const { validando, formulario, enviarData } = useVerificationCodeForm();
+  const { credenciales } = useAut();
+  useEffect(() => {
+    async function enviarCodigo() {
+      let correoEnviado = false;
+
+      while (!correoEnviado) {
+        const serviceEmailResponse = await enviarCorreoDeVerificacion({
+          token: credenciales.token,
+        });
+        correoEnviado = serviceEmailResponse.exito;
+      }
+    }
+    enviarCodigo();
+  }, []);
+
   return (
     <Form {...formulario}>
       <form
@@ -87,7 +105,7 @@ export default function EmailVerificationPage() {
           name="code"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>One-Time Password</FormLabel>
+              <FormLabel>Codigo de Verificacion: </FormLabel>
               <FormControl>
                 <InputOTP maxLength={6} {...field}>
                   <InputOTPGroup>

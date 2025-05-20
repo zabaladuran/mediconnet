@@ -78,7 +78,7 @@ export async function validarCodigoDeAutenticacion({ token, codigo }) {
 export async function enviarCorreoDeVerificacion({ token }) {
   if (!token || typeof token != "string") throw Error("Ops, ocurrio un error.");
   try {
-    return { exito: true, verificado: true };
+    return { exito: true };
   } catch {
     throw Error("Ops, error durante registro");
   }

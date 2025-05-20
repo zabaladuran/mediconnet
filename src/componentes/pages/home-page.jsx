@@ -1,25 +1,22 @@
 import { Stethoscope } from "lucide-react";
-import { useEffect, useState } from "react";
 import { Button } from "../../components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "../../components/ui/card";
 import ServiceCard from "../../funcionalidades/home/componentes/ServiceCard";
 
 function HomePage() {
+  console.log("home");
   return (
     <>
       {/* Navbar */}
       <nav className="bg-white border-b border-gray-200">
-          <div className="container mx-auto flex justify-between items-center py-4 px-6">
-            <a href="/home" className="flex items-center gap-2 font-medium text-[#16a34a]">
-          <div className="flex h-6 w-6 items-center justify-center rounded-md bg-[#16a34a] text-white">
-            <Stethoscope className="size-4" />
-          </div>
-          MediconNet
+        <div className="container mx-auto flex justify-between items-center py-4 px-6">
+          <a
+            href="/home"
+            className="flex items-center gap-2 font-medium text-[#16a34a]"
+          >
+            <div className="flex h-6 w-6 items-center justify-center rounded-md bg-[#16a34a] text-white">
+              <Stethoscope className="size-4" />
+            </div>
+            MediconNet
           </a>
           <ul className="flex items-center space-x-6">
             <li>
@@ -55,7 +52,8 @@ function HomePage() {
           <div className="flex items-center space-x-4">
             <Button
               variant="outline"
-              className="text-[#16a34a] border-[#16a34a] hover:bg-green-100" >
+              className="text-[#16a34a] border-[#16a34a] hover:bg-green-100"
+            >
               <a href="/auth/sign-in">Iniciar Sesión</a>
             </Button>
             <Button className="bg-[#16a34a] text-white hover:bg-green-700">
@@ -151,7 +149,7 @@ function HomePage() {
               <li>Compromiso con la excelencia</li>
             </ul>
             <Button className="bg-[#16a34a] text-white hover:bg-green-700">
-            <a href="#contacto">Conoce Nuestro Equipo</a>
+              <a href="#contacto">Conoce Nuestro Equipo</a>
             </Button>
           </div>
         </div>

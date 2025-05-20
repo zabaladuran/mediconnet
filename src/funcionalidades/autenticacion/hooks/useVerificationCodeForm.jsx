@@ -6,6 +6,7 @@ import { useNavigate } from "react-router";
 import { useState } from "react";
 import { useAut } from "./useAut";
 import { PACIENTE, DOCTOR } from "../data";
+
 export function useVerificationCodeForm() {
   const [validando, definirValidando] = useState(false);
   const { credenciales, autenticarUsuario } = useAut();

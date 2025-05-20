@@ -4,6 +4,7 @@ import {
   obtenerTipoUsuario,
   validarAutenticidadToken,
   validarCuentaVerificada,
+  enviarCorreoDeVerificacion,
 } from "./aut-usuario";
 export {
   signInUsuario,
@@ -11,4 +12,5 @@ export {
   validarCuentaVerificada,
   signUpUsuario,
   obtenerTipoUsuario,
+  enviarCorreoDeVerificacion,
 };

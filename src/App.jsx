@@ -20,13 +20,13 @@ function App() {
         <ProveedoresApp>
           <Routes>
             <Route path="/" element={<Navigate replace to="/home" />} />
+            <Route path="/home" element={<HomePage />} />
             <Route
               path="/verification/*"
               element={<PermitirUsuarioVerificacionPendiente />}
             >
               <Route path="email" element={<EmailVerificationPage />} />
             </Route>
-            <Route path="/home" element={<HomePage />} />
             <Route path="/auth/*" element={<BlockearUsuarioAutenticado />}>
               <Route path="sign-in" element={<SignInPage />} />
               <Route path="sign-up" element={<SignUpPage />} />
