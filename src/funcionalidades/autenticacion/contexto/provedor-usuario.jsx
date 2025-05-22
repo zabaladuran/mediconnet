@@ -108,7 +108,7 @@ export const ProveedorUsuario = ({ children }) => {
         cuentaVerificada: cuentaVerificada,
       });
       // REDIRECCIONAMIENTO SEGUN EL ESTADO DE LA CUENTA
-      if (!cuentaVerificada) navigate("/auth/verfication", { replace: true });
+      //if (!cuentaVerificada) navigate("/auth/verfication", { replace: true });
     }
     intentarRestaurarSesion();
   }, []);

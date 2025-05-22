@@ -1,9 +1,11 @@
 import { Stethoscope } from "lucide-react";
 import { Button } from "../../components/ui/button";
 import ServiceCard from "../../funcionalidades/home/componentes/ServiceCard";
-
+import { useAut } from "../../funcionalidades/autenticacion/contexto";
 function HomePage() {
-  console.log("home");
+  const { credenciales, cerrarSesion } = useAut();
+  console.log(credenciales);
+
   return (
     <>
       {/* Navbar */}
@@ -50,15 +52,27 @@ function HomePage() {
             </li>
           </ul>
           <div className="flex items-center space-x-4">
-            <Button
-              variant="outline"
-              className="text-[#16a34a] border-[#16a34a] hover:bg-green-100"
-            >
-              <a href="/auth/sign-in">Iniciar Sesión</a>
-            </Button>
-            <Button className="bg-[#16a34a] text-white hover:bg-green-700">
-              <a href="/auth/sign-up">Registrarse</a>
-            </Button>
+            {credenciales.token ? (
+              <Button
+                variant="outline"
+                className="text-[#16a34a] border-[#16a34a] hover:bg-green-100"
+                onClick={cerrarSesion}
+              >
+                Cerrar sesión
+              </Button>
+            ) : (
+              <>
+                <Button
+                  variant="outline"
+                  className="text-[#16a34a] border-[#16a34a] hover:bg-green-100"
+                >
+                  <a href="/auth/sign-in">Iniciar Sesión</a>
+                </Button>
+                <Button className="bg-[#16a34a] text-white hover:bg-green-700">
+                  <a href="/auth/sign-up">Registrarse</a>
+                </Button>
+              </>
+            )}
           </div>
         </div>
       </nav>
