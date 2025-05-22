@@ -14,7 +14,7 @@ function HomePage() {
       iniciarSesion({
         token: "token-fake-doctor",
         correo: "doctor@demo.com",
-        tipoUsuario: "DOCTOR",
+        tipoUsuario: "PACIENTE",
         cuentaVerificada: true,
       });
     }

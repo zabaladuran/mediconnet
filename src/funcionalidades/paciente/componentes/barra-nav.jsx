@@ -13,7 +13,9 @@ const BarraNav = () => {
           <TabsList className="flex items-center justify-between px-6 py-4 w-full bg-white">
             {/* Logo y título */}
             <div className="flex items-center space-x-4">
-              <h1 className="text-xl font-bold text-green-600">Mediconnet</h1>
+              <a className="text-xl font-bold text-green-600 hover:underline">
+                Mediconnet
+              </a>
             </div>
 
             {/* Pestañas */}
@@ -23,7 +25,6 @@ const BarraNav = () => {
               <TabsTrigger value="Historial Medico">
                 Historial Médico
               </TabsTrigger>
-              <TabsTrigger value="Medicamentos">Medicamentos</TabsTrigger>
               <TabsTrigger value="Configuracion">Configuración</TabsTrigger>
             </div>
 
@@ -52,9 +53,6 @@ const BarraNav = () => {
       </TabsContent>
       <TabsContent value="Historial Medico">
         <ButtonHistorialMedico /> {/* Muestra el contenido del componente */}
-      </TabsContent>
-      <TabsContent value="Medicamentos">
-        <p>Contenido de Medicamentos</p>
       </TabsContent>
       <TabsContent value="Configuracion">
         <ButtonConfiguracion /> {/* Muestra el contenido del componente */}
