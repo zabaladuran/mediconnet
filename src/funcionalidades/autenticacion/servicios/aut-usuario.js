@@ -5,7 +5,7 @@ export async function signInUsuario({ email, pass }) {
     return {
       exito: true,
       token: "aftwas",
-      cuentaVerificada: false,
+      cuentaVerificada: true,
       tipoUsuario: "paciente",
     };
   } catch {
