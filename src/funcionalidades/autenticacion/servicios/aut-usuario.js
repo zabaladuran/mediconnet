@@ -1,131 +1,46 @@
-const BASE_URL = "https://api-mediconnet.onrender.com";
-
-export async function signUpUsuario({ email, pass, nombreCompleto, tipoUsuario }) {
-  if (!email || !pass || !nombreCompleto || !tipoUsuario) {
-    throw new Error("Faltan campos requeridos.");
-  }
-
-  const [nombres, ...resto] = nombreCompleto.trim().split(" ");
-  const apellidos = resto.join(" ") || "Desconocido";
-
-  try {
-    const response = await fetch(`${BASE_URL}/Api/Registro`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        nombres,
-        apellidos,
-        correoElectronico: email,
-        contrasena: pass
-      })
-    });
-
-    if (!response.ok) {
-      const error = await response.text();
-      throw new Error(`Error en el registro: ${error}`);
-    }
-
-    const result = await response.json();
-    return { exito: true, ...result };
-  } catch (error) {
-    console.error("Error al registrar usuario:", error);
-    return { exito: false, mensaje: error.message };
-  }
-}
-
-export async function enviarCorreoDeVerificacion({ token, correo }) {
-  try {
-    const response = await fetch(`${BASE_URL}/Api/Registro/Enviar-codigo`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        ...(token ? { Authorization: `Bearer ${token}` } : {})
-      },
-      body: JSON.stringify({ correoElectronico: correo })
-    });
-
-    if (!response.ok) {
-      const error = await response.text();
-      throw new Error(`Error al enviar el código: ${error}`);
-    }
-
-    const result = await response.json();
-    return { exito: true, ...result };
-  } catch (error) {
-    console.error("Error al enviar código:", error);
-    return { exito: false, mensaje: error.message };
-  }
-}
-
-export async function validarCodigoDeAutenticacion({ correo, codigo }) {
-  try {
-    const response = await fetch(`${BASE_URL}/Api/Registro/Confirmar-codigo`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        correoElectronico: correo,
-        codigoVerificacion: codigo
-      })
-    });
-
-    if (!response.ok) {
-      const error = await response.text();
-      throw new Error(`Error al confirmar el código: ${error}`);
-    }
-
-    const result = await response.json();
-    return { exito: true, ...result };
-  } catch (error) {
-    console.error("Error al confirmar código:", error);
-    return { exito: false, mensaje: error.message };
-  }
-}
-
 export async function signInUsuario({ email, pass }) {
-  if (!email || !pass) {
-    throw new Error("Correo o contraseña inválidos.");
-  }
-
+  if (!email || !pass || typeof email != "string" || typeof pass != "string")
+    throw Error("Ops, ocurrio un error.");
   try {
-    const response = await fetch(`${BASE_URL}/Api/Login`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        correoElectronico: email,
-        contrasena: pass
-      })
-    });
-
-    if (!response.ok) {
-      const error = await response.text();
-      return { exito: false, mensaje: error };
-    }
-
-    const result = await response.json();
     return {
       exito: true,
-      token: result.token,
-      tipoUsuario: result.tipoUsuario,
-      cuentaVerificada: result.cuentaVerificada
+      token: "aftwas",
+      cuentaVerificada: false,
+      tipoUsuario: "paciente",
     };
-  } catch (error) {
-    console.error("Error al iniciar sesión:", error);
-    return { exito: false, mensaje: error.message };
+  } catch {
+    throw Error("Ops, error durante registro");
   }
 }
 
-
+export async function signUpUsuario({
+  email,
+  pass,
+  nombreCompleto,
+  tipoUsuario,
+}) {
+  if (
+    !email ||
+    !pass ||
+    !nombreCompleto ||
+    !tipoUsuario ||
+    typeof email != "string" ||
+    typeof pass != "string" ||
+    typeof nombreCompleto != "string" ||
+    typeof tipoUsuario != "string"
+  )
+    throw Error("Ops, ocurrio un error.");
+  try {
+    return { exito: true, token: "aftwas", verificado: false };
+  } catch {
+    throw Error("Ops, error durante inicio de sesion");
+  }
+}
 
 export async function obtenerTipoUsuario({ token }) {
   if (!token || typeof token != "string") throw Error("Ops, ocurrio un error.");
   try {
-    return { exito: true, tipoUsuario: "paciente" };
+    return { exito: true, tipoUsuario: "Paciente" };
   } catch {
     throw Error("Ops, error durante registro");
   }
@@ -149,3 +64,32 @@ export async function validarCuentaVerificada({ token }) {
   }
 }
 
+export async function validarCodigoDeAutenticacion({ token, codigo }) {
+  try {
+    // VALIDACION DE DATOS DE ENTRADA
+    if (!token || typeof token != "string")
+      throw Error("Error en el parametro token en validar codigo");
+    if (!codigo || typeof codigo != "number")
+      throw Error("Error en el parametro codigo en validar codigo");
+
+    // OBJETO DE RESPUESTA ESPERADO
+    return { exito: true, sms: "Codigo fue autenticado" };
+  } catch (e) {
+    console.error(e);
+    return { exito: false, sms: "No se puedo completar la autenticacioin" };
+  }
+}
+
+export async function enviarCorreoDeVerificacion({ token }) {
+  try {
+    // VALIDACION DE DATOS DE ENTRADA
+    if (!token || typeof token != "string")
+      throw Error("Error en el parametro token en validar codigo");
+
+    // OBJETO DE RESPUESTA ESPERADO
+    return { exito: true, sms: "Codigo enviado" };
+  } catch (e) {
+    console.error(e);
+    return { exito: false, sms: "No se puedo enviar el codigo..." };
+  }
+}

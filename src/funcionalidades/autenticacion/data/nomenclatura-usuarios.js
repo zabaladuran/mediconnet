@@ -1,2 +1,2 @@
-export const PACIENTE = "paciente";
-export const DOCTOR = "doctor";
+export const PACIENTE = "Paciente";
+export const DOCTOR = "Doctor";

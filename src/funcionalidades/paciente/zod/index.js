@@ -1,2 +1,3 @@
 import { validarPerfilPaciente } from "./esquemas-servicios-paciente";
-export { validarPerfilPaciente };
+import { EsquemaAgendarCita } from "./esquema-agendar-cita";
+export { validarPerfilPaciente, EsquemaAgendarCita };

@@ -6,8 +6,9 @@ import { useNavigate } from "react-router";
 import { useState } from "react";
 import { useAut } from "./useAut";
 import { PACIENTE, DOCTOR } from "../data";
-
+import { useQueryCodeVerification } from "../hooks";
 export function useVerificationCodeForm() {
+  const { validarCodigoDeAutenticacion } = useQueryCodeVerification();
   const [validando, definirValidando] = useState(false);
   const { credenciales, autenticarUsuario } = useAut();
   const navigate = useNavigate();
@@ -15,16 +16,18 @@ export function useVerificationCodeForm() {
     resolver: zodResolver(codeVerificationSchema),
   });
 
-  async function enviarData(data) {
+  async function verificarCodigo(data) {
     try {
       //  ENTRADA DE DATOS DE INICIO DE SESION
       definirValidando(true);
       const { code } = data;
 
       // VERIFICACION DEL CODIGO (BACKEND)
-      autenticarUsuario();
-      const { tipoUsuario, cuentaVerificada } = credenciales;
+      console.log(code);
+      const response = validarCodigoDeAutenticacion({ code: code });
+      if (response.exito) autenticarUsuario();
 
+      const { tipoUsuario, cuentaVerificada } = credenciales;
       // REDIRECCION CONDICIONAL
       if (tipoUsuario == PACIENTE && cuentaVerificada)
         return navigate("/paciente/dashboard/home", { replace: true });
@@ -37,5 +40,10 @@ export function useVerificationCodeForm() {
       definirValidando(false);
     }
   }
-  return { validando: validando, formulario: form, enviarData: enviarData };
+  return {
+    validando: validando,
+    formulario: form,
+    verificarCodigo: verificarCodigo,
+    validando: form.formState.isSubmitting,
+  };
 }

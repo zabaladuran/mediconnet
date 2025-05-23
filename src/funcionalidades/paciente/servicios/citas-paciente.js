@@ -72,3 +72,35 @@ export async function obtenerProximaVisita({ token }) {
     throw Error("Ops, error durante registro");
   }
 }
+
+export async function obtenerCitasDisponibles({
+  nombreDoctor,
+  cargoDoctor,
+  fechaSugeridad,
+}) {
+  if (!token || typeof token != "string") throw Error("Ops, ocurrio un error.");
+  try {
+    return {
+      exito: true,
+      citasDisponibles: [
+        { fecha: "12/12/12", nombreDoctor: "Garcia G.", cargo: "Enfermero" },
+        { fecha: "12/12/12", nombreDoctor: "Garcia G.", cargo: "Enfermero" },
+        { fecha: "12/12/12", nombreDoctor: "Garcia G.", cargo: "Enfermero" },
+      ],
+    };
+  } catch {
+    throw Error("Ops, error durante registro");
+  }
+}
+
+export async function agendarCita({ idCita, token, observaciones }) {
+  if (!token || typeof token != "string") throw Error("Ops, ocurrio un error.");
+  try {
+    return {
+      exito: true,
+      sms: "cita creada",
+    };
+  } catch {
+    throw Error("Ops, error durante registro");
+  }
+}
