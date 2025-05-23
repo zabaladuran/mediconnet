@@ -17,6 +17,7 @@ export function useSignInForm() {
     resolver: zodResolver(signInSchema),
     defaultValues: {
       email: obtenerDeLocalStorage({ clave: CLAVE_CORREO_USUARIO }) || "",
+      pass: "", // contraseña vacía por defecto
     },
   });
 
@@ -24,12 +25,12 @@ export function useSignInForm() {
     try {
       //  ENTRADA DE DATOS DE INICIO DE SESION
       definirValidando(true);
-      const { email, password } = data;
+      const { email, pass } = data;
 
       // SIGNIN REQUEST
       const signInResponse = await signInUsuario({
         email: email,
-        pass: password,
+        pass: pass,
       });
       if (!signInResponse.exito) {
         return toast.error("Crendenciales invalidas");

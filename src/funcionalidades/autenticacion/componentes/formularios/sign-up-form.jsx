@@ -1,7 +1,8 @@
+import { useState } from "react";
+import { Lock, Eye, EyeOff } from "lucide-react";
 import { Label } from "../../../../components/ui/label";
 import { Input } from "../../../../components/ui/input";
 import { Button } from "../../../../components/ui/button";
-import { Lock } from "lucide-react";
 import {
   Form,
   FormControl,
@@ -20,6 +21,8 @@ import { PACIENTE, DOCTOR } from "../../data";
 
 export function SignUpForm() {
   const { formulario, enviarData, validando } = useSignUpForm();
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   return (
     <Form {...formulario}>
@@ -34,107 +37,103 @@ export function SignUpForm() {
           </p>
         </div>
 
+        {/* Nombre */}
         <FormField
           control={formulario.control}
           name="nombreCompleto"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-sm font-semibold">
-                Nombre Completo
-              </FormLabel>
+              <FormLabel className="text-sm font-semibold">Nombre Completo</FormLabel>
               <FormControl>
-                <Input
-                  placeholder="Ingresa tu nombre completo"
-                  {...field}
-                  className="border rounded-md p-2"
-                />
+                <Input placeholder="Ingresa tu nombre completo" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
 
+        {/* Email */}
         <FormField
           control={formulario.control}
           name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-sm font-semibold">
-                Correo electrónico
-              </FormLabel>
+              <FormLabel className="text-sm font-semibold">Correo electrónico</FormLabel>
               <FormControl>
-                <Input
-                  type="email"
-                  placeholder="correo@ejemplo.com"
-                  {...field}
-                  className="border rounded-md p-2"
-                />
+                <Input type="email" placeholder="correo@ejemplo.com" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
 
+        {/* Contraseña */}
         <FormField
           control={formulario.control}
           name="password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-sm font-semibold">
-                Contraseña
-              </FormLabel>
+              <FormLabel className="text-sm font-semibold">Contraseña</FormLabel>
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 flex items-center pl-3">
-                  <Lock className="h-5 w-5 text-green-500" />
-                </div>
                 <FormControl>
                   <Input
                     {...field}
-                    type="password"
-                    className="pl-10 border rounded-md p-2"
+                    type={showPassword ? "text" : "password"}
+                    className="pl-10 pr-10"
                     placeholder="********"
                   />
                 </FormControl>
+                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-green-500" />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500"
+                >
+                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                </button>
               </div>
               <FormMessage />
             </FormItem>
           )}
         />
 
+        {/* Confirmar contraseña */}
         <FormField
           control={formulario.control}
           name="confirmPassword"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-sm font-semibold">
-                Confirmar contraseña
-              </FormLabel>
+              <FormLabel className="text-sm font-semibold">Confirmar contraseña</FormLabel>
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 flex items-center pl-3">
-                  <Lock className="h-5 w-5 text-green-500" />
-                </div>
                 <FormControl>
                   <Input
                     {...field}
-                    type="password"
-                    className="pl-10 border rounded-md p-2"
+                    type={showConfirmPassword ? "text" : "password"}
+                    className="pl-10 pr-10"
                     placeholder="********"
                   />
                 </FormControl>
+                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-green-500" />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500"
+                >
+                  {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                </button>
               </div>
               <FormMessage />
             </FormItem>
           )}
         />
 
+        {/* Tipo de usuario */}
         <FormField
           control={formulario.control}
           name="tipoUsuario"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-sm font-semibold">
-                Tipo de usuario
-              </FormLabel>
+              <FormLabel className="text-sm font-semibold">Tipo de usuario</FormLabel>
               <FormControl>
                 <RadioGroup
                   onValueChange={field.onChange}
@@ -142,18 +141,20 @@ export function SignUpForm() {
                   className="flex gap-6"
                 >
                   <div className="flex items-center space-x-2">
-                    <RadioGroupItem value={PACIENTE} id="paciente" className="border border-black data-[state=checked]:border-2 data-[state=checked]:border-emerald-600"
+                    <RadioGroupItem
+                      value={PACIENTE}
+                      id="paciente"
+                      className="border border-black data-[state=checked]:border-2 data-[state=checked]:border-emerald-600"
                     />
-                    <Label htmlFor="paciente" className="text-sm">
-                      Paciente
-                    </Label>
+                    <Label htmlFor="paciente" className="text-sm">Paciente</Label>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <RadioGroupItem value={DOCTOR} id="doctor"className="border border-black data-[state=checked]:border-2 data-[state=checked]:border-emerald-600"
+                    <RadioGroupItem
+                      value={DOCTOR}
+                      id="doctor"
+                      className="border border-black data-[state=checked]:border-2 data-[state=checked]:border-emerald-600"
                     />
-                    <Label htmlFor="doctor" className="text-sm">
-                      Doctor
-                    </Label>
+                    <Label htmlFor="doctor" className="text-sm">Doctor</Label>
                   </div>
                 </RadioGroup>
               </FormControl>
@@ -162,6 +163,7 @@ export function SignUpForm() {
           )}
         />
 
+        {/* Términos */}
         <FormField
           control={formulario.control}
           name="terminos"
@@ -172,19 +174,17 @@ export function SignUpForm() {
                   checked={field.value}
                   onCheckedChange={field.onChange}
                   className="border border-black"
-
                 />
               </FormControl>
               <div className="space-y-1 leading-none">
-                <FormLabel className="text-sm">
-                  Acepto los términos y condiciones
-                </FormLabel>
+                <FormLabel className="text-sm">Acepto los términos y condiciones</FormLabel>
               </div>
               <FormMessage />
             </FormItem>
           )}
         />
 
+        {/* Botón */}
         <Button
           disabled={validando}
           type="submit"
@@ -193,12 +193,10 @@ export function SignUpForm() {
           {validando ? "Verificando..." : "Registrarse"}
         </Button>
 
+        {/* Link a login */}
         <div className="text-center text-sm">
           ¿Ya tienes una cuenta?{" "}
-          <a
-            href="/auth/sign-in"
-            className="text-emerald-600 hover:underline underline-offset-4"
-          >
+          <a href="/auth/sign-in" className="text-emerald-600 hover:underline underline-offset-4">
             Iniciar sesión
           </a>
         </div>

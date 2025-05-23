@@ -50,7 +50,7 @@ export function SignInForm() {
         {/* Contraseña */}
         <FormField
           control={formulario.control}
-          name="password"
+          name="pass"
           render={({ field }) => (
             <FormItem>
               <FormLabel className="text-sm font-semibold">Contraseña</FormLabel>
