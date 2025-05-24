@@ -2,9 +2,23 @@ import { Stethoscope } from "lucide-react";
 import { Button } from "../../components/ui/button";
 import ServiceCard from "../../funcionalidades/home/componentes/ServiceCard";
 import { useAut } from "../../funcionalidades/autenticacion/contexto";
+import { useEffect } from "react";
+import { DOCTOR, PACIENTE } from "../../funcionalidades/autenticacion/data";
+
 function HomePage() {
-  const { credenciales, cerrarSesion } = useAut();
-  console.log(credenciales);
+  const { credenciales, cerrarSesion, iniciarSesion } = useAut();
+
+  // Simulación de login como doctor (solo para pruebas)
+  useEffect(() => {
+    if (!credenciales.token) {
+      iniciarSesion({
+        token: "token-fake-doctor",
+        correo: "doctor@demo.com",
+        tipoUsuario: "PACIENTE",
+        cuentaVerificada: true,
+      });
+    }
+  }, []);
 
   return (
     <>
@@ -53,13 +67,28 @@ function HomePage() {
           </ul>
           <div className="flex items-center space-x-4">
             {credenciales.token ? (
-              <Button
-                variant="outline"
-                className="text-[#16a34a] border-[#16a34a] hover:bg-green-100"
-                onClick={cerrarSesion}
-              >
-                Cerrar sesión
-              </Button>
+              <>
+                <Button
+                  variant="outline"
+                  className="text-[#16a34a] border-[#16a34a] hover:bg-green-100"
+                  onClick={cerrarSesion}
+                >
+                  Cerrar sesión
+                </Button>
+                <Button
+                  className="bg-[#16a34a] text-white hover:bg-green-700"
+                  // Redirige según el tipo de usuario
+                  onClick={() => {
+                    if (credenciales.tipoUsuario === DOCTOR) {
+                      window.location.href = "/doctor/dashboard/home";
+                    } else if (credenciales.tipoUsuario === PACIENTE) {
+                      window.location.href = "/paciente/dashboard/home";
+                    }
+                  }}
+                >
+                  Ir al Dashboard
+                </Button>
+              </>
             ) : (
               <>
                 <Button
