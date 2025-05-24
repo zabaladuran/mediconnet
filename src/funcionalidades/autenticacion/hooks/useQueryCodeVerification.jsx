@@ -1,4 +1,7 @@
-import { enviarCorreoDeVerificacion } from "../servicios/";
+import {
+  enviarCorreoDeVerificacion,
+  validarCodigoDeAutenticacion,
+} from "../servicios/";
 import { toast } from "sonner";
 import { useAut } from "./useAut";
 import { useState } from "react";
@@ -11,6 +14,8 @@ export function useQueryCodeVerification() {
 
   // HOOKS
   const { credenciales } = useAut();
+  const [usuarioFueAut, definirUsuarioFueAut] = useState(false);
+  const [exitoValidacion, definirExitoValidacion] = useState();
 
   // METHODS
   function superoEnviosMaximos() {
@@ -38,15 +43,16 @@ export function useQueryCodeVerification() {
       // FEEBACK DE LA TRANSACCION
       response.exito ? toast.success(response.sms) : toast.error(response.sms);
     } catch (e) {
+      // FEEDBACK
       console.error("useQueryCode", e);
       toast.error("Lo sentimos, no se puedo enviar el codigo de verificacion");
     }
   }
-  async function validarCodigoDeAutenticacion({ code }) {
+  async function validarCodigo({ codigo }) {
     try {
       // VALIDACION DE CONNECION
-      if (!code || typeof code != "string") {
-        throw Error("No se envio parametro code");
+      if (!codigo || typeof codigo != "string") {
+        throw Error("No se envio parametro 'codigo'");
       }
       if (superoIntentosMaximos())
         return toast.error("Superaste el numero maximo de intentos permitidos");
@@ -54,18 +60,30 @@ export function useQueryCodeVerification() {
       // CONEXION CON EL BACKEND
       const response = await validarCodigoDeAutenticacion({
         token: credenciales.token,
-        codigo: code,
+        codigo: codigo,
       });
 
       // FEEBACK DE LA TRANSACCION
-      response.exito ? toast.success(response.sms) : toast.error(response.sms);
-
+      if (response.exito) {
+        toast.success(response.sms);
+        definirUsuarioFueAut(true);
+        definirExitoValidacion(true);
+      } else {
+        toast.error(response.sms);
+        definirExitoValidacion(false);
+      }
       return response;
     } catch (e) {
+      // FEEDBACK
       console.error("useQueryCode", e);
       toast.error("Lo sentimos, no se puedo validar el codigo de verificacion");
     }
   }
 
-  return { sendCode, validarCodigoDeAutenticacion };
+  return {
+    sendCode,
+    validarCodigo,
+    usuarioFueAut,
+    exitoValidacion,
+  };
 }

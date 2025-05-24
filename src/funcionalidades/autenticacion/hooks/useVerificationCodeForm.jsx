@@ -7,7 +7,7 @@ import { useState } from "react";
 import { useAut } from "./useAut";
 import { PACIENTE, DOCTOR } from "../data";
 import { useQueryCodeVerification } from "../hooks";
-export function useVerificationCodeForm() {
+export function useVerificationCodeForm({ validarCodigoQuery }) {
   const { validarCodigoDeAutenticacion } = useQueryCodeVerification();
   const [validando, definirValidando] = useState(false);
   const { credenciales, autenticarUsuario } = useAut();
@@ -23,9 +23,10 @@ export function useVerificationCodeForm() {
       const { code } = data;
 
       // VERIFICACION DEL CODIGO (BACKEND)
-      console.log(code);
-      const response = validarCodigoDeAutenticacion({ code: code });
-      if (response.exito) autenticarUsuario();
+      const response = validarCodigoQuery({ codigo: code });
+      if (response.exito) {
+        autenticarUsuario();
+      }
 
       const { tipoUsuario, cuentaVerificada } = credenciales;
       // REDIRECCION CONDICIONAL
@@ -34,7 +35,10 @@ export function useVerificationCodeForm() {
       if (tipoUsuario == DOCTOR && cuentaVerificada)
         return navigate("/doctor/dashboard/home", { replace: true });
     } catch (e) {
-      toast.error("Error al verificar el código");
+      // FEEDBACK
+      toast.error(
+        "Lo sentimos, nuestros servicios internos estan presentando fallas"
+      );
       console.error(e);
     } finally {
       definirValidando(false);

@@ -14,21 +14,25 @@ import {
 } from "../../../../components/ui/input-otp";
 import { Button } from "../../../../components/ui/button";
 import { useVerificationCodeForm } from "../../hooks";
-export function EmailVerificationForm() {
-  const { validando, formulario, verificarCodigo } = useVerificationCodeForm();
+export function EmailVerificationForm({ validarCodigoQuery }) {
+  const { validando, formulario, verificarCodigo } = useVerificationCodeForm({
+    validarCodigoQuery: validarCodigoQuery,
+  });
 
   return (
     <Form {...formulario}>
       <form
         onSubmit={formulario.handleSubmit(verificarCodigo)}
-        className="w-2/3 space-y-6"
+        className="w-2/3 space-y-6 flex flex-col justify-center"
       >
         <FormField
           control={formulario.control}
           name="code"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Codigo de Verificacion:</FormLabel>
+              <FormLabel>
+                Ingresa tu codigo de verificacion de correo electronico:
+              </FormLabel>
               <FormControl>
                 <InputOTP maxLength={6} {...field}>
                   <InputOTPGroup>
@@ -42,7 +46,7 @@ export function EmailVerificationForm() {
                 </InputOTP>
               </FormControl>
               <FormDescription>
-                Please enter the one-time password sent to your phone.
+                Un email de verificacion fue enviado a tu correo
               </FormDescription>
               <FormMessage />
             </FormItem>

@@ -5,7 +5,12 @@ const API_URL = "https://api-mediconnet.onrender.com";
 // ===========================
 
 // Registro de usuarios
-export async function signUpUsuario({ email, pass, nombreCompleto, tipoUsuario }) {
+export async function signUpUsuario({
+  email,
+  pass,
+  nombreCompleto,
+  tipoUsuario,
+}) {
   if (!email || !pass || !nombreCompleto || !tipoUsuario) {
     throw Error("Campos inválidos");
   }
@@ -64,7 +69,12 @@ export async function validarCodigoDeAutenticacion({ token, codigo }) {
 
 // Inicio de sesión
 export async function signInUsuario({ email, pass }) {
-  if (!email || !pass || typeof email !== "string" || typeof pass !== "string") {
+  if (
+    !email ||
+    !pass ||
+    typeof email !== "string" ||
+    typeof pass !== "string"
+  ) {
     throw Error("Campos inválidos");
   }
 
@@ -92,7 +102,6 @@ export async function obtenerTipoUsuario({ token }) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ token }),
   });
-
   if (!res.ok) throw Error("Error al obtener tipo de usuario");
 
   const data = await res.json();
