@@ -1,3 +1,4 @@
+import { pipePropsAgendarCita } from "../zod";
 export async function obtenerProximasCitas({ token }) {
   if (!token || typeof token != "string") throw Error("Ops, ocurrio un error.");
   try {
@@ -79,6 +80,8 @@ export async function obtenerCitasDisponibles({
   fechaSugeridad,
 }) {
   if (!token || typeof token != "string") throw Error("Ops, ocurrio un error.");
+  if (!token || typeof token != "string") throw Error("Ops, ocurrio un error.");
+  if (!token || typeof token != "string") throw Error("Ops, ocurrio un error.");
   try {
     return {
       exito: true,
@@ -93,14 +96,30 @@ export async function obtenerCitasDisponibles({
   }
 }
 
-export async function agendarCita({ idCita, token, observaciones }) {
-  if (!token || typeof token != "string") throw Error("Ops, ocurrio un error.");
+export async function agendarCita({ cita }) {
   try {
+    // DATA PIPE LINE VERIFIER AND INPUT DATA
+    const pipeResponse = pipePropsAgendarCita({ cita: cita });
+    if (!pipeResponse.valido) {
+      throw Error(
+        `Parametros invalidos en cita-paciente-servicios: ${pipeResponse.sms}`
+      );
+    }
+
+    // FETCH TO BACKEND
+    const { idCita, ubicacionPaciente, token, observaciones } =
+      pipeResponse.cita;
+
+    // FEEDBACK
     return {
       exito: true,
-      sms: "cita creada",
+      sms: "Cita creada",
     };
-  } catch {
-    throw Error("Ops, error durante registro");
+  } catch (e) {
+    // ERROR FEEDBACK
+    return {
+      exito: false,
+      sms: e.message,
+    };
   }
 }

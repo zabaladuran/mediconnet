@@ -29,3 +29,38 @@ export const EsquemaAgendarCita = z.object({
     })
     .optional(),
 });
+
+const EsquemaAgendarCitaServicioProps = z.object({
+  idCita: z.int({
+    required_error: "El parametro 'idCita' no se envio",
+    invalid_type_error: "El servicio debe ser una cadena de texto",
+  }),
+  token: z
+    .string({
+      invalid_type_error: "El parametro 'token' no se envio",
+    })
+    .min(1, "El parametro 'token' no tiene la longitud minima esperada"),
+  observaciones: z
+    .string({
+      invalid_type_error: "Las observaciones deben ser una cadena de texto",
+    })
+    .optional()
+    .default("No se especifan."),
+  ubicacionPaciente: z
+    .string({
+      invalid_type_error: "El parametro 'ubicacionPaciente' no se envio",
+    })
+    .min(
+      1,
+      "El parametro 'ubicacionPaciente' no tiene la longitud minima esperada"
+    ),
+});
+
+export function pipePropsAgendarCita({ cita }) {
+  try {
+    const result = EsquemaAgendarCitaServicioProps.parse(cita);
+    return { valido: true, cita: result };
+  } catch (error) {
+    return { valido: false, sms: error.errors };
+  }
+}

@@ -28,6 +28,6 @@ export function validarPerfilPaciente(perfil) {
     EsquemaPerfilPaciente.parse(perfil);
     return { valido: true };
   } catch (error) {
-    return { valido: true, sms: error.errors };
+    return { valido: false, sms: error.errors };
   }
 }
