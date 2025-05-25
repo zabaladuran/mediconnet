@@ -23,7 +23,7 @@ export function useVerificationCodeForm({ validarCodigoQuery }) {
       const { code } = data;
 
       // VERIFICACION DEL CODIGO (BACKEND)
-      const response = validarCodigoQuery({ codigo: code });
+      const response = await validarCodigoQuery({ codigo: code });
       if (response.exito) {
         autenticarUsuario();
       }

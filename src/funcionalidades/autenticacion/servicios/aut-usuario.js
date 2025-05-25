@@ -48,37 +48,52 @@ export async function signUpUsuario({
 
 // Enviar código de verificación
 export async function enviarCorreoDeVerificacion({ token }) {
-  const res = await fetch(`${API_URL}/Api/Registro/Enviar-codigo`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ token }),
-  });
+  try {
+    const res = await fetch(`${API_URL}/Api/Registro/Enviar-codigo`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ token }),
+    });
 
-  if (!res.ok) throw Error("Error al enviar el código");
+    const data = await res.json();
 
-  const data = await res.json();
-  return {
-    exito: true,
-    tokenCodigo: data.tokenCodigo,
-    sms: data.mensaje,
-  };
+    if (!res.ok || data.error || data.message) {
+      return { exito: false, sms: data.error || data.message };
+    }
+
+    return {
+      exito: true,
+      tokenCodigo: data.tokenCodigo,
+      sms: data.mensaje,
+    };
+  } catch (e) {
+    return { exito: false, sms: "Error inesperado al enviar el código" };
+  }
 }
 
 // Confirmar código
 export async function validarCodigoDeAutenticacion({ token, codigo }) {
-  const res = await fetch(`${API_URL}/Api/Registro/Confirmar-codigo`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ tokenCodigo: token, codigo }),
-  });
+  try {
+    const res = await fetch(`${API_URL}/Api/Registro/Confirmar-codigo`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ tokenCodigo: token, codigo }),
+    });
 
-  if (!res.ok) throw Error("Código incorrecto");
+    const data = await res.json();
 
-  return { exito: true, sms: "Código fue autenticado" };
+    if (!res.ok || data.error || data.message) {
+      return { exito: false, sms: data.error || data.message };
+    }
+
+    return { exito: true, sms: "Código fue autenticado" };
+  } catch (e) {
+    return { exito: false, sms: "Error inesperado al validar código" };
+  }
 }
-
 // Inicio de sesión
 export async function signInUsuario({ email, pass }) {
+  // VALIDACION DE ENTRADAS
   if (
     !email ||
     !pass ||
@@ -88,15 +103,24 @@ export async function signInUsuario({ email, pass }) {
     throw Error("Campos inválidos");
   }
 
+  // PETICION AL BACKEND
   const res = await fetch(`${API_URL}/Api/Login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, pass }),
   });
 
-  if (!res.ok) throw Error("Error al iniciar sesión");
-
   const data = await res.json();
+
+  // RESPUESTA CON ERROR DEL BACKEND
+  if (!res.ok || data.error || data.message) {
+    return {
+      exito: false,
+      sms: data.error || data.message || "Error desconocido",
+    };
+  }
+
+  // RESPUESTA EXITOSA
   return {
     exito: true,
     token: data.token,
@@ -107,19 +131,28 @@ export async function signInUsuario({ email, pass }) {
 
 // Obtener tipo de usuario
 export async function obtenerTipoUsuario({ token }) {
-  const res = await fetch(`${API_URL}/Api/Tipo-user`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ token }),
-  });
-  if (!res.ok) throw Error("Error al obtener tipo de usuario");
+  try {
+    const res = await fetch(`${API_URL}/Api/Tipo-user`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ token }),
+    });
 
-  const data = await res.json();
-  return {
-    exito: true,
-    tipoUsuario: data.tipo,
-  };
+    const data = await res.json();
+
+    if (!res.ok || data.error || data.message) {
+      return { exito: false, sms: data.error || data.message };
+    }
+
+    return {
+      exito: true,
+      tipoUsuario: data.tipo,
+    };
+  } catch (e) {
+    return { exito: false, sms: "Error inesperado al obtener tipo de usuario" };
+  }
 }
+
 
 // ===========================
 // FUNCIONES ORIGINALES QUE AÚN NO TIENEN ENDPOINT REAL

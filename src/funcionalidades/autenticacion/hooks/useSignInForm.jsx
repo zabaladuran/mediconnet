@@ -5,7 +5,7 @@ import { CLAVE_CORREO_USUARIO, DOCTOR, PACIENTE } from "../data";
 import { signInSchema } from "../zod";
 import { useAut } from "../hooks";
 import { toast } from "sonner";
-import { obtenerTipoUsuario, signInUsuario } from "../servicios/";
+import { signInUsuario } from "../servicios/";
 import { useNavigate } from "react-router";
 import { useState } from "react";
 
@@ -13,11 +13,12 @@ export function useSignInForm() {
   const { iniciarSesion } = useAut();
   const [validando, definirValidando] = useState(false);
   const navigate = useNavigate();
+
   const form = useForm({
     resolver: zodResolver(signInSchema),
     defaultValues: {
       email: obtenerDeLocalStorage({ clave: CLAVE_CORREO_USUARIO }) || "",
-      pass: "", // contraseña vacía por defecto
+      pass: "", // contraseña vacia por defecto
     },
   });
 
@@ -28,12 +29,10 @@ export function useSignInForm() {
       const { email, pass } = data;
 
       // SIGNIN REQUEST
-      const signInResponse = await signInUsuario({
-        email: email,
-        pass: pass,
-      });
+      const signInResponse = await signInUsuario({ email, pass });
+
       if (!signInResponse.exito) {
-        return toast.error("Crendenciales invalidas");
+        return toast.error(signInResponse.sms); // mensaje dinámico del backend
       }
 
       // SIGN IN (LOCAL CREDENTIALS)
@@ -47,16 +46,22 @@ export function useSignInForm() {
       // REDIRECCION CONDICIONAL
       if (!signInResponse.cuentaVerificada)
         return navigate("/verification/email", { replace: true });
-      if (signInResponse.tipoUsuario == PACIENTE)
+      if (signInResponse.tipoUsuario === PACIENTE)
         return navigate("/paciente/dashboard/home", { replace: true });
-      if (signInResponse.tipoUsuario == DOCTOR)
+      if (signInResponse.tipoUsuario === DOCTOR)
         return navigate("/doctor/dashboard/home", { replace: true });
+
     } catch (e) {
-      toast.error("Error durante el envio de datos...");
-      console.error(e);
+      toast.error("Error durante el envío de datos.");
+      console.error("Error en signIn:", e);
     } finally {
       definirValidando(false);
     }
   }
-  return { validando: validando, formulario: form, enviarData: enviarData };
+
+  return {
+    validando,
+    formulario: form,
+    enviarData,
+  };
 }
