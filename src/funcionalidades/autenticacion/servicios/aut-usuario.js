@@ -11,10 +11,14 @@ export async function signUpUsuario({
   nombreCompleto,
   tipoUsuario,
 }) {
+  // INPUT VALIDATION
   if (!email || !pass || !nombreCompleto || !tipoUsuario) {
-    throw Error("Campos inválidos");
+    throw Error(
+      "No fueron dados los parametros minimos necesarios en signUpUsuario"
+    );
   }
 
+  // BACKEND REQUEST
   const res = await fetch(`${API_URL}/Api/Registro`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -25,15 +29,21 @@ export async function signUpUsuario({
       tipo: tipoUsuario,
     }),
   });
-
-  if (!res.ok) throw Error("Error al registrar");
-
   const data = await res.json();
-  return {
-    exito: true,
-    token: data.token,
-    verificado: false, // aún no se ha verificado
-  };
+
+  // FEEBACK
+  if (data.error) {
+    return {
+      exito: false,
+      sms: data.error,
+    };
+  } else {
+    return {
+      exito: true,
+      token: data.token,
+      verificado: false,
+    };
+  }
 }
 
 // Enviar código de verificación

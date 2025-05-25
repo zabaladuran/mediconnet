@@ -28,26 +28,26 @@ export function useSignUpForm() {
       const { nombreCompleto, email, password, tipoUsuario } = data;
 
       // SIGNUP Y OBTENCION DE CREDENCIALES (BACKEND)
-      let {
-        exito: exitoSignUp,
-        token,
-        verificado: cuentaVerificada,
-      } = await signUpUsuario({
+      const signUpResponse = await signUpUsuario({
         email: email,
         pass: password,
         nombreCompleto: nombreCompleto,
         tipoUsuario: tipoUsuario,
       });
-      if (!exitoSignUp) return toast.error("Crendenciales invalidas");
+      if (!signUpResponse.exito) {
+        return toast.error(signUpResponse.sms);
+      }
+
+      // LOADING LOCAL CREDENTIALS
       iniciarSesion({
         correo: email,
-        token: token,
+        token: signUpResponse.token,
         tipoUsuario: tipoUsuario,
-        cuentaVerificada: cuentaVerificada,
+        cuentaVerificada: signUpResponse.verificado,
       });
 
       // REDIRECCION CONDICIONAL
-      if (!cuentaVerificada)
+      if (!signUpResponse.verificado)
         return navigate("/verification/email", { replace: true });
       if (tipoUsuario == PACIENTE)
         return navigate("/paciente/dashboard/home", { replace: true });
