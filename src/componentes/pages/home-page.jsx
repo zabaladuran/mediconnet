@@ -2,23 +2,12 @@ import { Stethoscope } from "lucide-react";
 import { Button } from "../../components/ui/button";
 import ServiceCard from "../../funcionalidades/home/componentes/ServiceCard";
 import { useAut } from "../../funcionalidades/autenticacion/contexto";
-import { useEffect } from "react";
 import { DOCTOR, PACIENTE } from "../../funcionalidades/autenticacion/data";
+import { useNavigate } from "react-router";
 
 function HomePage() {
-  const { credenciales, cerrarSesion, iniciarSesion } = useAut();
-
-  // Simulación de login como doctor (solo para pruebas)
-  useEffect(() => {
-    if (!credenciales.token) {
-      iniciarSesion({
-        token: "token-fake-doctor",
-        correo: "doctor@demo.com",
-        tipoUsuario: "PACIENTE",
-        cuentaVerificada: true,
-      });
-    }
-  }, []);
+  const { credenciales, cerrarSesion } = useAut();
+  const navigate = useNavigate(); // <-- Agrega esto
 
   return (
     <>
@@ -77,12 +66,11 @@ function HomePage() {
                 </Button>
                 <Button
                   className="bg-[#16a34a] text-white hover:bg-green-700"
-                  // Redirige según el tipo de usuario
                   onClick={() => {
                     if (credenciales.tipoUsuario === DOCTOR) {
-                      window.location.href = "/doctor/dashboard/home";
+                      navigate("/doctor/dashboard/home");
                     } else if (credenciales.tipoUsuario === PACIENTE) {
-                      window.location.href = "/paciente/dashboard/home";
+                      navigate("/paciente/dashboard/home");
                     }
                   }}
                 >

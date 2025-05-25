@@ -13,7 +13,10 @@ const BarraNav = () => {
           <TabsList className="flex items-center justify-between px-6 py-4 w-full bg-white">
             {/* Logo y título */}
             <div className="flex items-center space-x-4">
-              <a className="text-xl font-bold text-green-600 hover:underline">
+              <a
+                className="text-xl font-bold text-green-600 hover:underline "
+                href="/home"
+              >
                 Mediconnet
               </a>
             </div>
