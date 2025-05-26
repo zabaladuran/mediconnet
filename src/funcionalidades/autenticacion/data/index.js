@@ -1,9 +1,11 @@
 import {
   CLAVE_CORREO_USUARIO,
   CLAVE_TOKEN_AUTENTICACION_USUARIO,
+  CLAVE_TOKEN_PARA_VERIFICACION_CODIGO,
 } from "./variables-de-autenticacion";
 import { PACIENTE, DOCTOR } from "./nomenclatura-usuarios";
 export {
+  CLAVE_TOKEN_PARA_VERIFICACION_CODIGO,
   CLAVE_CORREO_USUARIO,
   PACIENTE,
   DOCTOR,

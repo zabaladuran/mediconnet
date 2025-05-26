@@ -5,7 +5,11 @@ import {
 import { toast } from "sonner";
 import { useAut } from "./useAut";
 import { useState } from "react";
-
+import { CLAVE_TOKEN_PARA_VERIFICACION_CODIGO } from "../data";
+import {
+  guardarEnLocalStorage,
+  obtenerDeLocalStorage,
+} from "../../../servicios/local-storage-controlardor";
 // FALTA MANEJO DE CARGA (VALIDANDO)
 export function useQueryCodeVerification() {
   // RETRY SETTINGS
@@ -18,6 +22,18 @@ export function useQueryCodeVerification() {
   const [exitoValidacion, definirExitoValidacion] = useState();
 
   // METHODS
+  function guardarTokenCodigoVerificacion({ token }) {
+    guardarEnLocalStorage({
+      clave: CLAVE_TOKEN_PARA_VERIFICACION_CODIGO,
+      data: token,
+    });
+  }
+  function leerTokenCodigoVerificacion() {
+    const token = obtenerDeLocalStorage({
+      clave: CLAVE_TOKEN_PARA_VERIFICACION_CODIGO,
+    });
+    return token;
+  }
   function superoEnviosMaximos() {
     return false;
   }
@@ -41,12 +57,12 @@ export function useQueryCodeVerification() {
         token: credenciales.token,
       });
 
-      // FEEBACK DE LA TRANSACCION
-      if (!response.exito) {
-        toast.error(response.sms);
-      } else {
-        toast.success(response.sms);
+      // SAVING TOKEN FOR CODE VERIFICATION
+      if (response.exito) {
+        guardarTokenCodigoVerificacion({ token: response.tokenCodigo });
+        toast.success("Tu codigo de verificacion fue enviado");
       }
+      return response;
     } catch (e) {
       // FEEDBACK
       console.error("useQueryCode", e);
@@ -63,13 +79,15 @@ export function useQueryCodeVerification() {
       if (superoIntentosMaximos()) {
         return toast.error("Superaste el número máximo de intentos permitidos");
       }
-  
+
+      // DATA INPUT
+      const tokenCodigoAut = leerTokenCodigoVerificacion();
       // CONEXION CON EL BACKEND
       const response = await validarCodigoDeAutenticacion({
-        token: credenciales.token,
+        token: tokenCodigoAut,
         codigo: codigo,
       });
-  
+
       // FEEBACK DE LA TRANSACCION
       if (response?.exito) {
         toast.success(response.sms);
@@ -79,7 +97,7 @@ export function useQueryCodeVerification() {
         toast.error(response?.sms || "Código incorrecto");
         definirExitoValidacion(false);
       }
-  
+
       return response;
     } catch (e) {
       // FEEDBACK
@@ -88,7 +106,6 @@ export function useQueryCodeVerification() {
       return { exito: false, sms: "Error inesperado al validar código" }; // <- Agregado para coherencia
     }
   }
-  
 
   return {
     sendCode,

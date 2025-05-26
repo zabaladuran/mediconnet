@@ -25,6 +25,12 @@ export function useVerificationCodeForm({ validarCodigoQuery }) {
       // VERIFICACION DEL CODIGO (BACKEND)
       const response = await validarCodigoQuery({ codigo: code });
       if (response.exito) {
+        toast.success(response.sms);
+        autenticarUsuario();
+      } else {
+        toast.error(response.sms);
+      }
+      if (response.exito) {
         autenticarUsuario();
       }
 
@@ -35,7 +41,6 @@ export function useVerificationCodeForm({ validarCodigoQuery }) {
       if (tipoUsuario == DOCTOR && cuentaVerificada)
         return navigate("/doctor/dashboard/home", { replace: true });
     } catch (e) {
-      // FEEDBACK
       toast.error(
         "Lo sentimos, nuestros servicios internos estan presentando fallas"
       );

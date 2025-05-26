@@ -87,7 +87,9 @@ export const ProveedorUsuario = ({ children }) => {
       const { exito: exitoAutenticidad, autentico } =
         await validarAutenticidadToken({ token: token });
       if (!exitoAutenticidad)
-        return toast.error("Estamos experimentando unos errores.");
+        return toast.error(
+          "Estamos experimentando unos errores durante la carga de tus credenciales."
+        );
       if (!autentico) return toast.error("Estas intentando hackearnos?");
       const { exito: exitoTipoUsuario, tipoUsuario } = await obtenerTipoUsuario(
         {
@@ -99,7 +101,9 @@ export const ProveedorUsuario = ({ children }) => {
           token,
         });
       if (!exitoTipoUsuario || !exitoVerificacion)
-        return toast.error("Estamos experimentando unos errores.");
+        return toast.error(
+          "Estamos experimentando unos errores durante la carga de tus credenciales"
+        );
 
       // INICIAR SESION
       definirCredenciales({

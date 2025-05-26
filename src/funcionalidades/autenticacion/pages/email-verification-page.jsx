@@ -1,10 +1,14 @@
 import { EmailVerificationForm } from "../componentes";
 import { useQueryCodeVerification } from "../hooks";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
+import { XCircle, CheckCircle } from "lucide-react";
 export default function EmailVerificationPage() {
-  const { sendCode, validarCodigo, usuarioFueAut } = useQueryCodeVerification();
+  const { sendCode, validarCodigo, usuarioFueAut, exitoValidacion } =
+    useQueryCodeVerification();
+  const codigoFueEnviado = useRef(false);
   useEffect(() => {
-    sendCode();
+    !codigoFueEnviado.current && sendCode();
+    codigoFueEnviado.current = true;
   }, []);
 
   return (
@@ -20,27 +24,6 @@ export default function EmailVerificationPage() {
         >
           Reenviar código
         </p>
-
-        {usuarioFueAut && (
-          <div className="mt-6 flex items-center justify-center text-green-600">
-            <CheckCircle className="w-6 h-6 mr-2" />
-            <span className="text-base font-medium">Correo verificado</span>
-          </div>
-        )}
-
-        {usuarioFueAut && exito === "success" && (
-          <div className="mt-4 text-green-600 flex justify-center items-center gap-2">
-            <CheckCircle size={20} />
-            <span>Correo verificado</span>
-          </div>
-        )}
-
-        {usuarioFueAut && exito === "error" && (
-          <div className="mt-4 text-red-600 flex justify-center items-center gap-2">
-            <XCircle size={20} />
-            <span>Código incorrecto</span>
-          </div>
-        )}
       </div>
     </div>
   );
