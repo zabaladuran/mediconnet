@@ -36,14 +36,32 @@ export function SignUpInfo() {
               </li>
             ))}
           </ul>
-        </div>
-
-        <div className="mb-8">
-          <img
-            src="/placeholder.svg?height=300&width=400"
-            alt="Doctor usando smartphone"
-            className="rounded-lg object-cover w-full"
-          />
+          <br />
+          <br />
+          <br />
+          <div className="mb-8 flex flex-col items-center bg-emerald-50 rounded-lg p-6">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="40"
+              height="40"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              className="mb-4 text-emerald-600"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+            <blockquote className="italic text-center text-emerald-900">
+              “La salud es la mayor posesión. La alegría es el mayor tesoro. La
+              confianza es el mayor amigo.”
+            </blockquote>
+            <span className="mt-2 text-sm text-emerald-700">— Lao Tse</span>
+          </div>
         </div>
       </div>
     </div>

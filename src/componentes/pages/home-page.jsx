@@ -1,4 +1,11 @@
-import { Stethoscope } from "lucide-react";
+import { Globe, HeartHandshake, BadgeCheck } from "lucide-react";
+import {
+  Stethoscope,
+  Ambulance,
+  Baby,
+  FlaskConical,
+  HeartPulse,
+} from "lucide-react";
 import { Button } from "../../components/ui/button";
 import ServiceCard from "../../funcionalidades/home/componentes/ServiceCard";
 import { useAut } from "../../funcionalidades/autenticacion/contexto";
@@ -59,13 +66,13 @@ function HomePage() {
               <>
                 <Button
                   variant="outline"
-                  className="text-[#16a34a] border-[#16a34a] hover:bg-green-100"
+                  className="text-[#16a34a] border-[#16a34a] hover:bg-green-100 cursor-pointer"
                   onClick={cerrarSesion}
                 >
                   Cerrar sesión
                 </Button>
                 <Button
-                  className="bg-[#16a34a] text-white hover:bg-green-700"
+                  className="bg-[#16a34a] text-white hover:bg-green-700 cursor-pointer"
                   onClick={() => {
                     if (credenciales.tipoUsuario === DOCTOR) {
                       navigate("/doctor/dashboard/home");
@@ -81,12 +88,16 @@ function HomePage() {
               <>
                 <Button
                   variant="outline"
-                  className="text-[#16a34a] border-[#16a34a] hover:bg-green-100"
+                  className="text-[#16a34a] border-[#16a34a] hover:bg-green-100 cursor-pointer"
+                  onClick={() => (window.location.href = "/auth/sign-in")}
                 >
-                  <a href="/auth/sign-in">Iniciar Sesión</a>
+                  Iniciar Sesión
                 </Button>
-                <Button className="bg-[#16a34a] text-white hover:bg-green-700">
-                  <a href="/auth/sign-up">Registrarse</a>
+                <Button
+                  className="bg-[#16a34a] text-white hover:bg-green-700 cursor-pointer"
+                  onClick={() => (window.location.href = "/auth/sign-up")}
+                >
+                  Registrarse
                 </Button>
               </>
             )}
@@ -113,14 +124,18 @@ function HomePage() {
             Marta
           </p>
           <div className="mt-6 flex justify-center gap-4">
-            <Button className="bg-[#16a34a] text-white hover:bg-green-700">
-              <a href="/auth/sign-in">Solicitar Servicio</a>
+            <Button
+              className="bg-[#16a34a] text-white hover:bg-green-700 cursor-pointer"
+              onClick={() => (window.location.href = "/auth/sign-in")}
+            >
+              Solicitar Servicio
             </Button>
             <Button
               variant="outline"
-              className="text-[#16a34a] border-[#16a34a] hover:bg-green-100"
+              className="text-[#16a34a] border-[#16a34a] hover:bg-green-100 cursor-pointer"
+              onClick={() => (window.location.href = "#nosotros")}
             >
-              <a href="#nosotros">Conoce más</a>
+              Conoce más
             </Button>
           </div>
         </div>
@@ -133,18 +148,28 @@ function HomePage() {
         </h2>
         <div className="container mx-auto grid grid-cols-1 md:grid-cols-4 gap-6">
           <ServiceCard
+            icon={
+              <Stethoscope className="text-[#16a34a] w-10 h-10 mb-2 mx-auto" />
+            }
             title="Atención Médica Domiciliaria"
             description="Consulta médica en la comodidad de tu hogar"
           />
           <ServiceCard
+            icon={
+              <Ambulance className="text-[#16a34a] w-10 h-10 mb-2 mx-auto" />
+            }
             title="Ambulancia Básica y Medicalizada"
             description="Traslados seguros y oportunos para emergencias"
           />
           <ServiceCard
+            icon={<Baby className="text-[#16a34a] w-10 h-10 mb-2 mx-auto" />}
             title="Pediatría a Domicilio"
             description="Atención especializada para niños en casa"
           />
           <ServiceCard
+            icon={
+              <FlaskConical className="text-[#16a34a] w-10 h-10 mb-2 mx-auto" />
+            }
             title="Exámenes de Laboratorio"
             description="Pruebas clínicas sin salir de tu hogar"
           />
@@ -176,8 +201,11 @@ function HomePage() {
               <li>Ambulancias con personal especializado</li>
               <li>Equipo médico altamente capacitado</li>
             </ul>
-            <Button className="bg-[#16a34a] text-white hover:bg-green-700">
-              <a href="#contacto">Contáctanos</a>
+            <Button
+              className="bg-[#16a34a] text-white hover:bg-green-700 cursor-pointer"
+              onClick={() => (window.location.href = "#contacto")}
+            >
+              Contáctanos
             </Button>
           </div>
         </div>
@@ -190,14 +218,21 @@ function HomePage() {
         </h2>
         <div className="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
           <ServiceCard
+            icon={<Globe className="text-[#16a34a] w-10 h-10 mb-2 mx-auto" />}
             title="Cobertura Nacional"
             description="Presencia en varias ciudades del país"
           />
           <ServiceCard
+            icon={
+              <HeartHandshake className="text-[#16a34a] w-10 h-10 mb-2 mx-auto" />
+            }
             title="Atención Humanizada"
             description="Nos enfocamos en el bienestar y dignidad del paciente"
           />
           <ServiceCard
+            icon={
+              <BadgeCheck className="text-[#16a34a] w-10 h-10 mb-2 mx-auto" />
+            }
             title="Experiencia Certificada"
             description="Más de 30 años cuidando la salud de los colombianos"
           />
@@ -205,7 +240,15 @@ function HomePage() {
       </div>
 
       {/* CTA */}
-      <div id="contacto" className="bg-green-50 py-16 text-center">
+      <div
+        id="contacto"
+        className="bg-green-50 py-16 text-center relative overflow-hidden"
+      >
+        {/* Fondo decorativo */}
+        <div className="absolute -top-10 -left-10 w-40 h-40 bg-emerald-100 rounded-full opacity-30 animate-pulse"></div>
+        <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-emerald-200 rounded-full opacity-20"></div>
+        {/* Icono central */}
+        <HeartPulse className="mx-auto mb-6 w-16 h-16 text-[#16a34a] animate-bounce" />
         <h2 className="text-3xl font-bold text-gray-800 mb-4">
           ¡Cuidamos tu salud estés donde estés!
         </h2>
@@ -213,16 +256,31 @@ function HomePage() {
           Comunícate con nosotros para recibir atención médica en casa, las 24
           horas.
         </p>
+        <ul className="flex flex-col md:flex-row justify-center gap-4 mb-6 text-[#16a34a] font-medium">
+          <li className="flex items-center gap-2">
+            <i className="fas fa-user-md"></i> Atención personalizada
+          </li>
+          <li className="flex items-center gap-2">
+            <i className="fas fa-clock"></i> Disponibilidad 24/7
+          </li>
+          <li className="flex items-center gap-2">
+            <i className="fas fa-shield-heart"></i> Confidencialidad y seguridad
+          </li>
+        </ul>
         <div className="flex justify-center gap-4">
-          <Button className="bg-[#16a34a] text-white hover:bg-green-700">
-            <a href="/auth/sign-up">Afíliate Ahora</a>
+          <Button
+            className="bg-[#16a34a] text-white hover:bg-green-700 cursor-pointer"
+            type="button"
+            onClick={() => (window.location.href = "/auth/sign-up")}
+          >
+            Afíliate Ahora
           </Button>
         </div>
       </div>
 
       {/* Footer */}
       <footer className="bg-white py-12">
-        <div className="container mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div className="container mx-auto grid grid-cols-1 md:grid-cols-4 gap-x-12 gap-y-8">
           {/* Logo y redes */}
           <div>
             <h3 className="text-[#16a34a] text-xl font-bold mb-4">
@@ -256,81 +314,99 @@ function HomePage() {
               <li>Línea ética</li>
             </ul>
           </div>
-          {/* Contacto */}
-          <div>
+          {/* Contacto horizontal */}
+          <div className="md:col-span-2">
             <h4 className="font-bold mb-4">Contacto</h4>
-            <div className="mb-4">
-              <span className="font-semibold text-[#16a34a]">Bucaramanga</span>
-              <div className="text-gray-700 text-sm">
-                Avenida González Valencia
-                <br />
-                Calle 53 No. 29-36
-                <br />
-                <strong>PBX:</strong> (607) 657 7171
-                <br />
-                <strong>Emergencias:</strong> (607) 657 7171 Opción 1
-                <br />
-                <strong>Cel:</strong> 316-4736949
-                <br />
-                <strong>Correo Judiciales:</strong> siau@amesalud.com
+            <div className="flex flex-col md:flex-row md:space-x-8 space-y-6 md:space-y-0">
+              {/* Bucaramanga */}
+              <div>
+                <span className="font-semibold text-[#16a34a] block mb-1">
+                  Bucaramanga
+                </span>
+                <div className="text-gray-700 text-sm">
+                  <span>Avenida González Valencia, Calle 53 No. 29-36</span>
+                  <br />
+                  <span>
+                    <strong>PBX:</strong> (607) 657 7171
+                  </span>
+                  <br />
+                  <span>
+                    <strong>Emergencias:</strong> (607) 657 7171 Opción 1
+                  </span>
+                  <br />
+                  <span>
+                    <strong>Cel:</strong> 316-4736949
+                  </span>
+                  <br />
+                  <span>
+                    <strong>Correo Judiciales:</strong> siau@amesalud.com
+                  </span>
+                </div>
+              </div>
+              {/* Santa Marta */}
+              <div>
+                <span className="font-semibold text-[#16a34a] block mb-1">
+                  Santa Marta
+                </span>
+                <div className="text-gray-700 text-sm">
+                  <span>Avenida del Libertador No. 16D – 21</span>
+                  <br />
+                  <span>
+                    <strong>PBX:</strong> (605) 4237201
+                  </span>
+                  <br />
+                  <span>
+                    <strong>Emergencias:</strong> PBX: (605) 4237201 Opción 1
+                  </span>
+                  <br />
+                  <span>
+                    <strong>Cel:</strong> 316-4736949
+                  </span>
+                  <br />
+                  <span>
+                    <strong>Correo Judiciales:</strong>{" "}
+                    siausantamarta@amesalud.com
+                  </span>
+                </div>
+              </div>
+              {/* Cúcuta */}
+              <div>
+                <span className="font-semibold text-[#16a34a] block mb-1">
+                  Cúcuta
+                </span>
+                <div className="text-gray-700 text-sm">
+                  <span>Avenida 5E No. 9 – 07, Urbanización Sayago</span>
+                  <br />
+                  <span>
+                    <strong>PBX:</strong> (607) 574 8942 Opción 1
+                  </span>
+                  <br />
+                  <span>
+                    <strong>Emergencias:</strong> (607) 574 8942
+                  </span>
+                  <br />
+                  <span>
+                    <strong>Cel:</strong> 316-4736949
+                  </span>
+                  <br />
+                  <span>
+                    <strong>Correo Judiciales:</strong> siaucucuta@amesalud.com
+                  </span>
+                </div>
               </div>
             </div>
-            <div className="mb-4">
-              <span className="font-semibold text-[#16a34a]">Santa Marta</span>
-              <div className="text-gray-700 text-sm">
-                Avenida del Libertador No. 16D – 21
-                <br />
-                <strong>PBX:</strong> (605) 4237201
-                <br />
-                <strong>Emergencias:</strong> PBX: (605) 4237201 Opción 1
-                <br />
-                <strong>Cel:</strong> 316-4736949
-                <br />
-                <strong>Correo Judiciales:</strong> siausantamarta@amesalud.com
-              </div>
-            </div>
-            <div>
-              <span className="font-semibold text-[#16a34a]">Cúcuta</span>
-              <div className="text-gray-700 text-sm">
-                Avenida 5E No. 9 – 07
-                <br />
-                Urbanización Sayago
-                <br />
-                <strong>PBX:</strong> (607) 574 8942 Opción 1
-                <br />
-                <strong>Emergencias:</strong> (607) 574 8942
-                <br />
-                <strong>Cel:</strong> 316-4736949
-                <br />
-                <strong>Correo Judiciales:</strong> siaucucuta@amesalud.com
-              </div>
-            </div>
-          </div>
-          {/* Boletín */}
-          <div>
-            <h4 className="font-bold mb-4">Boletín Informativo</h4>
-            <p className="mb-4 text-gray-700">
-              Suscríbete para recibir noticias y actualizaciones
-            </p>
-            <form className="flex">
-              <input
-                type="email"
-                placeholder="Tu correo electrónico"
-                className="border border-gray-300 rounded-l px-3 py-2 focus:outline-none"
-              />
-              <button
-                type="submit"
-                className="bg-[#16a34a] text-white px-4 py-2 rounded-r hover:bg-green-700"
-              >
-                Suscribir
-              </button>
-            </form>
           </div>
         </div>
         <div className="border-t mt-8 pt-6 text-center text-gray-500 text-sm">
           © 2024 Mediconnet. Todos los derechos reservados.
         </div>
       </footer>
+
+      {/* Font Awesome CDN */}
+      <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      />
     </>
   );
 }

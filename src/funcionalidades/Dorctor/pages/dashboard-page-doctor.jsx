@@ -14,12 +14,16 @@ import { Label } from "../../components/ui/label";
 import { useAut } from "../../funcionalidades/autenticacion/hooks";
 import BarraNav from "../../funcionalidades/paciente/componentes/barra-nav"; // Importa BarraNav
 
-return (
-  <div className="min-h-screen bg-white-100">
-    <div className="py-4 flex justify-between items-center w-full">
-      <BarraNav />
+function DashboardPageDoctor() {
+  return (
+    <div className="min-h-screen bg-white-100">
+      <div className="py-4 flex justify-between items-center w-full">
+        <BarraNav />
+      </div>
     </div>
-  </div>
-);
+  );
+}
 
-export default DashboardPage;
+export default DashboardPageDoctor;
+// Este es un componente de página de dashboard para doctores en una aplicación React.
+// Importa los componentes necesarios de la biblioteca de UI y los hooks personalizados.
