@@ -1,3 +1,4 @@
+import FormularioCitasPaciente from "./funcionalidades/paciente/servicios/formulario-citas-paciente";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router";
 import {
   SignInPage,
@@ -37,6 +38,7 @@ function App() {
             <Route path="/doctor/*" element={<PermitirUsuarioDoctor />}>
               <Route path="dashboard/home" element={<DashboardPage />} />
             </Route>
+            <Route path="/prueba-citas" element={<FormularioCitasPaciente />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
           <Toaster />

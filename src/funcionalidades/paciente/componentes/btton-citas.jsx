@@ -8,7 +8,12 @@ const BttonCitas = () => {
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Calendario de Citas</h1>
         <button className="bg-green-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-green-600">
-          + Agendar Nueva Cita
+          <a
+            href="/paciente/citas"
+            className="bg-green-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-green-600"
+          >
+            + Agendar Nueva Cita
+          </a>
         </button>
       </div>
 

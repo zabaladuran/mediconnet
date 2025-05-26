@@ -1,4 +1,4 @@
-import { useState } from "react";
+///import { useState } from "react";
 import { Mail, Lock, LogIn } from "lucide-react";
 import { Button } from "../../components/ui/button";
 import {
@@ -11,7 +11,7 @@ import {
 } from "../../components/ui/card";
 import { Input } from "../../components/ui/input";
 import { Label } from "../../components/ui/label";
-import { useAut } from "../../funcionalidades/autenticacion/hooks";
+///import { useAut } from "../../funcionalidades/autenticacion/hooks";
 import BarraNav from "../../funcionalidades/paciente/componentes/barra-nav"; // Importa BarraNav
 
 function DashboardPageDoctor() {
