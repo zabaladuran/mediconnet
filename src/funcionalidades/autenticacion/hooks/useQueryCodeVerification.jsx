@@ -10,6 +10,7 @@ import {
   guardarEnLocalStorage,
   obtenerDeLocalStorage,
 } from "../../../servicios/local-storage-controlardor";
+
 // FALTA MANEJO DE CARGA (VALIDANDO)
 export function useQueryCodeVerification() {
   // RETRY SETTINGS
@@ -28,23 +29,28 @@ export function useQueryCodeVerification() {
       data: token,
     });
   }
+
   function leerTokenCodigoVerificacion() {
     const token = obtenerDeLocalStorage({
       clave: CLAVE_TOKEN_PARA_VERIFICACION_CODIGO,
     });
     return token;
   }
+
   function superoEnviosMaximos() {
     return false;
   }
+
   function superoElIntervaloDeReenvio() {
     try {
       return true;
     } catch (e) {}
   }
+
   function superoIntentosMaximos() {
     return false;
   }
+
   async function sendCode() {
     try {
       // VALIDACION DE CONNECION
@@ -62,6 +68,7 @@ export function useQueryCodeVerification() {
         guardarTokenCodigoVerificacion({ token: response.tokenCodigo });
         toast.success("Tu codigo de verificacion fue enviado");
       }
+
       return response;
     } catch (e) {
       // FEEDBACK
@@ -82,9 +89,15 @@ export function useQueryCodeVerification() {
 
       // DATA INPUT
       const tokenCodigoAut = leerTokenCodigoVerificacion();
+
+      if (!tokenCodigoAut) {
+        return toast.error("Token de verificación no disponible.");
+      }
+
       // CONEXION CON EL BACKEND
       const response = await validarCodigoDeAutenticacion({
-        token: tokenCodigoAut,
+        token: credenciales.token,
+        tokenCodigo: tokenCodigoAut,
         codigo: codigo,
       });
 
@@ -103,7 +116,7 @@ export function useQueryCodeVerification() {
       // FEEDBACK
       console.error("useQueryCode", e);
       toast.error("Lo sentimos, no se pudo validar el código de verificación");
-      return { exito: false, sms: "Error inesperado al validar código" }; // <- Agregado para coherencia
+      return { exito: false, sms: "Error inesperado al validar código" };
     }
   }
 

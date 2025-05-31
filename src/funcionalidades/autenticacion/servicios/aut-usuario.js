@@ -11,14 +11,10 @@ export async function signUpUsuario({
   nombreCompleto,
   tipoUsuario,
 }) {
-  // INPUT VALIDATION
   if (!email || !pass || !nombreCompleto || !tipoUsuario) {
-    throw Error(
-      "No fueron dados los parametros minimos necesarios en signUpUsuario"
-    );
+    throw Error("No fueron dados los parametros minimos necesarios en signUpUsuario");
   }
 
-  // BACKEND REQUEST
   const res = await fetch(`${API_URL}/Api/Registro`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -29,9 +25,9 @@ export async function signUpUsuario({
       tipo: tipoUsuario,
     }),
   });
+
   const data = await res.json();
 
-  // FEEBACK
   if (data.error) {
     return {
       exito: false,
@@ -40,19 +36,22 @@ export async function signUpUsuario({
   } else {
     return {
       exito: true,
-      token: data.token,
+      token: data.token, 
       verificado: false,
     };
   }
 }
+
 
 // Enviar código de verificación
 export async function enviarCorreoDeVerificacion({ token }) {
   try {
     const res = await fetch(`${API_URL}/Api/Registro/Enviar-codigo`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ token }),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`, // CAMBIO IMPORTANTE: Usar el token de sesión
+      },
     });
 
     const data = await res.json();
@@ -63,7 +62,7 @@ export async function enviarCorreoDeVerificacion({ token }) {
 
     return {
       exito: true,
-      tokenCodigo: data.tokenCodigo,
+      tokenCodigo: data.tokenCodigo, 
       sms: data.mensaje,
     };
   } catch (e) {
@@ -71,13 +70,18 @@ export async function enviarCorreoDeVerificacion({ token }) {
   }
 }
 
+
 // Confirmar código
-export async function validarCodigoDeAutenticacion({ token, codigo }) {
+export async function validarCodigoDeAutenticacion({ token, tokenCodigo, codigo }) {
   try {
     const res = await fetch(`${API_URL}/Api/Registro/Confirmar-codigo`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ tokenCodigo: token, codigo }),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`, // token de sesión
+        TokenCodigo: tokenCodigo,         // token del código
+      },
+      body: JSON.stringify({ codigo }),
     });
 
     const data = await res.json();
@@ -91,6 +95,7 @@ export async function validarCodigoDeAutenticacion({ token, codigo }) {
     return { exito: false, sms: "Error inesperado al validar código" };
   }
 }
+
 // Inicio de sesión
 export async function signInUsuario({ email, pass }) {
   // VALIDACION DE ENTRADAS
@@ -134,14 +139,16 @@ export async function obtenerTipoUsuario({ token }) {
   try {
     const res = await fetch(`${API_URL}/Api/Tipo-user`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ token }),
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`, // AQUE SE USA EL TOKEN DE SESIÓN
+      },
     });
 
     const data = await res.json();
 
-    if (!res.ok || data.error || data.message) {
-      return { exito: false, sms: data.error || data.message };
+    if (!res.ok || data.error) {
+      return { exito: false, sms: data.error || data.mensaje || "Error desconocido" };
     }
 
     return {
@@ -152,6 +159,7 @@ export async function obtenerTipoUsuario({ token }) {
     return { exito: false, sms: "Error inesperado al obtener tipo de usuario" };
   }
 }
+
 
 
 // ===========================

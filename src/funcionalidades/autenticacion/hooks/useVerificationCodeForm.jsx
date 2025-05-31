@@ -7,6 +7,7 @@ import { useState } from "react";
 import { useAut } from "./useAut";
 import { PACIENTE, DOCTOR } from "../data";
 import { useQueryCodeVerification } from "../hooks";
+
 export function useVerificationCodeForm({ validarCodigoQuery }) {
   const { validarCodigoDeAutenticacion } = useQueryCodeVerification();
   const [validando, definirValidando] = useState(false);
@@ -30,9 +31,6 @@ export function useVerificationCodeForm({ validarCodigoQuery }) {
       } else {
         toast.error(response.sms);
       }
-      if (response.exito) {
-        autenticarUsuario();
-      }
 
       const { tipoUsuario, cuentaVerificada } = credenciales;
       // REDIRECCION CONDICIONAL
@@ -49,10 +47,10 @@ export function useVerificationCodeForm({ validarCodigoQuery }) {
       definirValidando(false);
     }
   }
+
   return {
-    validando: validando,
+    validando: form.formState.isSubmitting,
     formulario: form,
     verificarCodigo: verificarCodigo,
-    validando: form.formState.isSubmitting,
   };
 }
