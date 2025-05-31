@@ -1,5 +1,11 @@
 import React from "react";
-import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/card";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+  CardDescription,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
 const ButtonDashboard = () => {
@@ -31,7 +37,9 @@ const ButtonDashboard = () => {
         <Card>
           <CardHeader>
             <CardTitle>Próximas Citas</CardTitle>
-            <CardDescription>Tienes 3 citas programadas para esta semana.</CardDescription>
+            <CardDescription>
+              Tienes 3 citas programadas para esta semana.
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <ul className="space-y-4">
@@ -79,57 +87,7 @@ const ButtonDashboard = () => {
       </div>
 
       {/* Columna Derecha */}
-      <div className="col-span-12 lg:col-span-3 space-y-6">
-        {/* Control de Medicamentos */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Control de Medicamentos</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <ul className="space-y-4">
-              <li>
-                <span className="block font-semibold">Omeprazol</span>
-                <span className="text-sm text-gray-600">1 vez al día</span>
-              </li>
-              <li>
-                <span className="block font-semibold">Vitamina D</span>
-                <span className="text-sm text-gray-600">1 vez al día</span>
-              </li>
-            </ul>
-          </CardContent>
-        </Card>
-
-        {/* Métricas de Salud */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Métricas de Salud</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p>
-              Adherencia a Medicamentos:{" "}
-              <span className="font-bold text-green-600">92%</span>
-            </p>
-            <p>
-              Citas Completadas:{" "}
-              <span className="font-bold text-green-600">85%</span>
-            </p>
-          </CardContent>
-        </Card>
-
-        {/* Notificaciones */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Notificaciones</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <ul className="space-y-4">
-              <li>Recordatorio de Cita: Dr. Carlos Ruiz mañana a las 09:30</li>
-              <li>Resultados Disponibles: Tus resultados de laboratorio están listos</li>
-              <li>Recordatorio de Medicamento: Tomar Omeprazol a las 08:00</li>
-            </ul>
-          </CardContent>
-        </Card>
-      </div>
+      <div className="col-span-12 lg:col-span-3 space-y-6"></div>
     </div>
   );
 };

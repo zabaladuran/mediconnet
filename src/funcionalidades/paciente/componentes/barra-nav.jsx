@@ -4,8 +4,18 @@ import ButtonDashboard from "../componentes/btton-dashboard";
 import ButtonCitas from "../componentes/btton-citas";
 import ButtonHistorialMedico from "../componentes/btton-Historialmedico";
 import ButtonConfiguracion from "../componentes/btton-configuracion";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+} from "@/components/ui/dropdown-menu";
+import { LogOut } from "lucide-react";
+import { useAut } from "@/funcionalidades/autenticacion/hooks"; // <-- IMPORTANTE
 
 const BarraNav = () => {
+  const { cerrarSesion } = useAut(); // <-- OBTIENE LA FUNCIÓN DEL CONTEXTO
+
   return (
     <Tabs defaultValue="Dashboard" className="w-full">
       <header className="bg-gray-100 shadow-md w-full mb-3">
@@ -31,18 +41,33 @@ const BarraNav = () => {
               <TabsTrigger value="Configuracion">Configuración</TabsTrigger>
             </div>
 
-            {/* Perfil del usuario */}
-            <div className="flex items-center space-x-4 mb-3">
-              <img
-                src="https://i.pinimg.com/736x/29/3e/94/293e94cf6378d2af9ffa9295ef44dfb7.jpg"
-                alt="Perfil"
-                className="w-10 h-10 rounded-full"
-              />
-              <div>
-                <span className="block text-gray-600 font-medium">Frieren</span>
-                <span className="block text-sm text-gray-500">Admin</span>
-              </div>
-            </div>
+            {/* Perfil del usuario con Dropdown */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button className="flex items-center space-x-3 focus:outline-none">
+                  <img
+                    src="https://i.pinimg.com/736x/29/3e/94/293e94cf6378d2af9ffa9295ef44dfb7.jpg"
+                    alt="Perfil"
+                    className="w-10 h-10 rounded-full"
+                  />
+                  <div className="text-left hidden md:block">
+                    <span className="block text-gray-600 font-medium">
+                      Frieren
+                    </span>
+                    <span className="block text-sm text-gray-500">Admin</span>
+                  </div>
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-48">
+                <DropdownMenuItem
+                  onClick={cerrarSesion}
+                  className="flex items-center gap-2 text-red-600"
+                >
+                  <LogOut className="w-4 h-4" />
+                  Cerrar sesión
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </TabsList>
         </nav>
       </header>
