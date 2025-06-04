@@ -1,4 +1,3 @@
-import FormularioCitasPaciente from "./funcionalidades/paciente/servicios/formulario-citas-paciente";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router";
 import {
   SignInPage,
@@ -14,6 +13,7 @@ import {
 } from "./componentes/navegacion";
 import { ProveedoresApp } from "./contexto/";
 import { Toaster } from "./components/ui/sonner";
+import { GetMedicalAssistancePage } from "./funcionalidades/paciente/pages";
 function App() {
   return (
     <>
@@ -38,7 +38,10 @@ function App() {
             <Route path="/doctor/*" element={<PermitirUsuarioDoctor />}>
               <Route path="dashboard/home" element={<DashboardPage />} />
             </Route>
-            <Route path="/prueba-citas" element={<FormularioCitasPaciente />} />
+            <Route
+              path="/appointment/set"
+              element={<GetMedicalAssistancePage />}
+            />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
           <Toaster />
