@@ -7,6 +7,7 @@ import {
   CardDescription,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Calendar, UserCircle, Clock, FileText } from "lucide-react";
 
 const ButtonDashboard = () => {
   return (
@@ -22,10 +23,7 @@ const ButtonDashboard = () => {
               + Agendar Nueva Cita
             </Button>
             <Button className="w-full bg-gray-200 text-gray-700 hover:bg-gray-300 mb-4">
-              Ver Historial
-            </Button>
-            <Button className="w-full bg-gray-200 text-gray-700 hover:bg-gray-300">
-              Gestionar Medicamentos
+              Configuracion
             </Button>
           </CardContent>
         </Card>
@@ -35,53 +33,118 @@ const ButtonDashboard = () => {
       <div className="col-span-12 lg:col-span-6 space-y-6">
         {/* Próximas Citas */}
         <Card>
-          <CardHeader>
-            <CardTitle>Próximas Citas</CardTitle>
-            <CardDescription>
-              Tienes 3 citas programadas para esta semana.
-            </CardDescription>
+          <CardHeader className="flex flex-row items-center justify-between pb-2">
+            <div>
+              <CardTitle className="text-lg">Próximas Citas</CardTitle>
+              <CardDescription>
+                Tienes 3 citas programadas para esta semana.
+              </CardDescription>
+            </div>
+            <Button
+              variant="outline"
+              className="flex items-center gap-2 border-gray-300 text-gray-700 font-medium"
+            >
+              <Calendar className="w-4 h-4" />
+              Ver Calendario
+            </Button>
           </CardHeader>
-          <CardContent>
-            <ul className="space-y-4">
-              <li className="flex justify-between items-center">
-                <span>Dr. Carlos Ruiz - Cardiología</span>
-                <span>15 Nov 2023 - 09:30</span>
-              </li>
-              <li className="flex justify-between items-center">
-                <span>Dra. María López - Dermatología</span>
-                <span>17 Nov 2023 - 11:00</span>
-              </li>
-              <li className="flex justify-between items-center">
-                <span>Dr. Juan Pérez - Medicina General</span>
-                <span>20 Nov 2023 - 15:45</span>
-              </li>
-            </ul>
+          <CardContent className="space-y-3">
+            {/* Cita 1 */}
+            <div className="flex items-center bg-green-50 border border-gray-200 rounded-lg px-4 py-3">
+              <div className="bg-green-100 rounded-full p-2 mr-4">
+                <UserCircle className="w-7 h-7 text-green-600" />
+              </div>
+              <div className="flex-1">
+                <p className="font-bold text-gray-900">Dr. Carlos Ruiz</p>
+                <p className="text-sm text-gray-500">Cardiología</p>
+              </div>
+              <div className="flex flex-col items-end">
+                <div className="flex items-center gap-1 text-gray-700 font-medium">
+                  <Calendar className="w-4 h-4 mr-1" />
+                  15 Nov 2023
+                </div>
+                <span className="flex items-center text-xs text-gray-400 mt-1">
+                  <Clock className="w-3 h-3 mr-1" />
+                  09:30
+                </span>
+              </div>
+            </div>
+            {/* Cita 2 */}
+            <div className="flex items-center bg-white border border-gray-200 rounded-lg px-4 py-3">
+              <div className="bg-green-100 rounded-full p-2 mr-4">
+                <UserCircle className="w-7 h-7 text-green-600" />
+              </div>
+              <div className="flex-1">
+                <p className="font-bold text-gray-900">Dra. María López</p>
+                <p className="text-sm text-gray-500">Dermatología</p>
+              </div>
+              <div className="flex flex-col items-end">
+                <div className="flex items-center gap-1 text-gray-700 font-medium">
+                  <Calendar className="w-4 h-4 mr-1" />
+                  17 Nov 2023
+                </div>
+                <span className="flex items-center text-xs text-gray-400 mt-1">
+                  <Clock className="w-3 h-3 mr-1" />
+                  11:00
+                </span>
+              </div>
+            </div>
+            {/* Cita 3 */}
+            <div className="flex items-center bg-white border border-gray-200 rounded-lg px-4 py-3">
+              <div className="bg-green-100 rounded-full p-2 mr-4">
+                <UserCircle className="w-7 h-7 text-green-600" />
+              </div>
+              <div className="flex-1">
+                <p className="font-bold text-gray-900">Dr. Juan Pérez</p>
+                <p className="text-sm text-gray-500">Medicina General</p>
+              </div>
+              <div className="flex flex-col items-end">
+                <div className="flex items-center gap-1 text-gray-700 font-medium">
+                  <Calendar className="w-4 h-4 mr-1" />
+                  20 Nov 2023
+                </div>
+                <span className="flex items-center text-xs text-gray-400 mt-1">
+                  <Clock className="w-3 h-3 mr-1" />
+                  15:45
+                </span>
+              </div>
+            </div>
           </CardContent>
         </Card>
 
         {/* Historial Médico Reciente */}
         <Card>
           <CardHeader>
-            <CardTitle>Historial Médico Reciente</CardTitle>
+            <CardTitle className="text-lg">Historial Médico Reciente</CardTitle>
             <CardDescription>Últimas consultas y diagnósticos</CardDescription>
           </CardHeader>
-          <CardContent>
-            <ul className="space-y-4">
-              <li>
-                <p className="font-bold">10 Oct 2023</p>
-                <p className="text-gray-600">Revisión general anual</p>
-                <p className="text-sm text-gray-500">
+          <CardContent className="space-y-3">
+            {/* Consulta 1 */}
+            <div className="flex items-center bg-green-50 border border-gray-200 rounded-lg px-4 py-3">
+              <div className="bg-green-100 rounded-full p-2 mr-4">
+                <FileText className="w-7 h-7 text-green-600" />
+              </div>
+              <div className="flex-1">
+                <p className="font-bold text-gray-900">10 Oct 2023</p>
+                <p className="text-sm text-gray-500">Revisión general anual</p>
+                <p className="text-xs text-gray-400">
                   Resultados normales. Próxima revisión en 12 meses.
                 </p>
-              </li>
-              <li>
-                <p className="font-bold">25 Sep 2023</p>
-                <p className="text-gray-600">Dolor lumbar</p>
-                <p className="text-sm text-gray-500">
+              </div>
+            </div>
+            {/* Consulta 2 */}
+            <div className="flex items-center bg-white border border-gray-200 rounded-lg px-4 py-3">
+              <div className="bg-green-100 rounded-full p-2 mr-4">
+                <FileText className="w-7 h-7 text-green-600" />
+              </div>
+              <div className="flex-1">
+                <p className="font-bold text-gray-900">25 Sep 2023</p>
+                <p className="text-sm text-gray-500">Dolor lumbar</p>
+                <p className="text-xs text-gray-400">
                   Prescripción de antiinflamatorios y terapia física.
                 </p>
-              </li>
-            </ul>
+              </div>
+            </div>
           </CardContent>
         </Card>
       </div>
