@@ -28,6 +28,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "../../../../components/ui/popover";
+import { Field } from "@tanstack/react-form";
 
 // Esquemas de validación para cada paso
 const AppointmentSpecificationsSchema = z.object({
@@ -53,6 +54,8 @@ export function AppointmentSpecificationsForm() {
     updateDataForm(values);
     next();
   };
+
+  const medicalPositions = ["Medico", "Enfermero", "internista"];
 
   return (
     <FormWrapper
@@ -83,6 +86,7 @@ export function AppointmentSpecificationsForm() {
                   <PopoverContent className="w-auto p-0" align="start">
                     <Calendar
                       mode="single"
+                      captionLayout="dropdown"
                       selected={field.value}
                       onSelect={field.onChange}
                       initialFocus
@@ -109,18 +113,18 @@ export function AppointmentSpecificationsForm() {
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    <SelectItem value="medico_general">
-                      Médico General
-                    </SelectItem>
-                    <SelectItem value="enfermera">Enfermera</SelectItem>
-                    <SelectItem value="especialista">Especialista</SelectItem>
+                    {medicalPositions.map((position) => {
+                      return (
+                        <SelectItem value={position}>{position}</SelectItem>
+                      );
+                    })}
                   </SelectContent>
                 </Select>
                 <FormMessage />
               </FormItem>
             )}
           />
-          <div className="flex justify-end gap-2">
+          <div className="flex justify-between gap-2">
             {!isFirstStep && (
               <Button variant="outline" onClick={back}>
                 Back

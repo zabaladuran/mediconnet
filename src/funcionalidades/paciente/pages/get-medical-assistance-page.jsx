@@ -4,7 +4,9 @@ import { ScheduleProvider } from "../contexto/schedule-provider";
 export function GetMedicalAssistancePage() {
   return (
     <ScheduleProvider>
-      <GetMedicalAssistanceForm />;
+      <div className="w-full h-screen flex items-center justify-center">
+        <GetMedicalAssistanceForm />
+      </div>
     </ScheduleProvider>
   );
 }

@@ -1,6 +1,6 @@
 import { createContext, useState } from "react";
 import { useMultiStepForm } from "../hooks";
-import { AppointmentSpecificationsForm } from "../componentes/forms/appointment-speciafications-form";
+import { AppointmentSpecificationsForm } from "../componentes/forms/appointment-specifications-form";
 import { ScheduleAppointmentForm } from "../componentes/forms/schedule-appointment-form";
 import { SelectAppointmentForm } from "../componentes/forms/select-appointment-form";
 
@@ -35,9 +35,9 @@ export const ScheduleProvider = ({ children }) => {
     isLastStep,
   } = useMultiStepForm({
     stepsArray: [
-      <AppointmentSpecificationsForm />,
       <SelectAppointmentForm />,
       <ScheduleAppointmentForm />,
+      <AppointmentSpecificationsForm />,
     ],
   });
 

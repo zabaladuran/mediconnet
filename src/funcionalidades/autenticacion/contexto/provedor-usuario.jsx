@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect } from "react";
+import { createContext, useState, useEffect, useRef } from "react";
 import {
   eliminarDeLocalStorage,
   guardarEnLocalStorage,
@@ -23,6 +23,7 @@ export const ContextoDeAutenticacion = createContext({
 });
 
 export const ProveedorUsuario = ({ children }) => {
+  const seIntentoVerificacion = useRef(false);
   const [credenciales, definirCredenciales] = useState({
     token: null,
     tipoUsuario: null,
@@ -112,7 +113,8 @@ export const ProveedorUsuario = ({ children }) => {
         cuentaVerificada: cuentaVerificada,
       });
     }
-    intentarRestaurarSesion();
+    !seIntentoVerificacion.current && intentarRestaurarSesion();
+    seIntentoVerificacion.current = true;
   }, []);
 
   const recursosDeContexto = {

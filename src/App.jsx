@@ -33,15 +33,15 @@ function App() {
               <Route path="sign-up" element={<SignUpPage />} />
             </Route>
             <Route path="/paciente/*" element={<PermitirUsuarioPaciente />}>
+              <Route
+                path="appointment/set"
+                element={<GetMedicalAssistancePage />}
+              />
               <Route path="dashboard/home" element={<DashboardPage />} />
             </Route>
             <Route path="/doctor/*" element={<PermitirUsuarioDoctor />}>
               <Route path="dashboard/home" element={<DashboardPage />} />
             </Route>
-            <Route
-              path="/appointment/set"
-              element={<GetMedicalAssistancePage />}
-            />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
           <Toaster />

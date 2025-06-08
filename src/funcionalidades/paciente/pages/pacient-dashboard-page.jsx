@@ -11,26 +11,6 @@ import { Button } from "../../..//components/ui/button";
 export const PacientDashboardPage = () => {
   return (
     <div className="container mx-auto px-6 py-8 grid grid-cols-1 lg:grid-cols-12 gap-6">
-      {/* Columna Izquierda: Acciones Rápidas */}
-      <div className="col-span-12 lg:col-span-3">
-        <Card>
-          <CardHeader>
-            <CardTitle>Acciones Rápidas</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <Button className="w-full bg-green-600 text-white hover:bg-green-700 mb-4">
-              + Agendar Nueva Cita
-            </Button>
-            <Button className="w-full bg-gray-200 text-gray-700 hover:bg-gray-300 mb-4">
-              Ver Historial
-            </Button>
-            <Button className="w-full bg-gray-200 text-gray-700 hover:bg-gray-300">
-              Gestionar Medicamentos
-            </Button>
-          </CardContent>
-        </Card>
-      </div>
-
       {/* Columna Central */}
       <div className="col-span-12 lg:col-span-6 space-y-6">
         {/* Próximas Citas */}

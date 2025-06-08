@@ -8,8 +8,10 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Calendar, UserCircle, Clock, FileText } from "lucide-react";
+import { useNavigate } from "react-router";
 
 const ButtonDashboard = () => {
+  const navigate = useNavigate();
   return (
     <div className="container mx-auto px-6 py-8 grid grid-cols-1 lg:grid-cols-12 gap-6">
       {/* Columna Izquierda: Acciones Rápidas */}
@@ -19,7 +21,12 @@ const ButtonDashboard = () => {
             <CardTitle>Acciones Rápidas</CardTitle>
           </CardHeader>
           <CardContent>
-            <Button className="w-full bg-green-600 text-white hover:bg-green-700 mb-4">
+            <Button
+              onClick={() =>
+                navigate("paciente/appointment/set", { replace: true })
+              }
+              className="pointer w-full bg-green-600 text-white hover:bg-green-700 mb-4"
+            >
               + Agendar Nueva Cita
             </Button>
             <Button className="w-full bg-gray-200 text-gray-700 hover:bg-gray-300 mb-4">

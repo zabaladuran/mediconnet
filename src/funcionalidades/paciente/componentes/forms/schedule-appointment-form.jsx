@@ -14,6 +14,7 @@ import {
 import { useForm } from "react-hook-form";
 import { FormWrapper } from "../ui/form-wrapper";
 import { Textarea } from "../../../../components/ui/textarea";
+
 const AppointmentSchema = z.object({
   observaciones: z
     .string()
@@ -24,8 +25,6 @@ const AppointmentSchema = z.object({
 });
 
 export function ScheduleAppointmentForm() {
-  // obtener cita seleccionada: nombre doc, cargo, fecha, hora
-  //   agendar la cita
   const { back, next, isFirstStep, isLastStep, dataForm, updateDataForm } =
     useScheduleForm();
   const form = useForm({
@@ -57,7 +56,7 @@ export function ScheduleAppointmentForm() {
                   <Textarea
                     value={field.value}
                     placeholder="Envianos tus observaciones"
-                    className="resize-none"
+                    className="resize-none h-max-[400px]"
                     {...field}
                   />
                 </FormControl>
@@ -69,9 +68,9 @@ export function ScheduleAppointmentForm() {
               </FormItem>
             )}
           />
-          <div className="flex justify-end gap-2">
+          <div className="flex justify-between gap-2">
             {!isFirstStep && (
-              <Button variant="outline" onClick={() => back()}>
+              <Button variant="outline" onClick={back}>
                 Back
               </Button>
             )}

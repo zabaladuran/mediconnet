@@ -1,6 +1,12 @@
 import { useForm } from "react-hook-form";
+import { ScrollArea } from "../../../../components/ui/scroll-area";
 import { useScheduleForm } from "../../hooks/useScheduleForm";
+import { AppointmentInfoCard } from "../ui/appointment-info-card";
 import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  RadioGroup,
+  RadioGroupItem,
+} from "../../../../components/ui/radio-group";
 import * as z from "zod";
 import { Button } from "../../../../components/ui/button";
 import {
@@ -14,9 +20,7 @@ import {
 import { FormWrapper } from "../ui/form-wrapper";
 // Esquemas de validación para cada paso
 const SelectAppointmentSchema = z.object({
-  idCita: z.string().min(1, {
-    message: "Por favor, selecciona un servicio.",
-  }),
+  idCita: z.number(),
 });
 
 export function SelectAppointmentForm() {
@@ -30,7 +34,38 @@ export function SelectAppointmentForm() {
     },
   });
 
-  const availableServices = [{ id: "2", name: "Dr Ikari" }];
+  const availableServices = [
+    {
+      idCita: 1,
+      nombreMedico: "Pepe M.",
+      horaInicio: "9:00 am",
+      horaFinal: "10:00am",
+    },
+    {
+      idCita: 2,
+      nombreMedico: "Pepe M.",
+      horaInicio: "9:00 am",
+      horaFinal: "10:00am",
+    },
+    {
+      idCita: 3,
+      nombreMedico: "Pepe M.",
+      horaInicio: "9:00 am",
+      horaFinal: "10:00am",
+    },
+    {
+      idCita: 4,
+      nombreMedico: "Pepe M.",
+      horaInicio: "9:00 am",
+      horaFinal: "10:00am",
+    },
+    {
+      idCita: 5,
+      nombreMedico: "Pepe M.",
+      horaInicio: "9:00 am",
+      horaFinal: "10:00am",
+    },
+  ];
   const onSubmit = async (values) => {
     updateDataForm(values);
     next();
@@ -54,24 +89,50 @@ export function SelectAppointmentForm() {
                 <FormItem>
                   <FormLabel>Servicio disponible</FormLabel>
                   <FormControl>
-                    <select
-                      value={field.value}
-                      className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                      {...field}
-                    >
-                      <option value="">Selecciona un servicio</option>
-                      {availableServices.map((service) => (
-                        <option key={service.id} value={service.id}>
-                          {service.name}
-                        </option>
-                      ))}
-                    </select>
+                    <ScrollArea className="h-[260px]">
+                      <RadioGroup
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                        className="flex flex-col w-full p-3"
+                      >
+                        {availableServices.map((service) => {
+                          const isSelected = field.value === service.idCita; // Check if the current item is selected
+                          return (
+                            <FormItem
+                              className="flex w-full items-center gap-4"
+                              key={service.idCita}
+                            >
+                              <FormControl>
+                                <RadioGroupItem
+                                  className="opacity-0 w-0 h-0 p-0 m-0 overflow-hidden absolute"
+                                  value={service.idCita}
+                                />
+                              </FormControl>
+                              <FormLabel
+                                className={`font-normal w-full ${
+                                  isSelected
+                                    ? "border-2 rounded-sm border-green-600"
+                                    : ""
+                                }`}
+                              >
+                                <AppointmentInfoCard
+                                  nombreMedico={service.nombreMedico}
+                                  horaFinal={service.horaFinal}
+                                  horaInicio={service.horaInicio}
+                                  fechaSugerida={dataForm.fechaSugerida}
+                                />
+                              </FormLabel>
+                            </FormItem>
+                          );
+                        })}
+                      </RadioGroup>
+                    </ScrollArea>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <div className="flex justify-end gap-2">
+            <div className="flex justify-between gap-2">
               {!isFirstStep && (
                 <Button variant="outline" onClick={back}>
                   Back
