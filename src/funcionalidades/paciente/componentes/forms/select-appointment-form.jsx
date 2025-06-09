@@ -119,7 +119,7 @@ export function SelectAppointmentForm() {
                                   nombreMedico={service.nombreMedico}
                                   horaFinal={service.horaFinal}
                                   horaInicio={service.horaInicio}
-                                  fechaSugerida={dataForm.fechaSugerida}
+                                  fechaSugerida={"Fecha sugerida"}
                                 />
                               </FormLabel>
                             </FormItem>

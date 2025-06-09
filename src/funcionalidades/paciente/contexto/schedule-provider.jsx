@@ -35,9 +35,9 @@ export const ScheduleProvider = ({ children }) => {
     isLastStep,
   } = useMultiStepForm({
     stepsArray: [
+      <AppointmentSpecificationsForm />,
       <SelectAppointmentForm />,
       <ScheduleAppointmentForm />,
-      <AppointmentSpecificationsForm />,
     ],
   });
 

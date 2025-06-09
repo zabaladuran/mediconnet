@@ -23,7 +23,7 @@ const ButtonDashboard = () => {
           <CardContent>
             <Button
               onClick={() =>
-                navigate("paciente/appointment/set", { replace: true })
+                navigate("/paciente/appointment/set", { replace: true })
               }
               className="pointer w-full bg-green-600 text-white hover:bg-green-700 mb-4"
             >

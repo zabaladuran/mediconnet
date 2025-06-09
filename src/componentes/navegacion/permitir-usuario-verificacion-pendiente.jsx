@@ -8,7 +8,7 @@ const PermitirUsuarioVerificacionPendiente = () => {
   if (cargando) return <LoadingPage />;
   if (!token) return <Navigate to="/auth/sign-in" />;
   if (tipoUsuario == PACIENTE && cuentaVerificada)
-    return <Navigate to="/doctor/dashboard/home" />;
+    return <Navigate to="/paciente/dashboard/home" />;
   if (tipoUsuario == DOCTOR && cuentaVerificada)
     return <Navigate to="/doctor/dashboard/home" />;
   return <Outlet />;

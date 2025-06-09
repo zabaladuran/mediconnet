@@ -115,7 +115,9 @@ export function AppointmentSpecificationsForm() {
                   <SelectContent>
                     {medicalPositions.map((position) => {
                       return (
-                        <SelectItem value={position}>{position}</SelectItem>
+                        <SelectItem key={position} value={position}>
+                          {position}
+                        </SelectItem>
                       );
                     })}
                   </SelectContent>
