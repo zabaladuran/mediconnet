@@ -14,6 +14,7 @@ import {
 import { ProveedoresApp } from "./contexto/";
 import { Toaster } from "./components/ui/sonner";
 import { GetMedicalAssistancePage } from "./funcionalidades/paciente/pages";
+import DashboardPageDoctor from "./funcionalidades/Dorctor/pages/dashboard-page-doctor";
 function App() {
   return (
     <>
@@ -40,7 +41,7 @@ function App() {
               <Route path="dashboard/home" element={<DashboardPage />} />
             </Route>
             <Route path="/doctor/*" element={<PermitirUsuarioDoctor />}>
-              <Route path="dashboard/home" element={<DashboardPage />} />
+              <Route path="dashboard/home" element={<DashboardPageDoctor />} />
             </Route>
             <Route path="*" element={<NotFoundPage />} />
           </Routes>

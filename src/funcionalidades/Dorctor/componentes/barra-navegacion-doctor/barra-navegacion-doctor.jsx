@@ -1,60 +1,81 @@
+import { Stethoscope, Home, LogOut } from "lucide-react";
 import React from "react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import ButtonDashboard from "../componentes/btton-dashboard";
-import ButtonCitas from "../componentes/btton-citas";
-import ButtonHistorialMedico from "../componentes/btton-Historialmedico";
-import ButtonConfiguracion from "../componentes/btton-configuracion";
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@/components/ui/tabs";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
-import { LogOut } from "lucide-react";
-import { useAut } from "@/funcionalidades/autenticacion/hooks"; // <-- IMPORTANTE
+import { useAut } from "@/funcionalidades/autenticacion/hooks";
 
-const BarraNavegacionDoctor = () => {
-  const { cerrarSesion } = useAut(); // <-- OBTIENE LA FUNCIÓN DEL CONTEXTO
+// Función para obtener iniciales
+function getInitials(nombre = "") {
+  return nombre
+    .split(" ")
+    .map((n) => n[0])
+    .join("")
+    .toUpperCase()
+    .slice(0, 2);
+}
+
+const BarraNavegacionDoctor = ({ children }) => {
+  const { cerrarSesion, credenciales } = useAut();
+  const nombre = credenciales?.nombreCompleto || "Doctor";
+  const rol = "Doctor";
+  const foto = credenciales?.fotoPerfil;
 
   return (
-    <Tabs defaultValue="Dashboard" className="w-full">
+    <Tabs defaultValue="Principal" className="w-full">
       <header className="bg-gray-100 shadow-md w-full mb-3">
         <nav>
-          <TabsList className="flex items-center justify-between px-6 py-4 w-full bg-white">
+          <TabsList className="flex items-center justify-between px-8 py-7 w-full bg-white">
             {/* Logo y título */}
             <div className="flex items-center space-x-4">
               <a
-                className="text-xl font-bold text-green-600 hover:underline "
+                className="flex items-center gap-2 text-xl font-bold text-green-600 hover:underline"
                 href="/home"
               >
+                <div className="flex h-8 w-8 items-center justify-center rounded-md bg-[#16a34a] text-white">
+                  <Stethoscope className="size-5" />
+                </div>
                 Mediconnet
               </a>
             </div>
 
-            {/* Pestañas */}
+            {/* Pestaña única */}
             <div className="flex space-x-4">
-              <TabsTrigger value="Dashboard">Dashboard</TabsTrigger>
-              <TabsTrigger value="Citas">Citas</TabsTrigger>
-              <TabsTrigger value="Historial Medico">
-                Historial Médico
+              <TabsTrigger value="Principal">
+                <Home className="inline-block mr-2 w-5 h-5" />
+                Principal
               </TabsTrigger>
-              <TabsTrigger value="Configuracion">Configuración</TabsTrigger>
             </div>
 
             {/* Perfil del usuario con Dropdown */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <button className="flex items-center space-x-3 focus:outline-none">
-                  <img
-                    src="https://i.pinimg.com/736x/29/3e/94/293e94cf6378d2af9ffa9295ef44dfb7.jpg"
-                    alt="Perfil"
-                    className="w-10 h-10 rounded-full"
-                  />
+                  {foto ? (
+                    <img
+                      src={foto}
+                      alt="Perfil"
+                      className="w-12 h-12 rounded-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-12 h-12 rounded-full bg-green-200 flex items-center justify-center text-green-700 font-bold text-xl">
+                      {getInitials(nombre)}
+                    </div>
+                  )}
                   <div className="text-left hidden md:block">
                     <span className="block text-gray-600 font-medium">
-                      Frieren
+                      {nombre}
                     </span>
-                    <span className="block text-sm text-gray-500">Admin</span>
+                    <span className="block text-sm text-gray-500">{rol}</span>
                   </div>
                 </button>
               </DropdownMenuTrigger>
@@ -72,18 +93,9 @@ const BarraNavegacionDoctor = () => {
         </nav>
       </header>
 
-      {/* Contenido de las pestañas */}
-      <TabsContent value="Dashboard">
-        <ButtonDashboard /> {/* Muestra el contenido del componente */}
-      </TabsContent>
-      <TabsContent value="Citas">
-        <ButtonCitas /> {/* Muestra el contenido del componente */}
-      </TabsContent>
-      <TabsContent value="Historial Medico">
-        <ButtonHistorialMedico /> {/* Muestra el contenido del componente */}
-      </TabsContent>
-      <TabsContent value="Configuracion">
-        <ButtonConfiguracion /> {/* Muestra el contenido del componente */}
+      {/* Contenido de la pestaña principal */}
+      <TabsContent value="Principal">
+        {children}
       </TabsContent>
     </Tabs>
   );

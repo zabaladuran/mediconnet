@@ -42,32 +42,32 @@ const BarraNav = () => {
     <Tabs defaultValue="Dashboard" className="w-full">
       <header className="bg-gray-100 shadow-md w-full mb-3">
         <nav>
-          <TabsList className="flex items-center justify-between px-6 py-4 w-full bg-white">
+          <TabsList className="flex items-center justify-between px-8 py-7 w-full bg-white">
             {/* Logo y título */}
             <div className="flex items-center space-x-4">
               <a
-                className="flex items-center gap-2 text-xl font-bold text-green-600 hover:underline"
+                className="flex items-center gap-2 text-2xl font-bold text-green-600 hover:underline"
                 href="/home"
               >
-                <div className="flex h-6 w-6 items-center justify-center rounded-md bg-[#16a34a] text-white">
-                  <Stethoscope className="size-4" />
+                <div className="flex h-8 w-8 items-center justify-center rounded-md bg-[#16a34a] text-white">
+                  <Stethoscope className="size-5" />
                 </div>
                 Mediconnet
               </a>
             </div>
 
             {/* Pestañas */}
-            <div className="flex space-x-4">
-              <TabsTrigger value="Dashboard">
-                <Home className="inline-block mr-2 w-4 h-4" />
+            <div className="flex space-x-6">
+              <TabsTrigger value="Dashboard" className="text-lg px-5 py-3">
+                <Home className="inline-block mr-2 w-5 h-5" />
                 Dashboard
               </TabsTrigger>
-              <TabsTrigger value="Citas">
-                <Calendar className="inline-block mr-2 w-4 h-4" />
+              <TabsTrigger value="Citas" className="text-lg px-5 py-3">
+                <Calendar className="inline-block mr-2 w-5 h-5" />
                 Citas
               </TabsTrigger>
-              <TabsTrigger value="Configuracion">
-                <Settings className="inline-block mr-2 w-4 h-4" />
+              <TabsTrigger value="Configuracion" className="text-lg px-5 py-3">
+                <Settings className="inline-block mr-2 w-5 h-5" />
                 Configuración
               </TabsTrigger>
             </div>
@@ -80,15 +80,15 @@ const BarraNav = () => {
                     <img
                       src={foto}
                       alt="Perfil"
-                      className="w-10 h-10 rounded-full object-cover"
+                      className="w-12 h-12 rounded-full object-cover"
                     />
                   ) : (
-                    <div className="w-10 h-10 rounded-full bg-green-200 flex items-center justify-center text-green-700 font-bold text-lg">
+                    <div className="w-12 h-12 rounded-full bg-green-200 flex items-center justify-center text-green-700 font-bold text-xl">
                       {getInitials(nombre)}
                     </div>
                   )}
                   <div className="text-left hidden md:block">
-                    <span className="block text-gray-600 font-medium">
+                    <span className="block text-gray-600 font-medium text-lg">
                       {nombre}
                     </span>
                     <span className="block text-sm text-gray-500">{rol}</span>
