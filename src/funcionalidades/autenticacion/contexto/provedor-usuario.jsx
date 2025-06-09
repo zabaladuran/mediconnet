@@ -24,6 +24,7 @@ export const ContextoDeAutenticacion = createContext({
 
 export const ProveedorUsuario = ({ children }) => {
   const seIntentoVerificacion = useRef(false);
+  const [cargando, definirCargando] = useState(true);
   const [credenciales, definirCredenciales] = useState({
     token: null,
     tipoUsuario: null,
@@ -79,19 +80,28 @@ export const ProveedorUsuario = ({ children }) => {
   useEffect(() => {
     async function intentarRestaurarSesion() {
       // ENTRADA DE CREDENCIALES LOCALES
+      // definirCargando(true);
       const token = obtenerDeLocalStorage({
         clave: CLAVE_TOKEN_AUTENTICACION_USUARIO,
       });
-      if (!token) return;
+      if (!token) {
+        definirCargando(false);
+        return;
+      }
 
       // ENTRADA DE CREDENCIALES BACKEND
       const { exito: exitoAutenticidad, autentico } =
         await validarAutenticidadToken({ token: token });
-      if (!exitoAutenticidad)
+      if (!exitoAutenticidad) {
+        definirCargando(false);
         return toast.error(
           "Estamos experimentando unos errores durante la carga de tus credenciales."
         );
-      if (!autentico) return toast.error("Estas intentando hackearnos?");
+      }
+      if (!autentico) {
+        definirCargando(false);
+        return toast.error("Estas intentando hackearnos?");
+      }
       const { exito: exitoTipoUsuario, tipoUsuario } = await obtenerTipoUsuario(
         {
           token: token,
@@ -101,24 +111,29 @@ export const ProveedorUsuario = ({ children }) => {
         await validarCuentaVerificada({
           token,
         });
-      if (!exitoTipoUsuario || !exitoVerificacion)
+      if (!exitoTipoUsuario || !exitoVerificacion) {
+        definirCargando(false);
         return toast.error(
           "Estamos experimentando unos errores durante la carga de tus credenciales"
         );
-
+      }
       // INICIAR SESION
       definirCredenciales({
         token: token,
         tipoUsuario: tipoUsuario,
         cuentaVerificada: cuentaVerificada,
       });
+      definirCargando(false);
     }
-    !seIntentoVerificacion.current && intentarRestaurarSesion();
+    if (!seIntentoVerificacion.current) {
+      intentarRestaurarSesion();
+    }
     seIntentoVerificacion.current = true;
   }, []);
 
   const recursosDeContexto = {
     credenciales,
+    cargando,
     iniciarSesion,
     cerrarSesion,
     autenticarUsuario,

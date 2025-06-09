@@ -12,7 +12,9 @@ export async function signUpUsuario({
   tipoUsuario,
 }) {
   if (!email || !pass || !nombreCompleto || !tipoUsuario) {
-    throw Error("No fueron dados los parametros minimos necesarios en signUpUsuario");
+    throw Error(
+      "No fueron dados los parametros minimos necesarios en signUpUsuario"
+    );
   }
 
   const res = await fetch(`${API_URL}/Api/Registro`, {
@@ -36,12 +38,11 @@ export async function signUpUsuario({
   } else {
     return {
       exito: true,
-      token: data.token, 
+      token: data.token,
       verificado: false,
     };
   }
 }
-
 
 // Enviar código de verificación
 export async function enviarCorreoDeVerificacion({ token }) {
@@ -62,7 +63,7 @@ export async function enviarCorreoDeVerificacion({ token }) {
 
     return {
       exito: true,
-      tokenCodigo: data.tokenCodigo, 
+      tokenCodigo: data.tokenCodigo,
       sms: data.mensaje,
     };
   } catch (e) {
@@ -70,16 +71,19 @@ export async function enviarCorreoDeVerificacion({ token }) {
   }
 }
 
-
 // Confirmar código
-export async function validarCodigoDeAutenticacion({ token, tokenCodigo, codigo }) {
+export async function validarCodigoDeAutenticacion({
+  token,
+  tokenCodigo,
+  codigo,
+}) {
   try {
     const res = await fetch(`${API_URL}/Api/Registro/Confirmar-codigo`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`, // token de sesión
-        TokenCodigo: tokenCodigo,         // token del código
+        TokenCodigo: tokenCodigo, // token del código
       },
       body: JSON.stringify({ codigo }),
     });
@@ -141,14 +145,16 @@ export async function obtenerTipoUsuario({ token }) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`, // AQUE SE USA EL TOKEN DE SESIÓN
+        Authorization: `Bearer ${token}`, // AQUE SE USA EL TOKEN DE SESIÓN
       },
     });
 
     const data = await res.json();
-
     if (!res.ok || data.error) {
-      return { exito: false, sms: data.error || data.mensaje || "Error desconocido" };
+      return {
+        exito: false,
+        sms: data.error || data.mensaje || "Error desconocido",
+      };
     }
 
     return {
@@ -159,8 +165,6 @@ export async function obtenerTipoUsuario({ token }) {
     return { exito: false, sms: "Error inesperado al obtener tipo de usuario" };
   }
 }
-
-
 
 // ===========================
 // FUNCIONES ORIGINALES QUE AÚN NO TIENEN ENDPOINT REAL

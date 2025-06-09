@@ -1,9 +1,11 @@
 import { Outlet, Navigate } from "react-router";
 import { useAut } from "../../funcionalidades/autenticacion/hooks";
+import { LoadingPage } from "../pages";
 
 const PermitirUsuarioAutenticado = () => {
-  const { usuario } = useAut(); // Verifica si el usuario está autenticado
-  return usuario?.token ? <Outlet /> : <Navigate to="/auth/sign-in" />; // Redirige si no está autenticado
+  const { credenciales, cargando } = useAut();
+  if (cargando) return <LoadingPage />;
+  return credenciales?.token ? <Outlet /> : <Navigate to="/auth/sign-in" />;
 };
 
 export default PermitirUsuarioAutenticado;
