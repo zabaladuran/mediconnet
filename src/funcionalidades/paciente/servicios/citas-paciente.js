@@ -3,115 +3,19 @@ export async function obtenerCitasDisponibles({ token, cargo, fechaSugerida }) {
   try {
     return {
       exito: true,
-      proximasCitas: [
-        {
-          fecha: "2025-05-30T00:00:00.000Z",
-          nombreDoctor: "Garcia G.",
-          cargo: "Enfermero",
-        },
-        {
-          fecha: "2025-05-31T00:00:00.000Z",
-          nombreDoctor: "Garcia G.",
-          cargo: "Enfermero",
-        },
-      ],
-    };
-  } catch {
-    throw Error("Ops, error durante registro");
-  }
-}
-
-import { pipePropsAgendarCita } from "../zod";
-export async function obtenerProximasCitas({ token }) {
-  if (!token || typeof token != "string") throw Error("Ops, ocurrio un error.");
-  try {
-    return {
-      exito: true,
-      proximasCitas: [
-        { fecha: "12/12/12", nombreDoctor: "Garcia G.", cargo: "Enfermero" },
-        { fecha: "12/12/12", nombreDoctor: "Garcia G.", cargo: "Enfermero" },
-      ],
-    };
-  } catch {
-    throw Error("Ops, error durante registro");
-  }
-}
-
-export async function obtenerCitasPendientes({ token }) {
-  if (!token || typeof token != "string") throw Error("Ops, ocurrio un error.");
-  try {
-    return {
-      exito: true,
-      citasPendientes: [
-        { fecha: "12/12/12", nombreDoctor: "Garcia G.", cargo: "Enfermero" },
-      ],
-    };
-  } catch {
-    throw Error("Ops, error durante registro");
-  }
-}
-
-export async function obtenerHistorialDeCitas({ token }) {
-  if (!token || typeof token != "string") throw Error("Ops, ocurrio un error.");
-  try {
-    return {
-      exito: true,
-      historialDeCitas: [
-        { fecha: "12/12/12", nombreDoctor: "Garcia G.", cargo: "Enfermero" },
-        { fecha: "12/12/12", nombreDoctor: "Garcia G.", cargo: "Enfermero" },
-      ],
-    };
-  } catch {
-    throw Error("Ops, error durante registro");
-  }
-}
-export async function obtenerUltimaVisita({ token }) {
-  if (!token || typeof token != "string") throw Error("Ops, ocurrio un error.");
-  try {
-    return {
-      exito: true,
-      ultimaVisita: {
-        fecha: "12/12/12",
-        nombreDoctor: "Garcia G.",
-        cargo: "Enfermero",
-      },
-    };
-  } catch {
-    throw Error("Ops, error durante registro");
-  }
-}
-
-export async function obtenerProximaVisita({ token }) {
-  if (!token || typeof token != "string") throw Error("Ops, ocurrio un error.");
-  try {
-    return {
-      exito: true,
-      proximaVisita: {
-        fecha: "12/12/12",
-        nombreDoctor: "Garcia G.",
-        cargo: "Enfermero",
-      },
-    };
-  } catch {
-    throw Error("Ops, error durante registro");
-  }
-}
-
-export async function obtenerCitasDisponibles({
-  nombreDoctor,
-  cargoDoctor,
-  fechaSugeridad,
-}) {
-  if (!token || typeof token != "string") throw Error("Ops, ocurrio un error.");
-  if (!token || typeof token != "string") throw Error("Ops, ocurrio un error.");
-  if (!token || typeof token != "string") throw Error("Ops, ocurrio un error.");
-  try {
-    return {
-      exito: true,
       citasDisponibles: [
-        { fecha: "12/12/12", nombreDoctor: "Garcia G.", cargo: "Enfermero" },
-        { fecha: "12/12/12", nombreDoctor: "Garcia G.", cargo: "Enfermero" },
-        { fecha: "12/12/12", nombreDoctor: "Garcia G.", cargo: "Enfermero" },
+        {
+          fecha: "2025-12-12",
+          idCita: 1,
+          nombreMedico: "Garcia G.",
+          cargoProfesional: "Enfermero",
+        },
+        {
+          fecha: "2025-05-12",
+          idCita: 2,
+          nombreMedico: "Garcia G.",
+          cargoProfesional: "Enfermero",
+        },
       ],
     };
   } catch {
@@ -119,7 +23,7 @@ export async function obtenerCitasDisponibles({
   }
 }
 
-export async function agendarCita({ cita }) {
+export async function agendarCita({ idCita }) {
   try {
     // DATA PIPE LINE VERIFIER AND INPUT DATA
     const pipeResponse = pipePropsAgendarCita({ cita: cita });
