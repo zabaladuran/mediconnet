@@ -1,8 +1,6 @@
 import { Calendar } from "../../../../components/ui/calendar";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "../../../../components/ui/button";
 import { CalendarIcon } from "lucide-react";
-import * as z from "zod";
 import {
   Form,
   FormControl,
@@ -19,7 +17,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../../../../components/ui/select";
-import { useForm } from "react-hook-form";
 import { FormWrapper } from "../ui/form-wrapper";
 import { useScheduleForm } from "../../hooks/useScheduleForm";
 import { format } from "date-fns";
@@ -28,34 +25,12 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "../../../../components/ui/popover";
-import { Field } from "@tanstack/react-form";
-
-// Esquemas de validación para cada paso
-const AppointmentSpecificationsSchema = z.object({
-  fechaSugerida: z.date({
-    required_error: "La fecha es requerida.",
-  }),
-  cargoMedico: z.string().min(1, {
-    message: "Por favor, selecciona un cargo médico.",
-  }),
-});
+import { useAppointmentSpecifications } from "../../hooks";
 
 export function AppointmentSpecificationsForm() {
-  const { back, next, isFirstStep, isLastStep, updateDataForm, dataForm } =
-    useScheduleForm();
-  const form = useForm({
-    resolver: zodResolver(AppointmentSpecificationsSchema),
-    values: {
-      fechaSugerida: dataForm.fechaSugerida || "",
-      cargoMedico: dataForm.cargoMedico || "",
-    },
-  });
-  const onSubmit = (values) => {
-    updateDataForm(values);
-    next();
-  };
-
-  const medicalPositions = ["Medico", "Enfermero", "internista"];
+  const { loading, form, specialtiesAvailable, enviarData } =
+    useAppointmentSpecifications();
+  const { back, next, isFirstStep, isLastStep } = useScheduleForm();
 
   return (
     <FormWrapper
@@ -63,7 +38,7 @@ export function AppointmentSpecificationsForm() {
       description={"Selecciona tus preferencias"}
     >
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <form onSubmit={form.handleSubmit(enviarData)} className="space-y-6">
           <FormField
             control={form.control}
             name="fechaSugerida"
@@ -106,14 +81,18 @@ export function AppointmentSpecificationsForm() {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Cargo Médico</FormLabel>
-                <Select onValueChange={field.onChange} value={field.value}>
+                <Select
+                  onValueChange={field.onChange}
+                  value={field.value}
+                  className="w-full"
+                >
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue placeholder="Seleccionar cargo" />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    {medicalPositions.map((position) => {
+                    {specialtiesAvailable.map((position) => {
                       return (
                         <SelectItem key={position} value={position}>
                           {position}
@@ -132,7 +111,7 @@ export function AppointmentSpecificationsForm() {
                 Back
               </Button>
             )}
-            <Button type="submit">
+            <Button type="submit" disabled={loading}>
               {isLastStep ? "Agendar" : "Siguiente"}
             </Button>
           </div>
