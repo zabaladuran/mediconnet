@@ -5,6 +5,7 @@ import ComboboxField from "../componentes/ComboboxField"
 
 // Listas de opciones para los comboboxes
 const ALERGIAS_GENERALES = [
+  "Ninguno",
   "Polen",
   "Ácaros del polvo",
   "Caspa de animales",
@@ -28,6 +29,7 @@ const ALERGIAS_GENERALES = [
 ]
 
 const MEDICAMENTOS = [
+  "Ninguno",
   "Penicilina",
   "Amoxicilina",
   "Aspirina",

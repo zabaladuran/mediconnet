@@ -167,25 +167,501 @@ export async function obtenerTipoUsuario({ token }) {
 }
 
 // ===========================
-// FUNCIONES ORIGINALES QUE AÚN NO TIENEN ENDPOINT REAL
+// ENDPOINTS QUE NO SE HAN IMPLEMENTADO AÚN EN LA APLICACIÓN
 // ===========================
 
-// Validar autenticidad del token (usamos obtenerTipoUsuario como prueba)
-export async function validarAutenticidadToken({ token }) {
+// Registrar información personal del paciente
+export async function registrarInformacionPersonalPaciente({
+  token,
+  cell,
+  tipoId,
+  personalId,
+  bloodGroup,
+  direccion,
+  alergiasGeneral = [],
+  alergiasMedications = [],
+}) {
+  if (!token || !cell || !tipoId || !personalId || !bloodGroup || !direccion) {
+    throw Error(
+      "Faltan campos obligatorios para registrar información del paciente"
+    );
+  }
+
   try {
-    await obtenerTipoUsuario({ token });
-    return { exito: true, autentico: true };
-  } catch {
-    return { exito: false, autentico: false };
+    const res = await fetch(`${API_URL}/Api/Informacion-Personal-Paciente`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        cell,
+        tipoId,
+        personalId,
+        bloodGroup,
+        direccion,
+        alergiasGeneral,
+        alergiasMedications,
+      }),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok || data.error || data.message) {
+      return {
+        exito: false,
+        sms: data.error || data.message || "Error al guardar información",
+      };
+    }
+
+    return {
+      exito: true,
+      sms: data.mensaje || "Información del paciente registrada correctamente",
+    };
+  } catch (e) {
+    return {
+      exito: false,
+      sms: "Error inesperado al registrar información del paciente",
+    };
   }
 }
 
-// Validar si la cuenta está verificada (no hay endpoint directo)
-export async function validarCuentaVerificada({ token }) {
+// Registrar información personal del médico
+export async function registrarInformacionPersonalMedico({
+  token,
+  cell,
+  tipoId,
+  personalId,
+  direccion,
+  especialidad = [],
+}) {
+  if (!token || !cell || !tipoId || !personalId || !direccion) {
+    throw Error(
+      "Faltan campos obligatorios para registrar información del médico"
+    );
+  }
+
   try {
-    await obtenerTipoUsuario({ token });
-    return { exito: true, verificado: true };
-  } catch {
-    return { exito: false, verificado: false };
+    const res = await fetch(`${API_URL}/Api/Informacion-Personal-Profesional`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        cell,
+        tipoId,
+        personalId,
+        direccion,
+        especialidad,
+      }),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok || data.error || data.message) {
+      return {
+        exito: false,
+        sms: data.error || data.message || "Error al guardar información",
+      };
+    }
+
+    return {
+      exito: true,
+      sms: data.mensaje || "Información del médico registrada correctamente",
+    };
+  } catch (e) {
+    return {
+      exito: false,
+      sms: "Error inesperado al registrar información del médico",
+    };
+  }
+}
+
+// Insertar horario médico
+export async function insertarHorarioMedico({ token, dia, horaInicio, horaFin }) {
+  if (!token) {
+    throw Error("Token requerido para insertar horario médico");
+  }
+
+  try {
+    const res = await fetch(`${API_URL}/Api/Horario-medico`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(
+        dia && horaInicio && horaFin
+          ? { dia, horaInicio, horaFin }
+          : {}
+      ),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok || data.error || data.message) {
+      return {
+        exito: false,
+        sms: data.error || data.message || "Error al insertar horario",
+      };
+    }
+
+    return {
+      exito: true,
+      sms: data.mensaje || "Horario insertado correctamente",
+    };
+  } catch (e) {
+    return {
+      exito: false,
+      sms: "Error inesperado al insertar horario",
+    };
+  }
+}
+// Buscar médicos por especialidad
+export async function buscarMedicosPorEspecialidad({ token, especialidad }) {
+  if (!token || !especialidad) {
+    throw Error("Token y especialidad son requeridos para buscar médicos");
+  }
+
+  try {
+    const res = await fetch(`${API_URL}/Api/Clasificar-medico`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ especialidad }),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok || data.error || data.message) {
+      return {
+        exito: false,
+        sms: data.error || data.message || "Error al buscar médicos",
+        medicos: [],
+      };
+    }
+
+    return {
+      exito: true,
+      sms: data.mensaje || "Médicos encontrados correctamente",
+      medicos: data.medicos || [],
+    };
+  } catch (e) {
+    return {
+      exito: false,
+      sms: "Error inesperado al buscar médicos",
+      medicos: [],
+    };
+  }
+}
+// Consultar horarios disponibles por médico
+export async function obtenerHorariosPorMedico({ token, nombre }) {
+  if (!token || !nombre) {
+    throw Error("Faltan datos para obtener los horarios del médico");
+  }
+
+  try {
+    const res = await fetch(`${API_URL}/Api/Medico-fecha`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ nombre }),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok || data.error || data.message) {
+      return {
+        exito: false,
+        sms: data.error || data.message || "No se pudieron obtener horarios",
+      };
+    }
+
+    return {
+      exito: true,
+      horarios: data,
+    };
+  } catch (e) {
+    return {
+      exito: false,
+      sms: "Error inesperado al obtener horarios del médico",
+    };
+  }
+}
+// Insertar nueva cita médica
+export async function insertarCita({
+  token,
+  nombre,
+  fechaInicial,
+  fechaFinal,
+  diaFecha,
+  motivoConsulta,
+}) {
+  if (
+    !token ||
+    !nombre ||
+    !fechaInicial ||
+    !fechaFinal ||
+    !diaFecha ||
+    !motivoConsulta
+  ) {
+    throw Error("Faltan campos obligatorios para insertar la cita");
+  }
+
+  try {
+    const res = await fetch(`${API_URL}/Api/Insertar-cita`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        nombre,
+        fechaInicial,
+        fechaFinal,
+        diaFecha,
+        motivoConsulta,
+      }),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok || data.error || data.message) {
+      return {
+        exito: false,
+        sms: data.error || data.message || "No se pudo agendar la cita",
+      };
+    }
+
+    return {
+      exito: true,
+      sms: data.Mensaje || "Cita agendada exitosamente",
+    };
+  } catch (e) {
+    return {
+      exito: false,
+      sms: "Error inesperado al agendar la cita médica",
+    };
+  }
+}
+// Obtener lista de especialidades médicas
+export async function obtenerListaEspecialidades({ token }) {
+  if (!token) {
+    throw Error("Token requerido para obtener especialidades");
+  }
+
+  try {
+    const res = await fetch(`${API_URL}/Api/Lista-Especialidades`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const data = await res.json();
+
+    if (!res.ok || data.error || data.message) {
+      return {
+        exito: false,
+        sms: data.error || data.message || "No se pudo obtener la lista",
+      };
+    }
+
+    return {
+      exito: true,
+      sms: data.mensaje || "Especialidades obtenidas correctamente",
+      especialidades: data.listaEspecialidades || [],
+    };
+  } catch (e) {
+    return {
+      exito: false,
+      sms: "Error inesperado al obtener especialidades",
+    };
+  }
+}
+//Mostrar citas disponibles por especialidad y fecha
+export async function mostrarCitasPorEspecialidadYFecha({ token, especialidad, fecha }) {
+  if (!token || !especialidad || !fecha) {
+    throw Error("Faltan datos para consultar citas disponibles");
+  }
+
+  try {
+    const res = await fetch(`${API_URL}/Api/Mostrar-citas-fecha`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ especialidad, fecha }),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok || data.error || data.message) {
+      return {
+        exito: false,
+        sms: data.error || data.message || "Error al obtener citas disponibles",
+      };
+    }
+
+    return {
+      exito: true,
+      citas: data.lista || [],
+      sms: data.mensaje || "Citas obtenidas correctamente",
+    };
+  } catch (e) {
+    return {
+      exito: false,
+      sms: "Error inesperado al mostrar citas por especialidad y fecha",
+    };
+  }
+}
+
+//Insertar una cita médica por ID de horario
+export async function agendarCitaPorId({ token, id, motivoConsulta }) {
+  if (!token || !id || !motivoConsulta) {
+    throw Error("Faltan datos obligatorios para agendar la cita");
+  }
+
+  try {
+    const res = await fetch(`${API_URL}/Api/Inserta-cita-Id`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ id, motivoConsulta }),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok || data.error || data.message) {
+      return {
+        exito: false,
+        sms: data.error || data.message || "Error al agendar la cita",
+      };
+    }
+
+    return {
+      exito: true,
+      sms: data.mensaje || "Cita agendada correctamente",
+    };
+  } catch (e) {
+    return {
+      exito: false,
+      sms: "Error inesperado al agendar la cita",
+    };
+  }
+}
+
+//  Confirmar validez de token JWT (Confirmar-jwt-id)
+export async function confirmarTokenValido({ token }) {
+  if (!token) {
+    throw Error("Token requerido para confirmar validez");
+  }
+
+  try {
+    const res = await fetch(`${API_URL}/Api/Confirmar-jwt-id`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const data = await res.json();
+
+    if (!res.ok || data.error || data.message) {
+      return {
+        exito: false,
+        sms: data.error || data.message || "Token inválido",
+      };
+    }
+
+    return {
+      exito: true,
+      sms: data.mensaje || "Token válido",
+    };
+  } catch (e) {
+    return {
+      exito: false,
+      sms: "Error inesperado al confirmar token",
+    };
+  }
+}
+
+// Verificar estado de verificación del usuario
+export async function obtenerEstadoDeVerificacion({ token }) {
+  if (!token) {
+    throw Error("Token requerido para obtener el estado de verificación");
+  }
+
+  try {
+    const res = await fetch(`${API_URL}/Api/Estado-user-verificacion`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const data = await res.json();
+
+    if (!res.ok || data.error || data.message) {
+      return {
+        exito: false,
+        sms: data.error || data.message || "Error al obtener estado de verificación",
+      };
+    }
+
+    return {
+      exito: true,
+      estado: data.estadoUser,
+      sms: data.mensaje || "Estado de verificación obtenido correctamente",
+    };
+  } catch (e) {
+    return {
+      exito: false,
+      sms: "Error inesperado al verificar estado del usuario",
+    };
+  }
+}
+
+// Obtener nombre completo del usuario
+export async function obtenerNombreDelUsuario({ token }) {
+  if (!token) {
+    throw Error("Token requerido para obtener el nombre del usuario");
+  }
+
+  try {
+    const res = await fetch(`${API_URL}/Api/Nombre-Usuario`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const data = await res.json();
+
+    if (!res.ok || data.error || data.message) {
+      return {
+        exito: false,
+        sms: data.error || data.message || "Error al obtener nombre del usuario",
+      };
+    }
+
+    return {
+      exito: true,
+      nombre: data.nombreCompleto,
+      sms: data.mensaje || "Nombre del usuario obtenido correctamente",
+    };
+  } catch (e) {
+    return {
+      exito: false,
+      sms: "Error inesperado al obtener nombre del usuario",
+    };
   }
 }

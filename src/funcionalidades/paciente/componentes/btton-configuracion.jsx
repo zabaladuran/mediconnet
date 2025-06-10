@@ -1,5 +1,4 @@
-import React from "react";
-import FormularioPaciente from "../formulario-paciente/FormularioPaciente";
+import FormularioPaciente from "../formulario-paciente/FormularioPaciente"
 
 const ConfiguracionPaciente = () => {
   return (
@@ -7,7 +6,7 @@ const ConfiguracionPaciente = () => {
       <h2 className="text-xl font-semibold mb-6">Información Personal</h2>
       <FormularioPaciente />
     </div>
-  );
-};
+  )
+}
 
-export default ConfiguracionPaciente;
+export default ConfiguracionPaciente

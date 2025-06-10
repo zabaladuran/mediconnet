@@ -12,8 +12,8 @@ import { toast } from "sonner";
 import { useNavigate } from "react-router";
 import {
   obtenerTipoUsuario,
-  validarAutenticidadToken,
-  validarCuentaVerificada,
+  confirmarTokenValido,
+  obtenerEstadoDeVerificacion,
 } from "../servicios/";
 
 export const ContextoDeAutenticacion = createContext({
@@ -31,6 +31,7 @@ export const ProveedorUsuario = ({ children }) => {
     cuentaVerificada: null,
   });
   const navigate = useNavigate();
+
   function cerrarSesion() {
     definirCredenciales({
       token: null,
@@ -40,32 +41,38 @@ export const ProveedorUsuario = ({ children }) => {
     eliminarDeLocalStorage({ clave: CLAVE_TOKEN_AUTENTICACION_USUARIO });
     toast.success("Su sesion ha sido cerrada");
   }
+
   function iniciarSesion({ token, correo, tipoUsuario, cuentaVerificada }) {
     if (
       !token ||
       !correo ||
       !tipoUsuario ||
-      typeof token != "string" ||
-      typeof correo != "string" ||
-      typeof tipoUsuario != "string" ||
-      typeof cuentaVerificada != "boolean"
-    )
+      typeof token !== "string" ||
+      typeof correo !== "string" ||
+      typeof tipoUsuario !== "string" ||
+      typeof cuentaVerificada !== "boolean"
+    ) {
       throw Error(
         "Ops, ocurrio un error. Parametros insuficientes para iniciar sesion"
       );
+    }
+
     definirCredenciales({
       token: token,
       tipoUsuario: tipoUsuario,
       cuentaVerificada: cuentaVerificada,
     });
+
     guardarEnLocalStorage({
       clave: CLAVE_CORREO_USUARIO,
       data: correo,
     });
+
     guardarEnLocalStorage({
       clave: CLAVE_TOKEN_AUTENTICACION_USUARIO,
       data: token,
     });
+
     toast.success("Sesion iniciada");
   }
 
@@ -79,55 +86,51 @@ export const ProveedorUsuario = ({ children }) => {
 
   useEffect(() => {
     async function intentarRestaurarSesion() {
-      // ENTRADA DE CREDENCIALES LOCALES
-      // definirCargando(true);
       const token = obtenerDeLocalStorage({
         clave: CLAVE_TOKEN_AUTENTICACION_USUARIO,
       });
+
       if (!token) {
         definirCargando(false);
         return;
       }
 
-      // ENTRADA DE CREDENCIALES BACKEND
-      const { exito: exitoAutenticidad, autentico } =
-        await validarAutenticidadToken({ token: token });
+      const { exito: exitoAutenticidad, sms } = await confirmarTokenValido({ token });
       if (!exitoAutenticidad) {
         definirCargando(false);
-        return toast.error(
-          "Estamos experimentando unos errores durante la carga de tus credenciales."
-        );
+        return toast.error(sms || "Error al validar autenticidad del token");
       }
-      if (!autentico) {
-        definirCargando(false);
-        return toast.error("Estas intentando hackearnos?");
-      }
-      const { exito: exitoTipoUsuario, tipoUsuario } = await obtenerTipoUsuario(
-        {
-          token: token,
-        }
-      );
-      const { exito: exitoVerificacion, verificado: cuentaVerificada } =
-        await validarCuentaVerificada({
-          token,
-        });
+
+      const { exito: exitoTipoUsuario, tipoUsuario } = await obtenerTipoUsuario({
+        token,
+      });
+
+      const {
+        exito: exitoVerificacion,
+        estado: cuentaVerificada,
+        sms: smsVerificacion,
+      } = await obtenerEstadoDeVerificacion({ token });
+
       if (!exitoTipoUsuario || !exitoVerificacion) {
         definirCargando(false);
         return toast.error(
           "Estamos experimentando unos errores durante la carga de tus credenciales"
         );
       }
-      // INICIAR SESION
+
       definirCredenciales({
         token: token,
         tipoUsuario: tipoUsuario,
         cuentaVerificada: cuentaVerificada,
       });
+
       definirCargando(false);
     }
+
     if (!seIntentoVerificacion.current) {
       intentarRestaurarSesion();
     }
+
     seIntentoVerificacion.current = true;
   }, []);
 
@@ -138,6 +141,7 @@ export const ProveedorUsuario = ({ children }) => {
     cerrarSesion,
     autenticarUsuario,
   };
+
   return (
     <ContextoDeAutenticacion.Provider
       children={children}
