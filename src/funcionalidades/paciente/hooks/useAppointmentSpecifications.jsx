@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 import { useScheduleForm } from "./useScheduleForm";
 import { obtenerEspecialidadesMedicas } from "../servicios/citas-paciente";
 import * as z from "zod";
+import { formatDateToString } from "../../../lib/utils";
 
 const AppointmentSpecificationsSchema = z.object({
   fechaSugerida: z.date({
@@ -33,11 +34,13 @@ export function useAppointmentSpecifications() {
 
   async function enviarData(data) {
     try {
-      //  ENTRADA DE DATOS
+      //  ENTRADA DE DATOS Y NORMALIZACION
       definirValidando(true);
+      let formattedDate = formatDateToString(data.fechaSugerida);
 
       // FORM ACTION
-      updateDataForm(data);
+      console.log(formattedDate, data.cargoMedico);
+      updateDataForm({ ...data, fechaSugerida: formattedDate });
       next();
     } finally {
       definirValidando(false);

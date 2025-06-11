@@ -47,7 +47,7 @@ export function useSignUpForm() {
       });
 
       // REDIRECCION CONDICIONAL
-      if (!signUpResponse.verificado)
+      if (!signUpResponse.verificado == "No Verificado")
         return navigate("/verification/email", { replace: true });
       if (tipoUsuario == PACIENTE)
         return navigate("/paciente/dashboard/home", { replace: true });

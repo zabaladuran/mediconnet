@@ -32,55 +32,64 @@ export async function obtenerEspecialidadesMedicas({ token }) {
   }
 }
 
-export async function obtenerCitasDisponibles({ token, cargo, fechaSugerida }) {
-  if (!token || typeof token != "string") throw Error("Ops, ocurrio un error.");
+export async function obtenerCitasDisponibles({
+  token,
+  especialidad,
+  fechaSugerida,
+}) {
   try {
+    console.log(especialidad, fechaSugerida);
+    const res = await fetch(`${API_URL}/Api/Mostrar-citas-fecha`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        especialidad: especialidad,
+        fecha: fechaSugerida,
+      }),
+    });
+    const data = await res.json();
+    console.log(data);
     return {
       exito: true,
-      citasDisponibles: [
-        {
-          fecha: "2025-12-12",
-          idCita: 1,
-          nombreMedico: "Garcia G.",
-          cargoProfesional: "Enfermero",
-        },
-        {
-          fecha: "2025-05-12",
-          idCita: 2,
-          nombreMedico: "Garcia G.",
-          cargoProfesional: "Enfermero",
-        },
-      ],
+      sms: data.mensaje,
+      citasDisponibles: data.lista,
     };
-  } catch {
-    throw Error("Ops, error durante registro");
+  } catch (e) {
+    console.error(e);
+    return {
+      exito: false,
+      sms: "Error inesperado al obtener la lista de citas disponibles",
+    };
   }
 }
 
-export async function agendarCita({ idCita }) {
+export async function agendarCita({ token, idCita, observacioenes }) {
   try {
-    // DATA PIPE LINE VERIFIER AND INPUT DATA
-    const pipeResponse = pipePropsAgendarCita({ cita: cita });
-    if (!pipeResponse.valido) {
-      throw Error(
-        `Parametros invalidos en cita-paciente-servicios: ${pipeResponse.sms}`
-      );
-    }
-
-    // FETCH TO BACKEND
-    const { idCita, ubicacionPaciente, token, observaciones } =
-      pipeResponse.cita;
-
-    // FEEDBACK
+    const res = await fetch(`${API_URL}/Api/Inserta-cita-Id`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        id: idCita,
+        motivoConsulta: observacioenes,
+      }),
+    });
+    const data = await res.json();
+    console.log(data, token, idCita, observacioenes);
     return {
       exito: true,
-      sms: "Cita creada",
+      sms: data.mensaje,
     };
   } catch (e) {
-    // ERROR FEEDBACK
+    console.error(e);
     return {
       exito: false,
-      sms: e.message,
+      sms: "Error inesperado al obtener la lista de citas disponibles",
     };
   }
 }

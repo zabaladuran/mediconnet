@@ -95,15 +95,19 @@ export const ProveedorUsuario = ({ children }) => {
         return;
       }
 
-      const { exito: exitoAutenticidad, sms } = await confirmarTokenValido({ token });
+      const { exito: exitoAutenticidad, sms } = await confirmarTokenValido({
+        token,
+      });
       if (!exitoAutenticidad) {
         definirCargando(false);
         return toast.error(sms || "Error al validar autenticidad del token");
       }
 
-      const { exito: exitoTipoUsuario, tipoUsuario } = await obtenerTipoUsuario({
-        token,
-      });
+      const { exito: exitoTipoUsuario, tipoUsuario } = await obtenerTipoUsuario(
+        {
+          token,
+        }
+      );
 
       const {
         exito: exitoVerificacion,
@@ -114,7 +118,7 @@ export const ProveedorUsuario = ({ children }) => {
       if (!exitoTipoUsuario || !exitoVerificacion) {
         definirCargando(false);
         return toast.error(
-          "Estamos experimentando unos errores durante la carga de tus credenciales"
+          smsVerificacion || sms || "Error al obtener datos del usuario"
         );
       }
 

@@ -56,7 +56,7 @@ export async function enviarCorreoDeVerificacion({ token }) {
     });
 
     const data = await res.json();
-
+    console.log(data);
     if (!res.ok || data.error || data.message) {
       return { exito: false, sms: data.error || data.message };
     }
@@ -279,7 +279,12 @@ export async function registrarInformacionPersonalMedico({
 }
 
 // Insertar horario médico
-export async function insertarHorarioMedico({ token, dia, horaInicio, horaFin }) {
+export async function insertarHorarioMedico({
+  token,
+  dia,
+  horaInicio,
+  horaFin,
+}) {
   if (!token) {
     throw Error("Token requerido para insertar horario médico");
   }
@@ -292,9 +297,7 @@ export async function insertarHorarioMedico({ token, dia, horaInicio, horaFin })
         Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(
-        dia && horaInicio && horaFin
-          ? { dia, horaInicio, horaFin }
-          : {}
+        dia && horaInicio && horaFin ? { dia, horaInicio, horaFin } : {}
       ),
     });
 
@@ -485,7 +488,11 @@ export async function obtenerListaEspecialidades({ token }) {
   }
 }
 //Mostrar citas disponibles por especialidad y fecha
-export async function mostrarCitasPorEspecialidadYFecha({ token, especialidad, fecha }) {
+export async function mostrarCitasPorEspecialidadYFecha({
+  token,
+  especialidad,
+  fecha,
+}) {
   if (!token || !especialidad || !fecha) {
     throw Error("Faltan datos para consultar citas disponibles");
   }
@@ -613,7 +620,10 @@ export async function obtenerEstadoDeVerificacion({ token }) {
     if (!res.ok || data.error || data.message) {
       return {
         exito: false,
-        sms: data.error || data.message || "Error al obtener estado de verificación",
+        sms:
+          data.error ||
+          data.message ||
+          "Error al obtener estado de verificación",
       };
     }
 
@@ -649,7 +659,8 @@ export async function obtenerNombreDelUsuario({ token }) {
     if (!res.ok || data.error || data.message) {
       return {
         exito: false,
-        sms: data.error || data.message || "Error al obtener nombre del usuario",
+        sms:
+          data.error || data.message || "Error al obtener nombre del usuario",
       };
     }
 

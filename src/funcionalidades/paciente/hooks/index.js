@@ -1,3 +1,12 @@
 import { useMultiStepForm } from "../hooks/useMultiStepForm";
 import { useAppointmentSpecifications } from "./useAppointmentSpecifications";
-export { useMultiStepForm, useAppointmentSpecifications };
+import { useAppointmentSelector } from "./useAppointmentSelector";
+import { useScheduleForm } from "./useScheduleForm";
+import { useScheduleAppointment } from "./useScheduleAppointment";
+export {
+  useScheduleForm,
+  useScheduleAppointment,
+  useMultiStepForm,
+  useAppointmentSpecifications,
+  useAppointmentSelector,
+};

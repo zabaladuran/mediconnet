@@ -44,13 +44,12 @@ export function useSignInForm() {
       });
 
       // REDIRECCION CONDICIONAL
-      if (!signInResponse.cuentaVerificada)
+      if (signInResponse.cuentaVerificada == "No Verificado")
         return navigate("/verification/email", { replace: true });
       if (signInResponse.tipoUsuario === PACIENTE)
         return navigate("/paciente/dashboard/home", { replace: true });
       if (signInResponse.tipoUsuario === DOCTOR)
         return navigate("/doctor/dashboard/home", { replace: true });
-
     } catch (e) {
       toast.error("Error durante el envío de datos.");
       console.error("Error en signIn:", e);

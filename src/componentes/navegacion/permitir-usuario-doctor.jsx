@@ -7,7 +7,8 @@ const PermitirUsuarioDoctor = () => {
   const { cuentaVerificada, token, tipoUsuario } = credenciales;
   if (cargando) return <LoadingPage />;
   if (!token) return <Navigate to="/auth/sign-in" />;
-  if (!cuentaVerificada) return <Navigate to="/verification/email" />;
+  if (cuentaVerificada == "No Verificado")
+    return <Navigate to="/verification/email" />;
   if (!tipoUsuario == DOCTOR) return <Navigate to="/paciente/dashboard/home" />;
   return <Outlet />;
 };

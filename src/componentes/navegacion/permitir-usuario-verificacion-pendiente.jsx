@@ -7,9 +7,9 @@ const PermitirUsuarioVerificacionPendiente = () => {
   const { cuentaVerificada, token, tipoUsuario } = credenciales;
   if (cargando) return <LoadingPage />;
   if (!token) return <Navigate to="/auth/sign-in" />;
-  if (tipoUsuario == PACIENTE && cuentaVerificada)
+  if (tipoUsuario == PACIENTE && cuentaVerificada != "No Verificado")
     return <Navigate to="/paciente/dashboard/home" />;
-  if (tipoUsuario == DOCTOR && cuentaVerificada)
+  if (tipoUsuario == DOCTOR && cuentaVerificada != "No Verificado")
     return <Navigate to="/doctor/dashboard/home" />;
   return <Outlet />;
 };

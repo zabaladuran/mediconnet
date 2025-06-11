@@ -1,7 +1,4 @@
-import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "../../../../components/ui/button";
-import * as z from "zod";
-import { useScheduleForm } from "../../hooks/useScheduleForm";
 import {
   Form,
   FormControl,
@@ -11,33 +8,13 @@ import {
   FormMessage,
   FormDescription,
 } from "../../../../components/ui/form";
-import { useForm } from "react-hook-form";
 import { FormWrapper } from "../ui/form-wrapper";
 import { Textarea } from "../../../../components/ui/textarea";
-
-const AppointmentSchema = z.object({
-  observaciones: z
-    .string()
-    .optional()
-    .transform((val) =>
-      val == null || val.trim() == "" ? "No se especifican" : val
-    ),
-});
+import { useScheduleAppointment, useScheduleForm } from "../../hooks";
 
 export function ScheduleAppointmentForm() {
-  const { back, next, isFirstStep, isLastStep, dataForm, updateDataForm } =
-    useScheduleForm();
-  const form = useForm({
-    resolver: zodResolver(AppointmentSchema),
-    values: {
-      observaciones: dataForm.observaciones || "",
-    },
-  });
-
-  const onSubmit = (values) => {
-    updateDataForm(values);
-    next();
-  };
+  const { loading, form, enviarData } = useScheduleAppointment();
+  const { back, isFirstStep, isLastStep } = useScheduleForm();
 
   return (
     <FormWrapper
@@ -45,7 +22,7 @@ export function ScheduleAppointmentForm() {
       description={"Selecciona tus preferencias"}
     >
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <form onSubmit={form.handleSubmit(enviarData)} className="space-y-6">
           <FormField
             control={form.control}
             name="observaciones"
@@ -74,7 +51,7 @@ export function ScheduleAppointmentForm() {
                 Back
               </Button>
             )}
-            <Button type="submit">
+            <Button type="submit" disabled={loading}>
               {isLastStep ? "Agendar" : "Siguiente"}
             </Button>
           </div>
