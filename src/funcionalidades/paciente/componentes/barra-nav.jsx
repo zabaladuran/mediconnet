@@ -21,21 +21,32 @@ import { useState } from "react";
 const BarraNav = () => {
   const { cerrarSesion, credenciales } = useAut();
   const [nombre, definirNombre] = useState("");
+  const [nombreCompleto, setNombreCompleto] = useState("");
 
-  // Simulación de datos de usuario (ajusta según tu backend)
+  // Obtener nombre del usuario desde el backend
   useEffect(() => {
     (async function () {
-      const res = await obtenerNombreDelUsuario({ token: credenciales.token });
-      definirNombre(res.nombre[0].toUpperCase());
+      if (credenciales?.token) {
+        const res = await obtenerNombreDelUsuario({ token: credenciales.token });
+        // res.nombre puede ser el nombre completo o un objeto, ajusta según tu backend
+        if (res?.nombre) {
+          definirNombre(res.nombre[0].toUpperCase());
+          setNombreCompleto(res.nombre);
+        } else {
+          definirNombre("U");
+          setNombreCompleto(credenciales?.nombreCompleto || "Usuario");
+        }
+      }
     })();
-  }, []);
+  }, [credenciales?.token, credenciales?.nombreCompleto]);
+
   const rol =
     credenciales?.tipoUsuario === "Medico"
       ? "Doctor"
       : credenciales?.tipoUsuario === "Paciente"
       ? "Paciente"
       : "Usuario";
-  const foto = credenciales?.fotoPerfil; // Debe venir del backend si existe
+  const foto = credenciales?.fotoPerfil;
 
   return (
     <Tabs defaultValue="Dashboard" className="w-full">
@@ -74,6 +85,14 @@ const BarraNav = () => {
                   <Avatar>
                     <AvatarFallback>{nombre}</AvatarFallback>
                   </Avatar>
+                  <div className="text-left hidden md:block">
+                    <span className="block text-gray-600 font-medium">
+                      {nombreCompleto || credenciales?.nombreCompleto || "Usuario"}
+                    </span>
+                    <span className="block text-sm text-gray-500">
+                      {rol}
+                    </span>
+                  </div>
                 </button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-48">
@@ -92,16 +111,16 @@ const BarraNav = () => {
 
       {/* Contenido de las pestañas */}
       <TabsContent value="Dashboard">
-        <ButtonDashboard /> {/* Muestra el contenido del componente */}
+        <ButtonDashboard />
       </TabsContent>
       <TabsContent value="Citas">
-        <ButtonCitas /> {/* Muestra el contenido del componente */}
+        <ButtonCitas />
       </TabsContent>
       <TabsContent value="Historial Medico">
-        <ButtonHistorialMedico /> {/* Muestra el contenido del componente */}
+        <ButtonHistorialMedico />
       </TabsContent>
       <TabsContent value="Configuracion">
-        <ButtonConfiguracion /> {/* Muestra el contenido del componente */}
+        <ButtonConfiguracion />
       </TabsContent>
     </Tabs>
   );

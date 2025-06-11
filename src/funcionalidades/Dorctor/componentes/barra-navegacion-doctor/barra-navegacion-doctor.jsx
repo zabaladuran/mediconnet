@@ -1,11 +1,6 @@
-import { Stethoscope, Home, LogOut } from "lucide-react";
-import React from "react";
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "@/components/ui/tabs";
+import { Stethoscope, Home, LogOut, Settings } from "lucide-react";
+import React, { useEffect, useState } from "react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -13,6 +8,8 @@ import {
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
 import { useAut } from "@/funcionalidades/autenticacion/hooks";
+import ConfiguracionDoctor from "../configuracion-doctor";
+import { obtenerNombreDelUsuario } from "@/funcionalidades/autenticacion/servicios";
 
 // Función para obtener iniciales
 function getInitials(nombre = "") {
@@ -26,9 +23,24 @@ function getInitials(nombre = "") {
 
 const BarraNavegacionDoctor = ({ children }) => {
   const { cerrarSesion, credenciales } = useAut();
-  const nombre = credenciales?.nombreCompleto || "Doctor";
-  const rol = "Doctor";
+  const [nombre, setNombre] = useState("");
+  const rol =
+    credenciales?.tipoUsuario === "Medico"
+      ? "Doctor"
+      : credenciales?.tipoUsuario === "Paciente"
+      ? "Paciente"
+      : "Usuario";
   const foto = credenciales?.fotoPerfil;
+
+  useEffect(() => {
+    (async function () {
+      if (credenciales?.token) {
+        const res = await obtenerNombreDelUsuario({ token: credenciales.token });
+        if (res?.nombre) setNombre(res.nombre);
+        else setNombre("Doctor");
+      }
+    })();
+  }, [credenciales?.token]);
 
   return (
     <Tabs defaultValue="Principal" className="w-full">
@@ -48,11 +60,15 @@ const BarraNavegacionDoctor = ({ children }) => {
               </a>
             </div>
 
-            {/* Pestaña única */}
+            {/* Pestañas */}
             <div className="flex space-x-4">
               <TabsTrigger value="Principal">
                 <Home className="inline-block mr-2 w-5 h-5" />
                 Principal
+              </TabsTrigger>
+              <TabsTrigger value="Configuracion">
+                <Settings className="inline-block mr-2 w-5 h-5" />
+                Configuración
               </TabsTrigger>
             </div>
 
@@ -94,8 +110,9 @@ const BarraNavegacionDoctor = ({ children }) => {
       </header>
 
       {/* Contenido de la pestaña principal */}
-      <TabsContent value="Principal">
-        {children}
+      <TabsContent value="Principal">{children}</TabsContent>
+      <TabsContent value="Configuracion">
+        <ConfiguracionDoctor />
       </TabsContent>
     </Tabs>
   );
