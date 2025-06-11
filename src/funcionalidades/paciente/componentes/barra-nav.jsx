@@ -14,22 +14,21 @@ import {
 import { LogOut } from "lucide-react";
 import { useAut } from "@/funcionalidades/autenticacion/hooks";
 import { Home, Calendar, FileText, Pill, Settings } from "lucide-react";
-
-// Función para obtener iniciales
-function getInitials(nombre = "") {
-  return nombre
-    .split(" ")
-    .map((n) => n[0])
-    .join("")
-    .toUpperCase()
-    .slice(0, 2);
-}
-
+import { useEffect } from "react";
+import { obtenerNombreDelUsuario } from "../../autenticacion/servicios";
+import { AvatarFallback, Avatar } from "../../../components/ui/avatar";
+import { useState } from "react";
 const BarraNav = () => {
   const { cerrarSesion, credenciales } = useAut();
+  const [nombre, definirNombre] = useState("");
 
   // Simulación de datos de usuario (ajusta según tu backend)
-  const nombre = credenciales?.nombreCompleto || "Usuario";
+  useEffect(() => {
+    (async function () {
+      const res = await obtenerNombreDelUsuario({ token: credenciales.token });
+      definirNombre(res.nombre[0].toUpperCase());
+    })();
+  }, []);
   const rol =
     credenciales?.tipoUsuario === "Medico"
       ? "Doctor"
@@ -62,10 +61,6 @@ const BarraNav = () => {
                 <Home className="inline-block mr-2 w-5 h-5" />
                 Dashboard
               </TabsTrigger>
-              <TabsTrigger value="Citas" className="text-lg px-5 py-3">
-                <Calendar className="inline-block mr-2 w-5 h-5" />
-                Citas
-              </TabsTrigger>
               <TabsTrigger value="Configuracion" className="text-lg px-5 py-3">
                 <Settings className="inline-block mr-2 w-5 h-5" />
                 Configuración
@@ -76,23 +71,9 @@ const BarraNav = () => {
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <button className="flex items-center space-x-3 focus:outline-none">
-                  {foto ? (
-                    <img
-                      src={foto}
-                      alt="Perfil"
-                      className="w-12 h-12 rounded-full object-cover"
-                    />
-                  ) : (
-                    <div className="w-12 h-12 rounded-full bg-green-200 flex items-center justify-center text-green-700 font-bold text-xl">
-                      {getInitials(nombre)}
-                    </div>
-                  )}
-                  <div className="text-left hidden md:block">
-                    <span className="block text-gray-600 font-medium text-lg">
-                      {nombre}
-                    </span>
-                    <span className="block text-sm text-gray-500">{rol}</span>
-                  </div>
+                  <Avatar>
+                    <AvatarFallback>{nombre}</AvatarFallback>
+                  </Avatar>
                 </button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-48">

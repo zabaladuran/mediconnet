@@ -3,7 +3,7 @@ import { useMultiStepForm } from "../hooks";
 import { AppointmentSpecificationsForm } from "../componentes/forms/appointment-specifications-form";
 import { ScheduleAppointmentForm } from "../componentes/forms/schedule-appointment-form";
 import { SelectAppointmentForm } from "../componentes/forms/select-appointment-form";
-
+import { AppointmentConfirmationCard } from "../componentes/ui/appointment-confirmation-card";
 export const ScheduleFormContext = createContext({
   dataForm: null,
   Stepper: null,
@@ -38,6 +38,7 @@ export const ScheduleProvider = ({ children }) => {
       <AppointmentSpecificationsForm />,
       <SelectAppointmentForm />,
       <ScheduleAppointmentForm />,
+      <AppointmentConfirmationCard />,
     ],
   });
 
